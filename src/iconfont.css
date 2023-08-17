@@ -1,0 +1,9 @@
+@font-face {
+  font-family: iconfont;
+  font-display: block;
+  font-style: normal;
+  src:
+    url("/src/assets/fonts/iconfont.woff2?t=1688465240183") format("woff2"),
+    url("/src/assets/fonts/iconfont.woff?t=1688465240183") format("woff"),
+    url("/src/assets/fonts/iconfont.ttf?t=1688465240183") format("truetype");
+}

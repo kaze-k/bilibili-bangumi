@@ -1,0 +1,51 @@
+.wrapper {
+  display: inline-block;
+  width: calc(100% / 7);
+  cursor: pointer;
+}
+
+.radio {
+  display: none;
+}
+
+.label {
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.day {
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 100%;
+}
+
+.date {
+  color: #ffffff;
+}
+
+.today {
+  width: 4px;
+  height: 4px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3px;
+}
+
+.istoday {
+  display: none;
+}
+
+.icon {
+  width: 4px;
+  height: 4px;
+}

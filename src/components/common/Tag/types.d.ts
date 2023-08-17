@@ -1,0 +1,3 @@
+interface TagProps {
+  children: string
+}

@@ -1,0 +1,10 @@
+.stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+
+  div {
+    transform: scale(0.9);
+    transform-origin: 0 0;
+  }
+}

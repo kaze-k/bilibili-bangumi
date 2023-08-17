@@ -1,0 +1,3 @@
+interface TimeProps {
+  children: string
+}

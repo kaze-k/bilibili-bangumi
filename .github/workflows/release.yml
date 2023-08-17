@@ -1,0 +1,76 @@
+name: Create Release
+
+on:
+  push:
+    tag:
+      - 'v*'
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    strategy:
+      matrix:
+        node-version: [18.x]
+        pnpm-version: [8.x]
+
+    steps:
+      - name: 1. 检查代码
+        if: contains(github.ref, 'tags')
+        uses: actions/checkout@v3
+
+      - name: 2. 安装pnpm
+        if: contains(github.ref, 'tags')
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ matrix.pnpm-version }}
+
+      - name: 3. 设置Node.js
+        if: contains(github.ref, 'tags')
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - name: 4. 缓存
+        if: contains(github.ref, 'tags')
+        uses: actions/cache@v3
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: 5. 安装依赖
+        if: steps.cache-dependencies.outputs.cache-hit != 'true' && contains(github.ref, 'tags')
+        run: pnpm install
+
+      - name: 6. 打包
+        if: contains(github.ref, 'tags')
+        run: pnpm zip
+
+      - name: 7. 创建GitHub Release
+        id: create_release
+        if: contains(github.ref, 'tags')
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: 8. 上传压缩文件
+        if: contains(github.ref, 'tags')
+        uses: actions/upload-release-asset@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/bilibili-bangumi.zip
+          asset_name: bilibili-bangumi.zip
+          asset_content_type: application/zip

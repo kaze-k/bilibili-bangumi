@@ -1,0 +1,16 @@
+{
+  "plugins": ["stylelint-prettier"],
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "prettier/prettier": true,
+    "color-hex-length": "long",
+    "selector-class-pattern": "^([a-z][a-z0-9]*)(_[a-z0-9]+)*$",
+    "selector-pseudo-class-no-unknown": null
+  },
+  "overrides": [
+    {
+      "files": ["**/*.scss", "**/*.module.scss"],
+      "customSyntax": "postcss-scss"
+    }
+  ]
+}
