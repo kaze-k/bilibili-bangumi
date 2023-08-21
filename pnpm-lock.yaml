@@ -118,8 +118,8 @@ devDependencies:
     specifier: ^11.0.0
     version: registry.npmmirror.com/copy-webpack-plugin@11.0.0(webpack@5.88.1)
   crx-pack-webpack-plugin:
-    specifier: ^1.0.0
-    version: registry.npmmirror.com/crx-pack-webpack-plugin@1.0.0(webpack@5.88.1)
+    specifier: ^1.1.0
+    version: registry.npmmirror.com/crx-pack-webpack-plugin@1.1.0(webpack@5.88.1)
   css-loader:
     specifier: ^6.8.1
     version: registry.npmmirror.com/css-loader@6.8.1(webpack@5.88.1)
@@ -138,6 +138,9 @@ devDependencies:
   eslint-webpack-plugin:
     specifier: ^4.0.1
     version: registry.npmmirror.com/eslint-webpack-plugin@4.0.1(eslint@8.42.0)(webpack@5.88.1)
+  generate-icon-webpack-plugin:
+    specifier: ^2.0.3
+    version: registry.npmmirror.com/generate-icon-webpack-plugin@2.0.3(webpack@5.88.1)
   html-webpack-plugin:
     specifier: ^5.5.3
     version: registry.npmmirror.com/html-webpack-plugin@5.5.3(webpack@5.88.1)
@@ -171,9 +174,6 @@ devDependencies:
   sass-loader:
     specifier: ^13.3.2
     version: registry.npmmirror.com/sass-loader@13.3.2(sass@1.63.6)(webpack@5.88.1)
-  sharp:
-    specifier: ^0.32.3
-    version: registry.npmmirror.com/sharp@0.32.3
   style-loader:
     specifier: ^3.3.3
     version: registry.npmmirror.com/style-loader@3.3.3(webpack@5.88.1)
@@ -2078,6 +2078,33 @@ packages:
       - '@swc/wasm'
     dev: true
 
+  registry.npmmirror.com/@commitlint/load@17.7.1:
+    resolution: {integrity: sha512-S/QSOjE1ztdogYj61p6n3UbkUvweR17FQ0zDbNtoTLc+Hz7vvfS7ehoTMQ27hPSjVBpp7SzEcOQu081RLjKHJQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@commitlint/load/-/load-17.7.1.tgz}
+    name: '@commitlint/load'
+    version: 17.7.1
+    engines: {node: '>=v14'}
+    requiresBuild: true
+    dependencies:
+      '@commitlint/config-validator': registry.npmmirror.com/@commitlint/config-validator@17.6.7
+      '@commitlint/execute-rule': registry.npmmirror.com/@commitlint/execute-rule@17.4.0
+      '@commitlint/resolve-extends': registry.npmmirror.com/@commitlint/resolve-extends@17.6.7
+      '@commitlint/types': registry.npmmirror.com/@commitlint/types@17.4.4
+      '@types/node': registry.npmmirror.com/@types/node@20.4.7
+      chalk: registry.npmmirror.com/chalk@4.1.2
+      cosmiconfig: registry.npmmirror.com/cosmiconfig@8.2.0
+      cosmiconfig-typescript-loader: registry.npmmirror.com/cosmiconfig-typescript-loader@4.4.0(@types/node@20.4.7)(cosmiconfig@8.2.0)(ts-node@10.9.1)(typescript@5.0.3)
+      lodash.isplainobject: registry.npmmirror.com/lodash.isplainobject@4.0.6
+      lodash.merge: registry.npmmirror.com/lodash.merge@4.6.2
+      lodash.uniq: registry.npmmirror.com/lodash.uniq@4.5.0
+      resolve-from: registry.npmmirror.com/resolve-from@5.0.0
+      ts-node: registry.npmmirror.com/ts-node@10.9.1(@types/node@20.4.7)(typescript@5.0.3)
+      typescript: registry.npmmirror.com/typescript@5.0.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+    dev: true
+    optional: true
+
   registry.npmmirror.com/@commitlint/message@17.4.2:
     resolution: {integrity: sha512-3XMNbzB+3bhKA1hSAWPCQA3lNxR4zaeQAQcHj0Hx5sVdO6ryXtgUBGGv+1ZCLMgAPRixuc6en+iNAzZ4NzAa8Q==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@commitlint/message/-/message-17.4.2.tgz}
     name: '@commitlint/message'
@@ -2781,7 +2808,7 @@ packages:
       '@jest/schemas': registry.npmmirror.com/@jest/schemas@29.6.0
       '@types/istanbul-lib-coverage': registry.npmmirror.com/@types/istanbul-lib-coverage@2.0.4
       '@types/istanbul-reports': registry.npmmirror.com/@types/istanbul-reports@3.0.1
-      '@types/node': registry.npmmirror.com/@types/node@18.15.11
+      '@types/node': registry.npmmirror.com/@types/node@20.4.7
       '@types/yargs': registry.npmmirror.com/@types/yargs@17.0.24
       chalk: registry.npmmirror.com/chalk@4.1.2
     dev: true
@@ -3077,6 +3104,12 @@ packages:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.15.11.tgz}
     name: '@types/node'
     version: 18.15.11
+    dev: true
+
+  registry.npmmirror.com/@types/node@20.4.7:
+    resolution: {integrity: sha512-bUBrPjEry2QUTsnuEjzjbS7voGWCc30W0qzgMf90GPeDGFRakvrz47ju+oqDAKCXLUCe39u57/ORMl/O/04/9g==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-20.4.7.tgz}
+    name: '@types/node'
+    version: 20.4.7
     dev: true
 
   registry.npmmirror.com/@types/normalize-package-data@2.4.1:
@@ -4229,6 +4262,15 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  registry.npmmirror.com/cli-table@0.3.11:
+    resolution: {integrity: sha512-IqLQi4lO0nIB4tcdTpN4LCB9FI3uqrJZK7RC515EnhZ6qBaglkIgICb1wjeAqpdoOabm1+SuQtkXIPdYC93jhQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cli-table/-/cli-table-0.3.11.tgz}
+    name: cli-table
+    version: 0.3.11
+    engines: {node: '>= 0.2.0'}
+    dependencies:
+      colors: registry.npmmirror.com/colors@1.0.3
+    dev: true
+
   registry.npmmirror.com/cli-truncate@2.1.0:
     resolution: {integrity: sha512-n8fOixwDD6b/ObinzTrp1ZKFzbgvKZvuz/TvejnLn1aQfC6r52XEx85FmuC+3HI+JM7coBRXUvNqEU2PHVrHpg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cli-truncate/-/cli-truncate-2.1.0.tgz}
     name: cli-truncate
@@ -4353,6 +4395,13 @@ packages:
     resolution: {integrity: sha512-Q31K32UwadWqAxs+Iu46gNm4HJqUwrTJT2zen5NnhkKE5w7uqeZQZiuODUOxM/zOtHfiUTkia0io6zbN/VcCUQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/colors-console/-/colors-console-1.0.3.tgz}
     name: colors-console
     version: 1.0.3
+    dev: true
+
+  registry.npmmirror.com/colors@1.0.3:
+    resolution: {integrity: sha512-pFGrxThWcWQ2MsAz6RtgeWe4NK2kUE1WfsrvvlctdII745EW9I0yflqhe7++M5LEc7bV2c/9/5zc8sFcpL0Drw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/colors/-/colors-1.0.3.tgz}
+    name: colors
+    version: 1.0.3
+    engines: {node: '>=0.1.90'}
     dev: true
 
   registry.npmmirror.com/commander@10.0.1:
@@ -4533,6 +4582,25 @@ packages:
       typescript: registry.npmmirror.com/typescript@5.0.3
     dev: true
 
+  registry.npmmirror.com/cosmiconfig-typescript-loader@4.4.0(@types/node@20.4.7)(cosmiconfig@8.2.0)(ts-node@10.9.1)(typescript@5.0.3):
+    resolution: {integrity: sha512-BabizFdC3wBHhbI4kJh0VkQP9GkBfoHPydD0COMce1nJ1kJAB3F2TmJ/I7diULBKtmEWSwEbuN/KDtgnmUUVmw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.4.0.tgz}
+    id: registry.npmmirror.com/cosmiconfig-typescript-loader/4.4.0
+    name: cosmiconfig-typescript-loader
+    version: 4.4.0
+    engines: {node: '>=v14.21.3'}
+    peerDependencies:
+      '@types/node': '*'
+      cosmiconfig: '>=7'
+      ts-node: '>=10'
+      typescript: '>=4'
+    dependencies:
+      '@types/node': registry.npmmirror.com/@types/node@20.4.7
+      cosmiconfig: registry.npmmirror.com/cosmiconfig@8.2.0
+      ts-node: registry.npmmirror.com/ts-node@10.9.1(@types/node@20.4.7)(typescript@5.0.3)
+      typescript: registry.npmmirror.com/typescript@5.0.3
+    dev: true
+    optional: true
+
   registry.npmmirror.com/cosmiconfig@8.2.0:
     resolution: {integrity: sha512-3rTMnFJA1tCOPwRxtgF4wd7Ab2qvDbL8jX+3smjIbS4HlZBagTlpERbdN7iAbWlrfxE3M8c27kTwTawQ7st+OQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cosmiconfig/-/cosmiconfig-8.2.0.tgz}
     name: cosmiconfig
@@ -4562,14 +4630,15 @@ packages:
       which: registry.npmmirror.com/which@2.0.2
     dev: true
 
-  registry.npmmirror.com/crx-pack-webpack-plugin@1.0.0(webpack@5.88.1):
-    resolution: {integrity: sha512-X9wycnhWhJGiJVw8D1GTRYxCNDZQkONIlLMBgql4FppEpMFDM6/Qb8N3AFrljwsb6OzeyAiK83Bg59h+C1aiMw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/crx-pack-webpack-plugin/-/crx-pack-webpack-plugin-1.0.0.tgz}
-    id: registry.npmmirror.com/crx-pack-webpack-plugin/1.0.0
+  registry.npmmirror.com/crx-pack-webpack-plugin@1.1.0(webpack@5.88.1):
+    resolution: {integrity: sha512-tyPFiB2ezHpgtekzZf/Kc8AdmvlgOvIcqLaq50nPUmOGiXo6IhLiSE65IDPT1uzVeQylFsg8+3okYRKqgSa0Mg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/crx-pack-webpack-plugin/-/crx-pack-webpack-plugin-1.1.0.tgz}
+    id: registry.npmmirror.com/crx-pack-webpack-plugin/1.1.0
     name: crx-pack-webpack-plugin
-    version: 1.0.0
+    version: 1.1.0
     peerDependencies:
       webpack: '>=5.0.0'
     dependencies:
+      colors-console: registry.npmmirror.com/colors-console@1.0.3
       crx3: registry.npmmirror.com/crx3@1.1.3
       mkdirp: registry.npmmirror.com/mkdirp@3.0.1
       webpack: registry.npmmirror.com/webpack@5.88.1(webpack-cli@5.1.4)
@@ -4732,7 +4801,7 @@ packages:
       longest: registry.npmmirror.com/longest@2.0.1
       word-wrap: registry.npmmirror.com/word-wrap@1.2.3
     optionalDependencies:
-      '@commitlint/load': registry.npmmirror.com/@commitlint/load@17.6.7
+      '@commitlint/load': registry.npmmirror.com/@commitlint/load@17.7.1
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -4865,10 +4934,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  registry.npmmirror.com/detect-libc@2.0.1:
-    resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/detect-libc/-/detect-libc-2.0.1.tgz}
+  registry.npmmirror.com/detect-libc@2.0.2:
+    resolution: {integrity: sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/detect-libc/-/detect-libc-2.0.2.tgz}
     name: detect-libc
-    version: 2.0.1
+    version: 2.0.2
     engines: {node: '>=8'}
     dev: true
 
@@ -5400,10 +5469,10 @@ packages:
     version: 1.3.0
     dev: true
 
-  registry.npmmirror.com/fast-fifo@1.3.0:
-    resolution: {integrity: sha512-IgfweLvEpwyA4WgiQe9Nx6VV2QkML2NkvZnk1oKnIzXgXdWxuhF7zw4DvLTPZJn6PIUneiAXPF24QmoEqHTjyw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fast-fifo/-/fast-fifo-1.3.0.tgz}
+  registry.npmmirror.com/fast-fifo@1.3.2:
+    resolution: {integrity: sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fast-fifo/-/fast-fifo-1.3.2.tgz}
     name: fast-fifo
-    version: 1.3.0
+    version: 1.3.2
     dev: true
 
   registry.npmmirror.com/fast-glob@3.2.12:
@@ -5668,6 +5737,19 @@ packages:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/functions-have-names/-/functions-have-names-1.2.3.tgz}
     name: functions-have-names
     version: 1.2.3
+    dev: true
+
+  registry.npmmirror.com/generate-icon-webpack-plugin@2.0.3(webpack@5.88.1):
+    resolution: {integrity: sha512-d9CCVKzBJhE+GZRZvURBvzx02Ts1+kUESF+EIdrX3hsQjf7czPWNAZlCMCNnErrVdFDr9iayZZkNDUyAvOCVWQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/generate-icon-webpack-plugin/-/generate-icon-webpack-plugin-2.0.3.tgz}
+    id: registry.npmmirror.com/generate-icon-webpack-plugin/2.0.3
+    name: generate-icon-webpack-plugin
+    version: 2.0.3
+    peerDependencies:
+      webpack: '>=5.0.0'
+    dependencies:
+      cli-table: registry.npmmirror.com/cli-table@0.3.11
+      sharp: registry.npmmirror.com/sharp@0.32.5
+      webpack: registry.npmmirror.com/webpack@5.88.1(webpack-cli@5.1.4)
     dev: true
 
   registry.npmmirror.com/gensync@1.0.0-beta.2:
@@ -7262,10 +7344,10 @@ packages:
       tslib: registry.npmmirror.com/tslib@2.6.0
     dev: true
 
-  registry.npmmirror.com/node-abi@3.45.0:
-    resolution: {integrity: sha512-iwXuFrMAcFVi/ZoZiqq8BzAdsLw9kxDfTC0HMyjXfSL/6CSDAGD5UmR7azrAgWV1zKYq7dUUMj4owusBWKLsiQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/node-abi/-/node-abi-3.45.0.tgz}
+  registry.npmmirror.com/node-abi@3.47.0:
+    resolution: {integrity: sha512-2s6B2CWZM//kPgwnuI0KrYwNjfdByE25zvAaEpq9IH4zcNsarH8Ihu/UuX6XMPEogDAxkuUFeZn60pXNHAqn3A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/node-abi/-/node-abi-3.47.0.tgz}
     name: node-abi
-    version: 3.45.0
+    version: 3.47.0
     engines: {node: '>=10'}
     dependencies:
       semver: registry.npmmirror.com/semver@7.5.4
@@ -8262,13 +8344,13 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      detect-libc: registry.npmmirror.com/detect-libc@2.0.1
+      detect-libc: registry.npmmirror.com/detect-libc@2.0.2
       expand-template: registry.npmmirror.com/expand-template@2.0.3
       github-from-package: registry.npmmirror.com/github-from-package@0.0.0
       minimist: registry.npmmirror.com/minimist@1.2.8
       mkdirp-classic: registry.npmmirror.com/mkdirp-classic@0.5.3
       napi-build-utils: registry.npmmirror.com/napi-build-utils@1.0.2
-      node-abi: registry.npmmirror.com/node-abi@3.45.0
+      node-abi: registry.npmmirror.com/node-abi@3.47.0
       pump: registry.npmmirror.com/pump@3.0.0
       rc: registry.npmmirror.com/rc@1.2.8
       simple-get: registry.npmmirror.com/simple-get@4.0.1
@@ -9089,15 +9171,15 @@ packages:
     version: 1.1.0
     dev: false
 
-  registry.npmmirror.com/sharp@0.32.3:
-    resolution: {integrity: sha512-i1gFPiNqyqxC4ouVvCKj5G8WfPIMeeSxpKcMrjic6NY4e8zktW7bIdqHPc3FCG+pNKU/XCEabKA57hhvZi8UmQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/sharp/-/sharp-0.32.3.tgz}
+  registry.npmmirror.com/sharp@0.32.5:
+    resolution: {integrity: sha512-0dap3iysgDkNaPOaOL4X/0akdu0ma62GcdC2NBQ+93eqpePdDdr2/LM0sFdDSMmN7yS+odyZtPsb7tx/cYBKnQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/sharp/-/sharp-0.32.5.tgz}
     name: sharp
-    version: 0.32.3
+    version: 0.32.5
     engines: {node: '>=14.15.0'}
     requiresBuild: true
     dependencies:
       color: registry.npmmirror.com/color@4.2.3
-      detect-libc: registry.npmmirror.com/detect-libc@2.0.1
+      detect-libc: registry.npmmirror.com/detect-libc@2.0.2
       node-addon-api: registry.npmmirror.com/node-addon-api@6.1.0
       prebuild-install: registry.npmmirror.com/prebuild-install@7.1.1
       semver: registry.npmmirror.com/semver@7.5.4
@@ -9289,12 +9371,12 @@ packages:
     version: 3.3.3
     dev: true
 
-  registry.npmmirror.com/streamx@2.15.0:
-    resolution: {integrity: sha512-HcxY6ncGjjklGs1xsP1aR71INYcsXFJet5CU1CHqihQ2J5nOsbd4OjgjHO42w/4QNv9gZb3BueV+Vxok5pLEXg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/streamx/-/streamx-2.15.0.tgz}
+  registry.npmmirror.com/streamx@2.15.1:
+    resolution: {integrity: sha512-fQMzy2O/Q47rgwErk/eGeLu/roaFWV0jVsogDmrszM9uIw8L5OA+t+V93MgYlufNptfjmYR1tOMWhei/Eh7TQA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/streamx/-/streamx-2.15.1.tgz}
     name: streamx
-    version: 2.15.0
+    version: 2.15.1
     dependencies:
-      fast-fifo: registry.npmmirror.com/fast-fifo@1.3.0
+      fast-fifo: registry.npmmirror.com/fast-fifo@1.3.2
       queue-tick: registry.npmmirror.com/queue-tick@1.0.1
     dev: true
 
@@ -9758,8 +9840,8 @@ packages:
     version: 3.1.6
     dependencies:
       b4a: registry.npmmirror.com/b4a@1.6.4
-      fast-fifo: registry.npmmirror.com/fast-fifo@1.3.0
-      streamx: registry.npmmirror.com/streamx@2.15.0
+      fast-fifo: registry.npmmirror.com/fast-fifo@1.3.2
+      streamx: registry.npmmirror.com/streamx@2.15.1
     dev: true
 
   registry.npmmirror.com/temp@0.9.4:
@@ -9928,6 +10010,41 @@ packages:
       v8-compile-cache-lib: registry.npmmirror.com/v8-compile-cache-lib@3.0.1
       yn: registry.npmmirror.com/yn@3.1.1
     dev: true
+
+  registry.npmmirror.com/ts-node@10.9.1(@types/node@20.4.7)(typescript@5.0.3):
+    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ts-node/-/ts-node-10.9.1.tgz}
+    id: registry.npmmirror.com/ts-node/10.9.1
+    name: ts-node
+    version: 10.9.1
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': registry.npmmirror.com/@cspotcode/source-map-support@0.8.1
+      '@tsconfig/node10': registry.npmmirror.com/@tsconfig/node10@1.0.9
+      '@tsconfig/node12': registry.npmmirror.com/@tsconfig/node12@1.0.11
+      '@tsconfig/node14': registry.npmmirror.com/@tsconfig/node14@1.0.3
+      '@tsconfig/node16': registry.npmmirror.com/@tsconfig/node16@1.0.4
+      '@types/node': registry.npmmirror.com/@types/node@20.4.7
+      acorn: registry.npmmirror.com/acorn@8.8.2
+      acorn-walk: registry.npmmirror.com/acorn-walk@8.2.0
+      arg: registry.npmmirror.com/arg@4.1.3
+      create-require: registry.npmmirror.com/create-require@1.1.1
+      diff: registry.npmmirror.com/diff@4.0.2
+      make-error: registry.npmmirror.com/make-error@1.3.6
+      typescript: registry.npmmirror.com/typescript@5.0.3
+      v8-compile-cache-lib: registry.npmmirror.com/v8-compile-cache-lib@3.0.1
+      yn: registry.npmmirror.com/yn@3.1.1
+    dev: true
+    optional: true
 
   registry.npmmirror.com/tsconfig-paths-webpack-plugin@4.0.1:
     resolution: {integrity: sha512-m5//KzLoKmqu2MVix+dgLKq70MnFi8YL8sdzQZ6DblmCdfuq/y3OqvJd5vMndg2KEVCOeNz8Es4WVZhYInteLw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tsconfig-paths-webpack-plugin/-/tsconfig-paths-webpack-plugin-4.0.1.tgz}
