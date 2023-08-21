@@ -1,169 +1,41 @@
-import ArchiverWebpackPlugin from "archive-webpack-plugin"
-import CopyWebpackPlugin from "copy-webpack-plugin"
+import ArchiveWebpackPlugin from "archive-webpack-plugin"
 import CrxPackWebpackPlugin from "crx-pack-webpack-plugin"
-import EslintWebpackPlugin from "eslint-webpack-plugin"
-import HtmlWebpackPlugin from "html-webpack-plugin"
+import GenerateIconWebpackPlugin from "generate-icon-webpack-plugin"
 import path from "path"
-import StylelintWebpackPlugin from "stylelint-webpack-plugin"
-import TerserWebpackPlugin from "terser-webpack-plugin"
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin"
-import { Chunk, Configuration, PathData } from "webpack"
-import WebpackExtensionManifestPlugin from "webpack-extension-manifest-plugin"
+import { Configuration } from "webpack"
 import { merge } from "webpack-merge"
 import WebpackBar from "webpackbar"
 
+import baseConfig from "./config/webpack.base"
 import devConfig from "./config/webpack.dev"
 import prodConfig from "./config/webpack.prod"
-import pkg from "./package.json"
-
-const config: (packageDir: string) => Configuration = (packageDir: string): Configuration => {
-  return {
-    stats: {
-      preset: "minimal",
-    },
-    entry: {
-      background: path.resolve(__dirname, "./src/background", "index.ts"),
-      popup: path.resolve(__dirname, "./src/popup", "index.tsx"),
-    },
-    output: {
-      filename(pathData: PathData): string {
-        return pathData.chunk.name === "background" ? "[name].js" : "static/scripts/[name].js"
-      },
-      chunkFilename: "static/scripts/[name].js",
-      path: path.resolve(__dirname, "./build/", packageDir),
-      clean: true,
-      asyncChunks: true,
-    },
-    resolve: {
-      extensions: [".ts", ".tsx", ".js", ".jsx", ".scss", ".json"],
-      modules: ["node_modules"],
-      plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, "./tsconfig.json") })],
-    },
-    optimization: {
-      splitChunks: {
-        chunks(chunk: Chunk): boolean {
-          return chunk.name !== "background"
-        },
-        name: "vendors",
-      },
-      minimizer: [
-        new TerserWebpackPlugin({
-          extractComments: true,
-        }),
-      ],
-    },
-    performance: {
-      maxAssetSize: 512000,
-      maxEntrypointSize: 512000,
-    },
-    module: {
-      rules: [
-        {
-          oneOf: [
-            {
-              test: /\.(ts|tsx)$/,
-              exclude: /node_modules/,
-              use: [
-                {
-                  loader: require.resolve("babel-loader"),
-                  options: {
-                    cacheDirectory: true,
-                    cacheCompression: false,
-                  },
-                },
-              ],
-            },
-            {
-              test: /\.(png|jpe?g|gif|webp|svg)$/,
-              type: "asset/resource",
-              generator: {
-                filename: "static/images/[name][ext]",
-              },
-            },
-            {
-              test: /\.(ttf|woff2?)$/,
-              type: "asset/resource",
-              generator: {
-                filename: "static/fonts/[name][ext]",
-              },
-            },
-          ],
-        },
-      ],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "./public/popup.html"),
-        filename: path.resolve(__dirname, "./build/", packageDir, "popup.html"),
-        title: "Bilibili Bangumi",
-        inject: "body",
-        chunks: ["popup"],
-      }),
-      new EslintWebpackPlugin({
-        cache: true,
-        fix: false,
-        context: path.resolve(__dirname, "./src"),
-        extensions: ["js", "ts", "tsx"],
-      }),
-      new StylelintWebpackPlugin({
-        context: "src",
-        fix: false,
-      }),
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: path.resolve(__dirname, "./public/icon.png"),
-            to: path.resolve(__dirname, "./build/", packageDir, "icon.png"),
-          },
-          {
-            from: path.resolve(__dirname, "./locales/"),
-            to: path.resolve(__dirname, "./build/", packageDir, "_locales/"),
-          },
-          {
-            from: path.resolve(__dirname, "./public/icons/"),
-            to: path.resolve(__dirname, "./build/", packageDir, "icons/"),
-          },
-        ],
-        options: {
-          concurrency: 100,
-        },
-      }),
-      new WebpackExtensionManifestPlugin({
-        config: {
-          base: path.resolve(__dirname, "./public/manifest.js"),
-          extend: {
-            manifest_version: 3,
-            name: `${pkg.displayName}`,
-            background: {
-              service_worker: "background.js",
-            },
-          },
-        },
-        pkgJsonProps: ["version", "author"],
-      }),
-    ],
-  }
-}
 
 const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any): Configuration => {
   if (env.WEBPACK_WATCH) {
-    const packageDir: string = "serve/"
+    const packageDir: string = "serve"
 
-    const optionConfig: Configuration = {
+    const watchConfig: Configuration = {
       plugins: [
         new WebpackBar({
           name: "webpack Watch",
           basic: true,
           reporters: ["basic"],
         }),
+        new GenerateIconWebpackPlugin({
+          original: path.resolve(__dirname, "./public/icon.png"),
+          outputDir: path.resolve(__dirname, "./build/", packageDir, "./icons/"),
+          size: [128, 64, 48, 32, 16],
+          log: false,
+          grayscale: true,
+        }),
       ],
     }
 
-    return merge(merge(optionConfig, config(packageDir)), devConfig)
+    return merge(merge(watchConfig, baseConfig(packageDir)), devConfig)
   }
 
   if (argv.mode === "development") {
-    const packageDir: string = "dev/"
+    const packageDir: string = "dev"
 
     const optionConfig: Configuration = {
       plugins: [
@@ -175,17 +47,36 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
           profile: true,
           reporters: ["fancy", "profile"],
         }),
+        new GenerateIconWebpackPlugin({
+          original: path.resolve(__dirname, "./public/icon.png"),
+          outputDir: path.resolve(__dirname, "./build/", packageDir, "./icons/"),
+          size: [128, 64, 48, 32, 16],
+          log: true,
+          grayscale: true,
+        }),
       ],
     }
 
-    return merge(merge(optionConfig, config(packageDir)), devConfig)
+    return merge(merge(optionConfig, baseConfig(packageDir)), devConfig)
   }
 
   if (argv.mode === "production") {
-    const packageDir: string = "bilibili-bangumi/"
+    const packageDir: string = "bilibili-bangumi"
+
+    const optionConfig: Configuration = {
+      plugins: [
+        new GenerateIconWebpackPlugin({
+          original: path.resolve(__dirname, "./public/icon.png"),
+          outputDir: path.resolve(__dirname, "./build/", packageDir, "/icons/"),
+          size: [128, 64, 48, 32, 16],
+          log: true,
+          grayscale: false,
+        }),
+      ],
+    }
 
     if (env.package) {
-      const optionConfig: Configuration = {
+      const packageConfig: Configuration = {
         plugins: [
           new CrxPackWebpackPlugin({
             zip: true,
@@ -198,13 +89,13 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
         ],
       }
 
-      return merge(merge(optionConfig, config(packageDir)), prodConfig)
+      return merge(merge(optionConfig, merge(packageConfig, baseConfig(packageDir))), prodConfig)
     }
 
     if (env.zip) {
-      const optionConfig: Configuration = {
+      const zipConfig: Configuration = {
         plugins: [
-          new ArchiverWebpackPlugin({
+          new ArchiveWebpackPlugin({
             source: path.resolve(__dirname, "./build/bilibili-bangumi"),
             destination: path.resolve(__dirname, "./build/bilibili-bangumi.zip"),
             format: "zip",
@@ -212,10 +103,10 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
         ],
       }
 
-      return merge(merge(optionConfig, config(packageDir)), prodConfig)
+      return merge(merge(optionConfig, merge(zipConfig, baseConfig(packageDir))), prodConfig)
     }
 
-    return merge(config(packageDir), prodConfig)
+    return merge(merge(optionConfig, baseConfig(packageDir)), prodConfig)
   }
 }
 
