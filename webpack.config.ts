@@ -31,7 +31,9 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
       ],
     }
 
-    return merge(merge(watchConfig, baseConfig(packageDir)), devConfig)
+    const devMergedConfig: Configuration = merge(watchConfig, baseConfig(packageDir), devConfig)
+
+    return devMergedConfig
   }
 
   if (argv.mode === "development") {
@@ -57,7 +59,9 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
       ],
     }
 
-    return merge(merge(optionConfig, baseConfig(packageDir)), devConfig)
+    const devMergedConfig: Configuration = merge(optionConfig, baseConfig(packageDir), devConfig)
+
+    return devMergedConfig
   }
 
   if (argv.mode === "production") {
@@ -75,38 +79,46 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
       ],
     }
 
+    const optionMergedConfig: Configuration = merge(optionConfig, baseConfig(packageDir))
+
     if (env.package) {
       const packageConfig: Configuration = {
         plugins: [
           new CrxPackWebpackPlugin({
             zip: true,
-            xml: false,
+            xml: true,
             keyFile: path.resolve(__dirname, "./bilibili-bangumi.pem"),
-            contentPath: path.resolve(__dirname, "./build/bilibili-bangumi"),
+            contentPath: path.resolve(__dirname, "./build/", packageDir),
             outputPath: path.resolve(__dirname, "./release"),
-            name: "bilibili-bangumi",
+            name: packageDir,
           }),
         ],
       }
 
-      return merge(merge(optionConfig, merge(packageConfig, baseConfig(packageDir))), prodConfig)
+      const prodMergedConfig: Configuration = merge(optionMergedConfig, packageConfig, prodConfig)
+
+      return prodMergedConfig
     }
 
     if (env.zip) {
       const zipConfig: Configuration = {
         plugins: [
           new ArchiveWebpackPlugin({
-            source: path.resolve(__dirname, "./build/bilibili-bangumi"),
-            destination: path.resolve(__dirname, "./build/bilibili-bangumi.zip"),
+            source: path.resolve(__dirname, "./build/", packageDir),
+            destination: path.resolve(__dirname, `./build/${packageDir}.zip`),
             format: "zip",
           }),
         ],
       }
 
-      return merge(merge(optionConfig, merge(zipConfig, baseConfig(packageDir))), prodConfig)
+      const prodMergedConfig: Configuration = merge(optionMergedConfig, zipConfig, prodConfig)
+
+      return prodMergedConfig
     }
 
-    return merge(merge(optionConfig, baseConfig(packageDir)), prodConfig)
+    const prodMergedConfig: Configuration = merge(optionConfig, baseConfig(packageDir), prodConfig)
+
+    return prodMergedConfig
   }
 }
 
