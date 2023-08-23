@@ -13,12 +13,18 @@ declare module "*.png" {
   export default content
 }
 
-declare module "crx3" {
-  const crx3: ([]: string[], settings: {
-    keyPath: string,
-    crxPath: string,
-  }) => Promise<void>
-  export default crx3
+declare module "archive-webpack-plugin" {
+  interface Options {
+    source: string
+    destination: string
+    format: "zip" | "tar"
+  }
+  class ArchiveWebapckPlugin {
+    constructor(options: Options | void)
+
+    apply(compiler: import("webpack").Compiler): void
+  }
+  export default ArchiveWebapckPlugin
 }
 
 type ReactElement = React.ReactElement
