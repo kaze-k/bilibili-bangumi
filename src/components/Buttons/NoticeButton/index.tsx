@@ -28,7 +28,7 @@ function NoticeButton(props: DarkModeProps): ReactElement {
   /**
    * @description 处理发送通信的方法
    */
-  const handleNotice: () => void =(): void => {
+  const handleNotice: () => void = (): void => {
     notice ? dispatch(enableNotice()) : dispatch(disableNotice())
   }
 

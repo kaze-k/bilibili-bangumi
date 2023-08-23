@@ -1,7 +1,7 @@
 import { joinUrl } from "~/utils"
 
 const config = {
-  baseURL: "https://api.bilibili.com/",
+  baseURL: "https://api.bilibili.com",
 }
 
 /**
