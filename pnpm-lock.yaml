@@ -118,8 +118,8 @@ devDependencies:
     specifier: ^11.0.0
     version: registry.npmmirror.com/copy-webpack-plugin@11.0.0(webpack@5.88.1)
   crx-pack-webpack-plugin:
-    specifier: ^1.1.0
-    version: registry.npmmirror.com/crx-pack-webpack-plugin@1.1.0(webpack@5.88.1)
+    specifier: ^1.1.1
+    version: registry.npmmirror.com/crx-pack-webpack-plugin@1.1.1(webpack@5.88.1)
   css-loader:
     specifier: ^6.8.1
     version: registry.npmmirror.com/css-loader@6.8.1(webpack@5.88.1)
@@ -4630,11 +4630,11 @@ packages:
       which: registry.npmmirror.com/which@2.0.2
     dev: true
 
-  registry.npmmirror.com/crx-pack-webpack-plugin@1.1.0(webpack@5.88.1):
-    resolution: {integrity: sha512-tyPFiB2ezHpgtekzZf/Kc8AdmvlgOvIcqLaq50nPUmOGiXo6IhLiSE65IDPT1uzVeQylFsg8+3okYRKqgSa0Mg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/crx-pack-webpack-plugin/-/crx-pack-webpack-plugin-1.1.0.tgz}
-    id: registry.npmmirror.com/crx-pack-webpack-plugin/1.1.0
+  registry.npmmirror.com/crx-pack-webpack-plugin@1.1.1(webpack@5.88.1):
+    resolution: {integrity: sha512-ivRPml2QvjQuea9E9dnQYYJ21RHxiQg4h6jpharC3Ne6uXBkxbndU2XwoiomfeThY4pX824p6T5A9vvFHC3yTw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/crx-pack-webpack-plugin/-/crx-pack-webpack-plugin-1.1.1.tgz}
+    id: registry.npmmirror.com/crx-pack-webpack-plugin/1.1.1
     name: crx-pack-webpack-plugin
-    version: 1.1.0
+    version: 1.1.1
     peerDependencies:
       webpack: '>=5.0.0'
     dependencies:
