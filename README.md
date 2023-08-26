@@ -23,8 +23,8 @@ Bilibili Bangumi是一个[bilibili](https://bilibili.com)追番时间表的浏�
 
 ## 下载
 
-- [Github]()
-- [Microsoft Edge Addons]()
+- [Github](https://github.com/kaze-k/bilibili-bangumi/releases)
+- [Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/jikionlmfnamgagmpeojklopaafpmgho)
 
 ## 快捷方式
 
