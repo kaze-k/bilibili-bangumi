@@ -11,6 +11,7 @@ import devConfig from "./config/webpack.dev"
 import prodConfig from "./config/webpack.prod"
 
 const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any): Configuration => {
+  // serve模式(watch)
   if (env.WEBPACK_WATCH) {
     const packageDir: string = "serve"
 
@@ -36,6 +37,7 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
     return devMergedConfig
   }
 
+  // dev模式
   if (argv.mode === "development") {
     const packageDir: string = "dev"
 
@@ -64,6 +66,7 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
     return devMergedConfig
   }
 
+  // build模式
   if (argv.mode === "production") {
     const packageDir: string = "bilibili-bangumi"
 
