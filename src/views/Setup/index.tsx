@@ -10,6 +10,7 @@ import StorageRow from "./Rows/StorageRow"
 import ThemeRow from "./Rows/ThemeRow"
 import SetupHeader from "./SetupHeader"
 import style from "./style.module.scss"
+import Version from "./version"
 
 /**
  * @description 设置页组件
@@ -38,6 +39,7 @@ function Setup(): ReactElement {
           <ThemeRow darkMode={darkMode} />
           <StorageRow darkMode={darkMode} />
           <ResetRow darkMode={darkMode} />
+          <Version />
         </div>
       </Main>
     </>
