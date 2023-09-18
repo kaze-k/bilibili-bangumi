@@ -18,6 +18,7 @@ function ResetRow(props: DarkModeProps): ReactElement {
 
   const titleText: string = "设置"
   const text: string = formatSize(size)
+  const explain: string = `同步设置所占用的空间: ${text}`
 
   /**
    * @description 获取同步存储方法: 获取同步存储中已被使用的存储大小
@@ -30,7 +31,7 @@ function ResetRow(props: DarkModeProps): ReactElement {
 
   /**
    * @description 获取已被使用的存储大小的方法: 实时获取同步存储已被使用的存储大小
-   * @return {*}  {Promise<void>}
+   * @return {*}  {Promise<void>} 无返回值
    */
   const getStorageInUse: () => Promise<void> = async (): Promise<void> => {
     chrome.storage.onChanged.addListener((changes: StorageChanges, areaName: StorageAreaName): void => {
@@ -57,6 +58,7 @@ function ResetRow(props: DarkModeProps): ReactElement {
       <div className={style.title_text}>{titleText}</div>
       <div className={style.content}>
         <Row
+          title={explain}
           text={text}
           darkMode={props.darkMode}
         >

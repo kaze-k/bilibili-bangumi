@@ -117,9 +117,9 @@ function SystemThemeRow(props: DarkModeProps): ReactElement {
     dispatch(toggleSysTheme())
   }
 
-  let showAuto: ReactElement
+  let ShowAuto: ReactElement
   if (!system) {
-    showAuto = (
+    ShowAuto = (
       <div className={style.container}>
         <AutoThemeRow darkMode={props.darkMode} />
       </div>
@@ -143,7 +143,7 @@ function SystemThemeRow(props: DarkModeProps): ReactElement {
           </Row>
         </div>
       </div>
-      {showAuto}
+      {ShowAuto}
     </div>
   )
 }

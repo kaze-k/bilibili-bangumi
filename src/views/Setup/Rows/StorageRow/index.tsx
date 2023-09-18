@@ -18,6 +18,7 @@ function StorageRow(props: DarkModeProps): ReactElement {
 
   const titleText: string = "存储"
   const text: string = formatSize(size)
+  const explain: string = `本地缓存所占用的空间: ${text}`
 
   /**
    * @description 获取本地存储的方法: 获取本地存储中已被使用的存储大小
@@ -56,6 +57,7 @@ function StorageRow(props: DarkModeProps): ReactElement {
       <div className={style.title_text}>{titleText}</div>
       <div className={style.content}>
         <Row
+          title={explain}
           text={text}
           darkMode={props.darkMode}
         >
