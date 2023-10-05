@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"
 
@@ -42,9 +42,9 @@ const HoverWrapper: StyledComponent<"div", any, HoverWrapperProps, never> = styl
  * @description 选中框
  * @param {HoverWrapperProps} props 选中框Props
  * @param {number} props.index 索引值
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Hover(props: HoverWrapperProps): ReactElement {
+function Hover(props: HoverWrapperProps): React.ReactElement {
   return (
     <HoverWrapper
       className={style.hover_wrapper}

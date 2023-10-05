@@ -10,15 +10,15 @@ import style from "./style.module.scss"
  * @description 存储行组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function StorageRow(props: DarkModeProps): ReactElement {
+function StorageRow(props: DarkModeProps): React.ReactElement {
   // 状态
   const [size, setSize] = useState<number>(0)
 
-  const titleText: string = "存储"
+  const titleText = "存储"
   const text: string = formatSize(size)
-  const explain: string = `本地缓存所占用的空间: ${text}`
+  const explain = `本地缓存所占用的空间: ${text}`
 
   /**
    * @description 获取本地存储的方法: 获取本地存储中已被使用的存储大小

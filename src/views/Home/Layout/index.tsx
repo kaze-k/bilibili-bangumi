@@ -1,35 +1,43 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+import ErrorPage from "~/components/common/ErrorPage"
 import Loading from "~/components/common/Loading"
 import Main from "~/components/common/Main"
-import { getAllEpisodes, getAnimeEpisodes, getGuoChuangEpisodes, setIndex } from "~/store/features/data"
+import Refresh from "~/components/common/Refresh"
+import { getAllEpisodes, getAnimeEpisodes, getGuoChuangEpisodes, setIndex, update } from "~/store/features/data"
 
-import { Container, ContentWrapper, Page } from "./components"
+import { Container, ContentWrapper, EmptyPage, Page } from "./components"
 import style from "./style.module.scss"
 
 /**
  * @description Layout组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Layout(props: DarkModeProps): ReactElement {
+function Layout(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
   const [loading, setLoading] = useState<boolean>(true)
   const change: boolean = useSelector((state: State): boolean => state.storage.change)
-  const episodes: Array<[]> = useSelector((state: State): Array<[]> => state.data.episodes)
+  const episodes: [][] = useSelector((state: State): [][] => state.data.episodes)
   const currentIndex: number = useSelector((state: State): number => state.data.currentIndex)
   const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.episodeStyle)
-  const dates: Array<[]> = useSelector((state: State): Array<[]> => state.data.dates)
+  const dates: [][] = useSelector((state: State): [][] => state.data.dates)
+  const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
+  const isError: boolean = useSelector((state: State): boolean => state.data.isError)
+
+  // 节点实例
+  const pageRef = useRef(null)
+  const refreshRef = useRef(null)
 
   /**
    * @description 处理滚动的方法: 当按住`CTRL`键并滚动鼠标滚轮时滚动
-   * @param {MainWheelEvent} event 滚动event
+   * @param {React.WheelEvent<HTMLElement>} event 滚动event
    */
-  const handleScroll: (event: MainWheelEvent) => void = (event: MainWheelEvent): void => {
+  const handleScroll: (event: React.WheelEvent<HTMLElement>) => void = (event: React.WheelEvent<HTMLElement>): void => {
     if (event.ctrlKey) {
       if (event.deltaY > 0) {
         if (currentIndex >= dates.length - 1) {
@@ -72,17 +80,15 @@ function Layout(props: DarkModeProps): ReactElement {
    * - 点击已更新的剧集跳转到最新一集的页面
    * - 点击未更新的剧集跳转到剧集的已更新的集数的页面
    * @param {number} episode_id 剧集episode id
-   * @param {number} pub_ts 更新的时间戳
+   * @param {number} published 更新的时间戳
    * @param {number} season_id 剧集season id
    */
-  const handleClick: (episode_id: number, pub_ts: number, season_id: number) => void = (
+  const handleClick: (episode_id: number, published: number, season_id: number) => void = (
     episode_id: number,
-    pub_ts: number,
+    published: number,
     season_id: number,
   ): void => {
-    const now: number = new Date().getTime()
-    const pub_time: number = pub_ts * 1000
-    if (pub_time <= now && episode_id) {
+    if (published && episode_id) {
       chrome.tabs.create({
         url: `https://www.bilibili.com/bangumi/play/ep${episode_id}`,
       })
@@ -93,26 +99,57 @@ function Layout(props: DarkModeProps): ReactElement {
     }
   }
 
+  /**
+   * @description 监听事件的回调函数
+   * @param {React.WheelEvent<HTMLElement>} event 滚动event
+   */
+  const listener: (event: React.WheelEvent<HTMLElement>) => void = (event: React.WheelEvent<HTMLElement>): void => {
+    if (event.ctrlKey) {
+      return
+    }
+
+    const scrollTop: number = pageRef?.current?.childNodes[currentIndex]?.scrollTop
+
+    if (!refreshRef.current?.visible && scrollTop === 0 && event?.deltaY < 0) {
+      dispatch(update())
+    }
+  }
+
   // 当剧集类别改变时/当索引值改变时/当存储信息改变时: 发送通信
   useEffect((): void => {
-    if (typeof currentIndex !== "undefined") {
+    if (currentIndex !== null) {
       handleData()
     }
   }, [episodeStyle, currentIndex, change])
 
-  // 当剧集信息获取成功时: 停止加载动画
+  // 当剧集信息获取成功时/当错误状态改变时: 停止加载动画
   useEffect((): void => {
     if (episodes.length) {
       setLoading(false)
     } else {
       setLoading(true)
+
+      if (isError) {
+        setTimeout((): void => {
+          setLoading(false)
+        }, 500)
+      }
     }
-  }, [episodes])
+  }, [episodes.length, isError])
+
+  // 当刷新组件可见状态改变时/当加载动画改变时: 监听页面组件的鼠标滚轮事件
+  // 卸载时: 移除页面组件的鼠标滚轮事件的监听
+  useEffect((): (() => void) => {
+    if (!refreshRef.current?.visible || !isLoading) {
+      pageRef?.current?.childNodes[currentIndex]?.addEventListener("wheel", listener, false)
+    }
+    return (): void => pageRef?.current?.childNodes[currentIndex]?.removeEventListener("wheel", listener, false)
+  })
 
   // 有数据时渲染的组件
-  const Containers: (items: object[]) => ReactElement[] = (items: object[]): ReactElement[] =>
+  const containers: (items: {}[]) => React.ReactElement[] = (items: {}[]): React.ReactElement[] =>
     items?.map(
-      (item: ContainerItem, index: number): ReactElement => (
+      (item: ContainerItem, index: number): React.ReactElement => (
         <Container
           key={index}
           darkMode={props.darkMode}
@@ -126,7 +163,7 @@ function Layout(props: DarkModeProps): ReactElement {
         >
           <ContentWrapper
             darkMode={props.darkMode}
-            handleClick={(): void => handleClick(item?.episode_id, item?.pub_ts, item?.season_id)}
+            handleClick={(): void => handleClick(item?.episode_id, item?.published, item?.season_id)}
             square_cover={item?.square_cover}
             title={item?.title}
             delay={item?.delay}
@@ -143,14 +180,22 @@ function Layout(props: DarkModeProps): ReactElement {
       ),
     )
 
-  const Pages: ReactElement[] = episodes?.map(
-    (items: Array<[]>, indexs: number): ReactElement => (
+  // 无数据时渲染的组件
+  const noUpdate: React.ReactElement = EmptyPage("今日无内容更新哦~")
+
+  const pages: React.ReactElement[] = episodes?.map(
+    (items: [][], indexs: number): React.ReactElement => (
       <Page
         key={indexs}
         className={style.page}
         index={currentIndex}
       >
-        {Containers(items)}
+        <Refresh
+          darkMode={props.darkMode}
+          isLoading={isLoading}
+          ref={refreshRef}
+        />
+        {items.length ? containers(items) : noUpdate}
       </Page>
     ),
   )
@@ -165,13 +210,24 @@ function Layout(props: DarkModeProps): ReactElement {
     )
   }
 
+  if (isError && !episodes.length) {
+    return (
+      <Main darkMode={props.darkMode}>
+        <div className={style.wrapper}>
+          <ErrorPage />
+        </div>
+      </Main>
+    )
+  }
+
   return (
     <Main darkMode={props.darkMode}>
       <div
         className={style.wrapper}
-        onWheel={(e: MainWheelEvent): void => handleScroll(e)}
+        onWheel={(e: React.WheelEvent<HTMLElement>): void => handleScroll(e)}
+        ref={pageRef}
       >
-        {Pages}
+        {pages}
       </div>
     </Main>
   )

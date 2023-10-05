@@ -9,9 +9,9 @@ import { disableNotice, enableNotice, toggleNotice } from "~/store/features/noti
  * @description 通知按钮组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function NoticeButton(props: DarkModeProps): ReactElement {
+function NoticeButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
@@ -37,7 +37,7 @@ function NoticeButton(props: DarkModeProps): ReactElement {
     handleNotice()
   }, [])
 
-  let icon: ReactElement
+  let icon: React.ReactElement
   if (notice) {
     icon = (
       <FontAwesomeIcon

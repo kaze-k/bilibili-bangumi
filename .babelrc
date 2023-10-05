@@ -9,8 +9,5 @@
     ],
     "@babel/preset-typescript"
   ],
-  "plugins": [
-    "@babel/plugin-transform-runtime",
-    "@rschristian/babel-plugin-webpack-chunk-name-comments"
-  ]
+  "plugins": ["@babel/plugin-transform-runtime", "@rschristian/babel-plugin-webpack-chunk-name-comments"]
 }

@@ -2,43 +2,41 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 /**
  * @description 发送更新信息的通信
- * @return {*}  {Promise<void>} 无返回值
+ * @return {*}  {Promise<boolean | null>} 返回布尔值
  */
-const update: AsyncThunk<void, void, void> = createAsyncThunk("data/update", async (): Promise<void> => {
-  await chrome.runtime.sendMessage({ message: "update" })
-})
+const update: AsyncThunk<boolean | null, void, void> = createAsyncThunk(
+  "data/update",
+  async (): Promise<boolean | null> => {
+    const response: boolean | null = await chrome.runtime.sendMessage({ message: "update" })
+    return response
+  },
+)
 
 /**
  * @description 发送获取全部剧集信息的通信
- * @return {*}  {Promise<Array<[]>>} 返回从background获取的全部剧集信息
+ * @return {*}  {Promise<[][]>} 返回从background获取的全部剧集信息
  */
-const getAllEpisodes: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
-  "data/all/episodes",
-  async (): Promise<Array<[]>> => {
-    const response: MessageResponse = await chrome.runtime.sendMessage({ message: "all_episodes" })
-    return response.data
-  },
-)
+const getAllEpisodes: AsyncThunk<[][], void, void> = createAsyncThunk("data/all/episodes", async (): Promise<[][]> => {
+  const response: MessageResponse = await chrome.runtime.sendMessage({ message: "all_episodes" })
+  return response.data
+})
 
 /**
  * @description 发送获取日漫日期信息的通信
- * @return {*}  {Promise<Array<[]>>} 返回从background获取的日漫日期信息
+ * @return {*}  {Promise<[][]>} 返回从background获取的日漫日期信息
  */
-const getAnimeDates: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
-  "data/anime/dates",
-  async (): Promise<Array<[]>> => {
-    const response: MessageResponse = await chrome.runtime.sendMessage({ message: "anime_dates" })
-    return response.data
-  },
-)
+const getAnimeDates: AsyncThunk<[][], void, void> = createAsyncThunk("data/anime/dates", async (): Promise<[][]> => {
+  const response: MessageResponse = await chrome.runtime.sendMessage({ message: "anime_dates" })
+  return response.data
+})
 
 /**
  * @description 发送获取日漫剧集信息的通信
- * @return {*}  {Promise<Array<[]>>} 返回从background获取的日漫剧集信息
+ * @return {*}  {Promise<[][]>} 返回从background获取的日漫剧集信息
  */
-const getAnimeEpisodes: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
+const getAnimeEpisodes: AsyncThunk<[][], void, void> = createAsyncThunk(
   "data/anime/episodes",
-  async (): Promise<Array<[]>> => {
+  async (): Promise<[][]> => {
     const response: MessageResponse = await chrome.runtime.sendMessage({ message: "anime_episodes" })
     return response.data
   },
@@ -46,11 +44,11 @@ const getAnimeEpisodes: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
 
 /**
  * @description 发送获取国创日期信息的通信
- * @return {*}  {Promise<Array<[]>>} 返回从background获取的国创日期信息
+ * @return {*}  {Promise<[][]>} 返回从background获取的国创日期信息
  */
-const getGuoChuangDates: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
+const getGuoChuangDates: AsyncThunk<[][], void, void> = createAsyncThunk(
   "data/guochuang/dates",
-  async (): Promise<Array<[]>> => {
+  async (): Promise<[][]> => {
     const response: MessageResponse = await chrome.runtime.sendMessage({ message: "guochuang_dates" })
     return response.data
   },
@@ -58,11 +56,11 @@ const getGuoChuangDates: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
 
 /**
  * @description 发送获取国创剧集信息的通信
- * @return {*}  {Promise<Array<[]>>} 返回从background获取的国创剧集信息
+ * @return {*}  {Promise<[][]>} 返回从background获取的国创剧集信息
  */
-const getGuoChuangEpisodes: AsyncThunk<Array<[]>, void, void> = createAsyncThunk(
+const getGuoChuangEpisodes: AsyncThunk<[][], void, void> = createAsyncThunk(
   "data/guochuang/episodes",
-  async (): Promise<Array<[]>> => {
+  async (): Promise<[][]> => {
     const response: MessageResponse = await chrome.runtime.sendMessage({ message: "guochuang_episodes" })
     return response.data
   },
@@ -73,12 +71,14 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
   initialState: {
     episodes: [],
     dates: [],
-    currentIndex: undefined,
+    currentIndex: null,
     checked: [],
     anime_episodes: [],
     anime_dates: [],
     guochuang_episodes: [],
     guochuang_dates: [],
+    isLoading: false,
+    isError: false,
   },
   reducers: {
     /**
@@ -108,36 +108,51 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
     clearData(state: DataState): void {
       state.episodes = []
       state.dates = []
-      state.currentIndex = undefined
+      state.currentIndex = null
       state.checked = []
       state.anime_episodes = []
       state.anime_dates = []
       state.guochuang_episodes = []
       state.guochuang_dates = []
+      state.isLoading = false
+      state.isError = false
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<DataState>): void => {
     builder
-      .addCase(getAllEpisodes.fulfilled, (state: DataState, actions: PayloadAction<Array<[]>>): void => {
+      .addCase(update.pending, (state: DataState): void => {
+        state.isLoading = true
+      })
+      .addCase(update.fulfilled, (state: DataState, actions: PayloadAction<boolean>): void => {
+        if (actions.payload === null) {
+          state.isError = true
+        } else {
+          state.isError = false
+        }
+
+        state.isLoading = actions.payload
+      })
+
+      .addCase(getAllEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
         state.episodes = actions.payload
       })
 
-      .addCase(getAnimeDates.fulfilled, (state: DataState, actions: PayloadAction<Array<[]>>): void => {
+      .addCase(getAnimeDates.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
         state.anime_dates = actions.payload
         state.dates = actions.payload
       })
 
-      .addCase(getAnimeEpisodes.fulfilled, (state: DataState, actions: PayloadAction<Array<[]>>): void => {
+      .addCase(getAnimeEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
         state.anime_episodes = actions.payload
         state.episodes = actions.payload
       })
 
-      .addCase(getGuoChuangDates.fulfilled, (state: DataState, actions: PayloadAction<Array<[]>>): void => {
+      .addCase(getGuoChuangDates.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
         state.guochuang_dates = actions.payload
         state.dates = actions.payload
       })
 
-      .addCase(getGuoChuangEpisodes.fulfilled, (state: DataState, actions: PayloadAction<Array<[]>>): void => {
+      .addCase(getGuoChuangEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
         state.guochuang_episodes = actions.payload
         state.episodes = actions.payload
       })

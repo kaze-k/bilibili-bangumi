@@ -6,9 +6,9 @@ const Setup: LazyElement = lazy((): SetupLazyElement => import("Setup"))
 
 /**
  * @description 路由组件
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function RouterView(): ReactElement {
+function RouterView(): React.ReactElement {
   const routes: Routes = useRoutes([
     {
       path: "/",

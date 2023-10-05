@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"
 
@@ -21,7 +21,8 @@ const Day: StyledComponent<"div", any, DayProps, never> = styled.div(
 /**
  * @description 导航栏元素组件
  * @param {NavItmeProps} props 导航栏元素Props
- * @param {ChangeEventHandler<HTMLInputElement>} props.onChange 改变事件 [可选]
+ * @param {React.ChangeEventHandler<HTMLInputElement>} props.onChange 改变事件 [可选]
+ * @param {React.MouseEventHandler<HTMLInputElement>} props.onClick 点击事件 [可选]
  * @param {string} props.date 日期 [可选]
  * @param {string} props.day 星期几 [可选]
  * @param {number} props.today 是否是今天 [可选]
@@ -30,10 +31,10 @@ const Day: StyledComponent<"div", any, DayProps, never> = styled.div(
  * @param {string} props.name 元素名称
  * @param {string} props.for 元素id
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function NavItem(props: NavItmeProps): ReactElement {
-  let today: ReactElement
+function NavItem(props: NavItmeProps): React.ReactElement {
+  let today: React.ReactElement
   if (props.today) {
     today = (
       <FontAwesomeIcon

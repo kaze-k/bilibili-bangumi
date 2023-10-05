@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useNavigate } from "react-router-dom"
+import { NavigateFunction, useNavigate } from "react-router-dom"
 
 import Button from "~/components/common/Button"
 
@@ -7,12 +7,12 @@ import Button from "~/components/common/Button"
  * @description 进入设置页面按钮组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function SetupButton(props: DarkModeProps): ReactElement {
+function SetupButton(props: DarkModeProps): React.ReactElement {
   const navigation: NavigateFunction = useNavigate()
 
-  const icon: ReactElement = (
+  const icon: React.ReactElement = (
     <FontAwesomeIcon
       icon="gear"
       size="xl"

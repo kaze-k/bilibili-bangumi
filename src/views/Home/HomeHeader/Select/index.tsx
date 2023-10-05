@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import { setStyle } from "~/store/features/episodeStyle"
 import { toChineseStyle } from "~/utils"
@@ -69,18 +69,18 @@ const SelectItem: StyledComponent<"li", any, SelectItemProps, never> = styled.li
  * @description 选项盒
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function SelectBox(props: DarkModeProps): ReactElement {
+function SelectBox(props: DarkModeProps): React.ReactElement {
   const styles: Styles = ["all", "anime", "guochuang"]
 
   const dispatch: Dispatch = useDispatch()
 
   // 节点实例
-  const selectItems: RefObject<HTMLUListElement> = useRef(null)
+  const selectItemsRef: React.RefObject<HTMLUListElement> = useRef(null)
 
   // 状态
-  const [hover, setHover] = useState<boolean[]>(Array(selectItems?.current?.children?.length).fill(false))
+  const [hover, setHover] = useState<boolean[]>(Array(selectItemsRef?.current?.children?.length).fill(false))
   const index: number = useSelector((state: State): number => state.episodeStyle.index)
 
   /**
@@ -105,8 +105,8 @@ function SelectBox(props: DarkModeProps): ReactElement {
     handleHover()
   }, [index])
 
-  const SelectItems: ReactElement[] = styles.map(
-    (item: Style, index: number): ReactElement => (
+  const selectItems: React.ReactElement[] = styles.map(
+    (item: Style, index: number): React.ReactElement => (
       <SelectItem
         key={item}
         className={style.select_item}
@@ -124,7 +124,7 @@ function SelectBox(props: DarkModeProps): ReactElement {
       darkMode={props.darkMode}
     >
       <ul
-        ref={selectItems}
+        ref={selectItemsRef}
         className={style.wrapper}
       >
         <HoverBox
@@ -132,7 +132,7 @@ function SelectBox(props: DarkModeProps): ReactElement {
           index={index}
           darkMode={props.darkMode}
         />
-        {SelectItems}
+        {selectItems}
       </ul>
     </SelectBoxDiv>
   )
@@ -142,15 +142,15 @@ function SelectBox(props: DarkModeProps): ReactElement {
  * @description 选择组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Select(props: DarkModeProps): ReactElement {
+function Select(props: DarkModeProps): React.ReactElement {
   // 状态
   const [showSelect, setShowSelect] = useState<boolean>(false)
   const episodeStyle: Style = useSelector((state: State): Style => state.episodeStyle.episodeStyle)
 
   // 节点实例
-  const selectRef: RefObject<HTMLDivElement> = useRef(null)
+  const selectRef: React.RefObject<HTMLDivElement> = useRef(null)
 
   /**
    * @description 处理点击的方法: 切换显示选项的值
@@ -164,7 +164,7 @@ function Select(props: DarkModeProps): ReactElement {
    * @param {Event} event document event
    */
   const listener: (event: Event) => void = (event: Event): void => {
-    if (selectRef.current.contains(event.target as Document)) {
+    if (selectRef?.current?.contains(event.target as Document)) {
       return
     }
     setShowSelect(false)
@@ -182,6 +182,8 @@ function Select(props: DarkModeProps): ReactElement {
     }
   }, [showSelect])
 
+  const selectbox: React.ReactElement = <SelectBox darkMode={props.darkMode} />
+
   return (
     <div
       ref={selectRef}
@@ -196,7 +198,7 @@ function Select(props: DarkModeProps): ReactElement {
         <FontAwesomeIcon icon="filter" />
         <span className={style.text}>{toChineseStyle(episodeStyle)}</span>
       </SelectButton>
-      {showSelect && <SelectBox darkMode={props.darkMode} />}
+      {showSelect && selectbox}
     </div>
   )
 }

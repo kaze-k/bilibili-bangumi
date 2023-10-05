@@ -1,4 +1,4 @@
-interface ImageProps {
+type ImageProps = {
   img?: string
   title?: string
 }

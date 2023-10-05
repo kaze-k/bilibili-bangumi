@@ -7,12 +7,14 @@ import style from "./style.module.scss"
  * @param {RatingProps} props 评分Props
  * @param {number} props.score 评分得分 [可选]
  * @param {string} props.count 评分人数 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Rating(props: RatingProps): ReactElement {
-  const icon: ReactElement = <IconFont icon="users" />
+function Rating(props: RatingProps): React.ReactElement {
+  const icon: React.ReactElement = <IconFont icon="users" />
 
-  let count: ReactElement
+  const text = "暂无评分"
+
+  let count: React.ReactElement
   if (props.count) {
     count = (
       <span
@@ -29,7 +31,7 @@ function Rating(props: RatingProps): ReactElement {
         className={style.no_score}
         title="暂无评分"
       >
-        暂无评分
+        {text}
       </h4>
     )
   }

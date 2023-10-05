@@ -6,9 +6,9 @@ import style from "./style.module.scss"
  * @description 时间组件
  * @param {TimeProps} props 时间组件Props
  * @param {string} props.children 时间
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Time(props: TimeProps): ReactElement {
+function Time(props: TimeProps): React.ReactElement {
   return (
     <div>
       <div>

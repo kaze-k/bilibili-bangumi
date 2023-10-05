@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"
 
@@ -40,47 +40,45 @@ const ButtonDiv: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
 /**
  * @description 按钮组件
  * @param {ButtonProps} props 按钮Props
- * @param {ReactElement | string} props.children 子组件
- * @param {MouseEventHandler<HTMLAnchorElement>} props.onClick 点击事件 [可选]
+ * @param {React.ReactElement | string} props.children 子组件
+ * @param {React.MouseEventHandler<HTMLAnchorElement>} props.onClick 点击事件 [可选]
  * @param {string} props.title 标题 [可选]
  * @param {boolean} props.darkMode 深色主题 [可选]
  * @param {boolean} props.mini mini类型 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Button(props: ButtonProps): ReactElement {
-  const miniButton: ReactElement = (
-    <MiniButtonDiv
-      className={style.mini_button}
-      title={props.title}
-      darkMode={props.darkMode}
-    >
-      <a
-        onClick={props.onClick}
-        className={style.mini_icon_box}
-      >
-        {props.children}
-      </a>
-    </MiniButtonDiv>
-  )
-
+function Button(props: ButtonProps): React.ReactElement {
   if (props.mini) {
-    return miniButton
-  }
-
-  return (
-    <ButtonDiv
-      className={style.button}
-      title={props.title}
-      darkMode={props.darkMode}
-    >
-      <a
-        onClick={props.onClick}
-        className={style.icon_box}
+    return (
+      <MiniButtonDiv
+        className={style.mini_button}
+        title={props.title}
+        darkMode={props.darkMode}
       >
-        {props.children}
-      </a>
-    </ButtonDiv>
-  )
+        <a
+          onClick={props.onClick}
+          className={style.mini_icon_box}
+        >
+          {props.children}
+        </a>
+      </MiniButtonDiv>
+    )
+  } else {
+    return (
+      <ButtonDiv
+        className={style.button}
+        title={props.title}
+        darkMode={props.darkMode}
+      >
+        <a
+          onClick={props.onClick}
+          className={style.icon_box}
+        >
+          {props.children}
+        </a>
+      </ButtonDiv>
+    )
+  }
 }
 
 export default Button

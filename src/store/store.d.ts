@@ -31,15 +31,22 @@ type Slice<State, CaseReducers, Name> = import("@reduxjs/toolkit").Slice<State, 
 
 type ActionReducerMapBuilder<State> = import("@reduxjs/toolkit").ActionReducerMapBuilder<State>
 
-interface DataState {
-  episodes: Array<[]>
-  dates: Array<[]>
+type MessageResponse = {
+  data: [][]
+}
+
+/* state */
+type DataState = {
+  episodes: [][]
+  dates: [][]
   currentIndex: number
   checked: boolean[]
-  anime_episodes: Array<[]>
-  anime_dates: Array<[]>
-  guochuang_episodes: Array<[]>
-  guochuang_dates: Array<[]>
+  anime_episodes: [][]
+  anime_dates: [][]
+  guochuang_episodes: [][]
+  guochuang_dates: [][]
+  isLoading: boolean
+  isError: boolean
 }
 
 type EpisodeStyleState = {
@@ -49,7 +56,11 @@ type EpisodeStyleState = {
 
 type NoticeState = {
   notice: boolean
+  silent: boolean
   autoClear: boolean
+  animeNotice: boolean
+  guochuangNotice: boolean
+  timeout: number
 }
 
 type StorageState = {
@@ -86,6 +97,10 @@ type EpisodeStyleReducers = {
 
 type NoticeReducers = {
   toggleNotice(state: NoticeState): void
+  toggleSilent(state: NoticeState): void
+  toggleAutoClear(state: NoticeState): void
+  toggleAnimeNotice(state: NoticeState): void
+  toggleGuoChuangNotice(state: NoticeState): void
   resetNotice(state: NoticeState): void
 }
 
@@ -103,10 +118,7 @@ type ThemeReducers = {
   resetTheme(state: ThemeState): void
 }
 
-interface MessageResponse {
-  data: any
-}
-
+/* index.ts */
 type CombinedReducers = Reducer<CombinedState<AppState>, AnyAction>
 
 type PersistedReducer = Reducer<EmptyObject & AppState & PersistPartial, AnyAction>

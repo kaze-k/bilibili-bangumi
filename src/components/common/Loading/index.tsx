@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import { updateAutoTheme } from "~/store/features/theme"
 
@@ -21,9 +21,9 @@ const LoadingBox: StyledComponent<"div", any, DarkModeProps, never> = styled.div
 
 /**
  * @description 加载动画组件
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Loading(): ReactElement {
+function Loading(): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态

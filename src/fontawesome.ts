@@ -1,17 +1,20 @@
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faClock } from "@fortawesome/free-regular-svg-icons"
+import { faClock, faDizzy } from "@fortawesome/free-regular-svg-icons"
 import {
   faAngleLeft,
   faBell,
   faBellSlash,
   faCircle,
+  faCircleNotch,
   faCircleXmark,
   faCloudMoon,
+  faCompactDisc,
   faFilter,
   faGear,
   faMagnifyingGlass,
   faSpinner,
   faSun,
+  faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
@@ -27,4 +30,8 @@ library.add(
   faSpinner,
   faFilter,
   faClock,
+  faDizzy,
+  faCircleNotch,
+  faCompactDisc,
+  faSyncAlt,
 )

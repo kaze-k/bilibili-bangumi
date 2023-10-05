@@ -10,15 +10,15 @@ import style from "./style.module.scss"
  * @description 重置设置行组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function ResetRow(props: DarkModeProps): ReactElement {
+function ResetRow(props: DarkModeProps): React.ReactElement {
   // 状态
   const [size, setSize] = useState<number>(0)
 
-  const titleText: string = "设置"
+  const titleText = "设置"
   const text: string = formatSize(size)
-  const explain: string = `同步设置所占用的空间: ${text}`
+  const explain = `同步设置所占用的空间: ${text}`
 
   /**
    * @description 获取同步存储方法: 获取同步存储中已被使用的存储大小

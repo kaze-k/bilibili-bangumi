@@ -1,21 +1,21 @@
-interface TimelineParams {
+type TimelineParams = {
   types: number
   before?: number
   after?: number
 }
 
-interface Info {
+type Info = {
   season_id: number
 }
 
-interface Query {
+type Query = {
   method: string
   mode: string
   url: string
   query?: TimelineParams | Info
 }
 
-interface APIResponse {
+type APIResponse = {
   code?: number
   message?: string
   result?: any

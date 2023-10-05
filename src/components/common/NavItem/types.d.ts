@@ -1,18 +1,14 @@
-interface NavItmeProps {
-  onChange?: ChangeEventHandler<HTMLInputElement>
-  onClick?: MouseEventHandler<HTMLInputElement>
-  date?: string
-  day?: string
-  today?: number
-  current: number
+interface DayProps extends DarkModeProps {
+  today?: boolean
   checked?: boolean
-  name: string
-  for: string
-  darkMode?: boolean
 }
 
-interface DayProps {
-  today?: boolean
-  checked: boolean
-  darkMode?: boolean
+interface NavItmeProps extends DayProps {
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  onClick?: React.MouseEventHandler<HTMLInputElement>
+  date?: string
+  day?: string
+  current: number
+  name: string
+  for: string
 }

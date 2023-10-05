@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import Card from "~/components/common/Card"
 import Episode from "~/components/common/Episode"
@@ -40,16 +41,16 @@ const Page: StyledComponent<"div", any, PageProps, never> = styled.div(
 /**
  * @description 遍历标签组件
  * @param {string[]} styles 标签
- * @return {*}  {ReactElement[]}
+ * @return {*}  {React.ReactElement[]}
  */
-function Tags(styles: string[]): ReactElement[] {
-  return styles.map((style: string, index: number): ReactElement => <Tag key={index}>{style}</Tag>)
+function Tags(styles: string[]): React.ReactElement[] {
+  return styles?.map((style: string, index: number): React.ReactElement => <Tag key={index}>{style}</Tag>)
 }
 
 /**
  * @description 内容包裹
  * @param {ContentWrapperProps} props 内容包裹Props
- * @param {MouseEventHandler<HTMLDivElement>} props.handleClick 处理点击的方法
+ * @param {React.MouseEventHandler<HTMLDivElement>} props.handleClick 处理点击的方法
  * @param {string} props.square_cover 封面图片 [可选]
  * @param {string} props.title 标题 [可选]
  * @param {boolean} props.delay 是否延迟更新 [可选]
@@ -62,9 +63,9 @@ function Tags(styles: string[]): ReactElement[] {
  * @param {number} props.count 评分人数 [可选]
  * @param {boolean} props.published 是否已更新 [可选]
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function ContentWrapper(props: ContentWrapperProps): ReactElement {
+function ContentWrapper(props: ContentWrapperProps): React.ReactElement {
   return (
     <Content
       className={style.content}
@@ -105,11 +106,11 @@ function ContentWrapper(props: ContentWrapperProps): ReactElement {
  * @param {number} props.favorite 收藏量 [可选]
  * @param {number} props.share 分享量 [可选]
  * @param {number} props.reply 评论量 [可选]
- * @param {ReactElement} props.children 子组件 [可选]
+ * @param {React.ReactElement} props.children 子组件 [可选]
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Container(props: ContainerProps): ReactElement {
+function Container(props: ContainerProps): React.ReactElement {
   return (
     <div className={style.container}>
       <Card
@@ -132,4 +133,22 @@ function Container(props: ContainerProps): ReactElement {
   )
 }
 
-export { Page, ContentWrapper, Container }
+/**
+ * @description 空白页面
+ * @param {string} text 显示的文本
+ * @return {*}  {React.ReactElement}
+ */
+function EmptyPage(text: string): React.ReactElement {
+  return (
+    <div className={style.no_update}>
+      <FontAwesomeIcon
+        icon={["far", "dizzy"]}
+        size="2xl"
+        className={style.icon}
+      />
+      <span>{text}</span>
+    </div>
+  )
+}
+
+export { Page, ContentWrapper, Container, EmptyPage }

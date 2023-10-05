@@ -2,8 +2,7 @@ interface EpisodeIndexProps {
   published?: boolean
 }
 
-interface EpisodeProps {
+interface EpisodeProps extends EpisodeIndexProps {
   title: string
   index: string
-  published?: boolean
 }

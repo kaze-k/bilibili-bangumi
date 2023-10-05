@@ -27,27 +27,15 @@ declare module "archive-webpack-plugin" {
   export default ArchiveWebapckPlugin
 }
 
-type ReactElement = React.ReactElement
-
-type StyledComponent<C, T, O, A> = import("styled-components").StyledComponent<C, T, O, A>
-
-type CSSProp = import("styled-components").CSSProp
-
-type RefObject<T> = React.RefObject<T>
-
-type ChangeEvent<T> = React.ChangeEvent<T>
-
-type ChangeEventHandler<T> = React.ChangeEventHandler<T>
-
-type MouseEventHandler<T> = React.MouseEventHandler<T>
-
-type DebouncedFunc<T> = import("lodash").DebouncedFunc<T>
+interface Json {
+  [key: string]: any
+}
 
 interface DarkModeProps {
   darkMode?: boolean
 }
 
-interface StorageChanges {
+type StorageChanges = {
   [key: string]: chrome.storage.StorageChange
 }
 

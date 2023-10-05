@@ -1,3 +1,3 @@
-interface TimeProps {
+type TimeProps = {
   children: string
 }

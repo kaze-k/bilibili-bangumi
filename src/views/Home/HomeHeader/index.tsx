@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux"
+
 import NoticeButton from "~/components/Buttons/NoticeButton"
 import SetupButton from "~/components/Buttons/SetupButton"
 import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
+import Disconnection from "~/components/common/Disconnection"
 import Header from "~/components/common/Header"
 
 import Search from "./Search"
@@ -11,17 +14,21 @@ import style from "./sytle.module.scss"
  * @description 首页头部组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function HomeHeader(props: DarkModeProps): ReactElement {
+function HomeHeader(props: DarkModeProps): React.ReactElement {
+  const currentIndex: number = useSelector((state: State): number => state.data.currentIndex)
+
+  const selectElement: React.ReactElement = <Select darkMode={props.darkMode} />
+
+  const disconnectionElement: React.ReactElement = <Disconnection darkMode={props.darkMode} />
+
   return (
     <Header
       className={style.header}
       darkMode={props.darkMode}
     >
-      <div className={style.left}>
-        <Select darkMode={props.darkMode} />
-      </div>
+      <div className={style.left}>{currentIndex !== null ? selectElement : disconnectionElement}</div>
       <div className={style.center}>
         <Search darkMode={props.darkMode} />
       </div>

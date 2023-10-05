@@ -1,5 +1,8 @@
-type RowProps = {
+interface TextProps {
+  title?: string
+}
+
+interface RowProps extends TextProps, DarkModeProps {
   text?: string
-  children: ReactElement
-  darkMode?: boolean
+  children: React.ReactElement
 }

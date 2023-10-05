@@ -8,9 +8,9 @@ import style from "./style.module.scss"
  * @param {string} props.views 播放数 [可选]
  * @param {string} props.danmakus 弹幕数 [可选]
  * @param {string} props.favorites 追番数 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Stat(props: StatProps): ReactElement {
+function Stat(props: StatProps): React.ReactElement {
   return (
     <div className={style.stat}>
       <div title={`播放数：${props.views}`}>

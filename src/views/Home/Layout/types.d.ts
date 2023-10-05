@@ -1,6 +1,5 @@
-interface ContentWrapperProps {
-  darkMode?: boolean
-  handleClick?: MouseEventHandler<HTMLDivElement>
+interface ContentWrapperProps extends DarkModeProps {
+  handleClick?: React.MouseEventHandler<HTMLDivElement>
   square_cover?: string
   title?: string
   delay?: boolean
@@ -14,8 +13,7 @@ interface ContentWrapperProps {
   published?: boolean
 }
 
-interface ContainerProps {
-  darkMode?: boolean
+interface ContainerProps extends DarkModeProps {
   pub_time?: string
   styles?: string[]
   likes?: number
@@ -23,15 +21,11 @@ interface ContainerProps {
   favorite?: number
   share?: number
   reply?: number
-  children?: ReactElement
+  children?: React.ReactElement
 }
 
-interface ContainerItem {
-  [key: string]: any
-}
+type ContainerItem = Json
 
-interface PageProps {
+type PageProps = {
   index: number
 }
-
-type MainWheelEvent = React.WheelEvent<HTMLElement>

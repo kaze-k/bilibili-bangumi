@@ -9,14 +9,14 @@ import ResetRow from "./Rows/ResetRow"
 import StorageRow from "./Rows/StorageRow"
 import ThemeRow from "./Rows/ThemeRow"
 import SetupHeader from "./SetupHeader"
+import Version from "./Version"
 import style from "./style.module.scss"
-import Version from "./version"
 
 /**
  * @description 设置页组件
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Setup(): ReactElement {
+function Setup(): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态

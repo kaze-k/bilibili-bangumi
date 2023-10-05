@@ -1,4 +1,4 @@
-type LazyElement = React.LazyExoticComponent<() => ReactElement>
+type LazyElement = React.LazyExoticComponent<() => React.ReactElement>
 
 type HomeLazyElement = Promise<typeof import("~/views/Home")>
 

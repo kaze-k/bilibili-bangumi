@@ -10,9 +10,9 @@ import style from "./style.module.scss"
  * @param {string} props.favorite 收藏量 [可选]
  * @param {string} props.share 分享量 [可选]
  * @param {string} props.reply 评论量 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Info(props: InfoProps): ReactElement {
+function Info(props: InfoProps): React.ReactElement {
   return (
     <div className={style.info}>
       <span title="点赞量">

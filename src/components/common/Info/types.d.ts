@@ -1,4 +1,4 @@
-interface InfoProps {
+type InfoProps = {
   likes?: string
   coins?: string
   favorite?: string

@@ -9,12 +9,12 @@ import { resetTheme } from "~/store/features/theme"
  * @description 重置设置按钮组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function ResetButton(props: DarkModeProps): ReactElement {
+function ResetButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
-  const text: string = "重置"
+  const text = "重置"
 
   /**
    * @description 重置设置的方法

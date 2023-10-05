@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"
 
@@ -41,12 +41,12 @@ const ButtonSpan: StyledComponent<"span", any, ButtonSpanProps, never> = styled.
  * @description 开关组件
  * @param {SwitchProps} props 开关组件Props
  * @param {boolean} props.checked 是否选中
- * @param {ChangeEventHandler<HTMLInputElement>} props.onChange 改变事件
+ * @param {React.ChangeEventHandler<HTMLInputElement>} props.onChange 改变事件
  * @param {string} props.id 元素id
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Switch(props: SwitchProps): ReactElement {
+function Switch(props: SwitchProps): React.ReactElement {
   return (
     <div className={style.switch_box}>
       <input

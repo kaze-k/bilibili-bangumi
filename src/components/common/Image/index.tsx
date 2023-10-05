@@ -7,9 +7,9 @@ import style from "./style.module.scss"
  * @param {ImageProps} props 图片Props
  * @param {string} props.img 图片地址 [可选]
  * @param {string} props.title 图片名称 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Image(props: ImageProps): ReactElement {
+function Image(props: ImageProps): React.ReactElement {
   return (
     <img
       className={style.img}

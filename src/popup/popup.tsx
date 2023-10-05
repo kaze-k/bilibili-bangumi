@@ -9,9 +9,9 @@ import { persistor, store } from "~/store"
 
 /**
  * @description popup页面根组件
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Popup(): ReactElement {
+function Popup(): React.ReactElement {
   return (
     <MemoryRouter>
       <Provider store={store}>

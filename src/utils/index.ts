@@ -34,7 +34,9 @@ function formatSize(size: number): string {
 function joinUrl(params: Params): string {
   const { baseURL, url, query } = params
 
-  let fullParams: string = ""
+  let fullParams: string
+  fullParams = ""
+
   for (const i in query) {
     fullParams += `${i}=${query[i]}&`
   }
@@ -99,19 +101,52 @@ function toChineseStyle(style: Style): ToChineseStyleReturn {
  * @param {string} [name=storageKey] 存储对象中的属性名[默认与storageKey的值相同] [可选]
  * @return {*}  {Promise<boolean>} 返回布尔值
  */
-async function settings(storageKey: string, name: string = storageKey): Promise<boolean> {
+async function settings<T extends boolean | number | string>(
+  storageKey: string,
+  name: string = storageKey,
+): Promise<T> {
   const syncStorage: Storages = await chrome.storage.sync.get("persist:syncStorage")
 
   if (syncStorage["persist:syncStorage"]) {
-    const rootParsed: object = JSON.parse(syncStorage["persist:syncStorage"])
-    const parsed: object = JSON.parse(rootParsed[`${storageKey}`])
+    const rootParsed: {} = JSON.parse(syncStorage["persist:syncStorage"])
+    const parsed: {} = JSON.parse(rootParsed[`${storageKey}`])
 
-    if (parsed[`${name}`]) {
-      return true
-    } else {
-      return false
-    }
+    const result: T = parsed[String(name)]
+
+    return result
   }
 }
 
-export { toChineseDay, formatSize, joinUrl, formatNum, formatTime, toChineseStyle, settings }
+/**
+ * @description 转换时间戳
+ * @param {number} time 时间戳
+ * @param {ToTimeOpt} [opt="m"] 转换的时间单位[默认是分钟] [可选]
+ * @return {*}  {number} 返回时间
+ */
+function toTime(time: number, opt: ToTimeOpt = "m"): number {
+  let result: number
+  switch (opt) {
+    case "ms":
+      result = time
+      break
+
+    case "s":
+      result = time / 1000
+      break
+
+    case "m":
+      result = time / 1000 / 60
+      break
+
+    case "h":
+      result = time / 1000 / 60 / 60
+      break
+
+    default:
+      result = time / 1000
+  }
+
+  return result
+}
+
+export { toChineseDay, formatSize, joinUrl, formatNum, formatTime, toChineseStyle, settings, toTime }

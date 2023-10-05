@@ -1,3 +1,3 @@
-interface TagProps {
+type TagProps = {
   children: string
 }

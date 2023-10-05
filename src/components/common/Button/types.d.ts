@@ -1,7 +1,6 @@
-interface ButtonProps {
-  children: ReactElement | string
-  onClick?: MouseEventHandler<HTMLAnchorElement>
+interface ButtonProps extends DarkModeProps {
+  children: React.ReactElement | string
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>
   title?: string
-  darkMode?: boolean
   mini?: boolean
 }

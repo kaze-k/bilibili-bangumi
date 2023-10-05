@@ -1,19 +1,13 @@
-interface SwitchProps {
+interface ButtonSpanProps extends DarkModeProps {
   checked: boolean
-  onChange: ChangeEventHandler<HTMLInputElement>
-  id: string
-  darkMode?: boolean
 }
 
-interface LabelProps {
-  darkMode?: boolean
+interface SwitchProps extends ButtonSpanProps {
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  id: string
+}
+
+interface LabelProps extends ButtonSpanProps {
   htmlFor: string
   checked: boolean
 }
-
-interface ButtonSpanProps {
-  darkMode?: boolean
-  checked: boolean
-}
-
-type SwitchChangeEvent = ChangeEvent<HTMLInputElement>

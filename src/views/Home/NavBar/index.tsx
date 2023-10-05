@@ -12,28 +12,28 @@ import style from "./style.module.scss"
  * @description 导航栏组件
  * @param {DarkModeProps} props 深色主题Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function NavBar(props: DarkModeProps): ReactElement {
+function NavBar(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
   const [loading, setLoading] = useState<boolean>(true)
-  const change: boolean = useSelector((state: State): boolean => state.storage.change)
   const [rendered, setRendered] = useState<boolean>(false)
-  const dates: Array<[]> = useSelector((state: State): Array<[]> => state.data.dates)
+  const change: boolean = useSelector((state: State): boolean => state.storage.change)
+  const dates: [][] = useSelector((state: State): [][] => state.data.dates)
   const currentIndex: number = useSelector((state: State): number => state.data.currentIndex)
   const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.episodeStyle)
   const checked: boolean[] = useSelector((state: State): boolean[] => state.data.checked)
 
   // nav的节点实例
-  const navRef: RefObject<HTMLElement> = useRef<HTMLElement>(null)
+  const navRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null)
 
   /**
    * @description 导航栏滚动的方法: 当按住`CTRL`键时可以对页面进行滚动，否则只滚动导航栏
-   * @param {NavWheelEvent} event 导航栏滚动event
+   * @param {React.WheelEvent<HTMLElement>} event 导航栏滚动event
    */
-  const handleScroll: (event: NavWheelEvent) => void = (event: NavWheelEvent): void => {
+  const handleScroll: (event: React.WheelEvent<HTMLElement>) => void = (event: React.WheelEvent<HTMLElement>): void => {
     if (event.ctrlKey) {
       const currentChecked: boolean[] = [...checked].fill(false)
       if (event.deltaY > 0) {
@@ -61,6 +61,10 @@ function NavBar(props: DarkModeProps): ReactElement {
     }
   }
 
+  /**
+   * @description 导航栏点击的方法
+   * @param {number} i 索引值
+   */
   const handleClick: (i: number) => void = (i: number): void => {
     const x: number =
       (navRef.current.childNodes[i] as HTMLElement).offsetLeft -
@@ -129,14 +133,14 @@ function NavBar(props: DarkModeProps): ReactElement {
 
   // 当索引值改变时/当加载动画改变时: 触发处理改变的方法
   useEffect((): void => {
-    if (typeof currentIndex !== "undefined" && dates.length && !loading) {
+    if (currentIndex !== null && dates.length && !loading) {
       handleChange(currentIndex)
     }
   }, [currentIndex, loading])
 
   // 导航栏元素
-  const navItems: ReactElement[] = dates?.map(
-    (item: NavItem, index: number): ReactElement => (
+  const navItems: React.ReactElement[] = dates?.map(
+    (item: NavItem, index: number): React.ReactElement => (
       <NavItem
         onChange={(): void => handleChange(index)}
         onClick={(): void => handleClick(index)}
@@ -161,19 +165,19 @@ function NavBar(props: DarkModeProps): ReactElement {
         darkMode={props.darkMode}
       />
     )
+  } else {
+    return (
+      <Nav
+        onWheel={(e: React.WheelEvent<HTMLElement>): void => handleScroll(e)}
+        ref={navRef}
+        className={style.nav}
+        darkMode={props.darkMode}
+      >
+        {navItems}
+        <Hover index={currentIndex} />
+      </Nav>
+    )
   }
-
-  return (
-    <Nav
-      onWheel={(e: NavWheelEvent): void => handleScroll(e)}
-      ref={navRef}
-      className={style.nav}
-      darkMode={props.darkMode}
-    >
-      {navItems}
-      <Hover index={currentIndex} />
-    </Nav>
-  )
 }
 
 export default NavBar

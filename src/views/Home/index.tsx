@@ -1,4 +1,4 @@
-import { throttle } from "lodash"
+import { DebouncedFunc, throttle } from "lodash"
 import { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -12,9 +12,9 @@ import NavBar from "./NavBar"
 
 /**
  * @description 首页组件
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Home(): ReactElement {
+function Home(): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态

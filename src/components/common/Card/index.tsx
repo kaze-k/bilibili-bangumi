@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"
 
@@ -30,14 +30,14 @@ const Header: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
 /**
  * @description 卡片组件
  * @param {CardProps} props 卡片Props
- * @param {ReactElement | ReactElement[]} props.headerLeft 头部左边内容 [可选]
- * @param {ReactElement | ReactElement[]} props.headerRight 头部右边内容 [可选]
- * @param {ReactElement | ReactElement[]} props.children 子组件
- * @param {ReactElement | ReactElement[]} props.footer 尾部内容 [可选]
+ * @param {React.ReactElement | React.ReactElement[]} props.headerLeft 头部左边内容 [可选]
+ * @param {React.ReactElement | React.ReactElement[]} props.headerRight 头部右边内容 [可选]
+ * @param {React.ReactElement | React.ReactElement[]} props.children 子组件
+ * @param {React.ReactElement | React.ReactElement[]} props.footer 尾部内容 [可选]
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {ReactElement}
+ * @return {*}  {React.ReactElement}
  */
-function Card(props: CardProps): ReactElement {
+function Card(props: CardProps): React.ReactElement {
   return (
     <Wrapper
       className={style.card}

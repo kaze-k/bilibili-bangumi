@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { CSSProp, StyledComponent } from "styled-components"
 
 /**
  * @description iconfont图标组件

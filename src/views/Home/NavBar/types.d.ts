@@ -1,9 +1,5 @@
-type NavWheelEvent = React.WheelEvent<HTMLElement>
-
-interface HoverWrapperProps {
+type HoverWrapperProps = {
   index: number
 }
 
-interface NavItem {
-  [key: string]: any
-}
+type NavItem = Json

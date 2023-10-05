@@ -51,4 +51,4 @@ module.exports = {
   allowCustomScopes: true, // 允许自定义范围
   skipQuestions: ["body", "footer"], // 跳过的问题
   subjectLimit: 100, // 主题限制
-};
+}

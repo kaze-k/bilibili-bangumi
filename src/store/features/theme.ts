@@ -14,7 +14,6 @@ const theme: Slice<ThemeState, ThemeReducers, "theme"> = createSlice({
      * @description 切换深色主题
      * @param {ThemeState} state 状态
      */
-
     toggleDarkMode(state: ThemeState): void {
       state.darkMode = !state.darkMode
       state.system = false
@@ -25,7 +24,6 @@ const theme: Slice<ThemeState, ThemeReducers, "theme"> = createSlice({
      * @description 切换跟随系统的主题
      * @param {ThemeState} state 状态
      */
-
     toggleSysTheme(state: ThemeState): void {
       state.system = !state.system
       state.auto = false

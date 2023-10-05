@@ -1,14 +1,12 @@
-interface HoverBoxProps {
-  darkMode?: boolean
+interface HoverBoxProps extends DarkModeProps {
   index: number
 }
 
-interface SelectButtonProps {
-  darkMode?: boolean
+interface SelectButtonProps extends DarkModeProps {
   show: boolean
 }
 
-interface SelectItemProps {
+type SelectItemProps = {
   hover: boolean
 }
 
