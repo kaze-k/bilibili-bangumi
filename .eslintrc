@@ -37,6 +37,12 @@
           "{}": false
         }
       }
+    ],
+    "@typescript-eslint/no-empty-function": [
+      "error",
+      {
+        "allow": ["constructors"]
+      }
     ]
   }
 }
