@@ -4,6 +4,13 @@
  */
 class Popup {
   /**
+   * popup类
+   * @private
+   * @memberof Popup
+   */
+  private constructor() {}
+
+  /**
    * @description 获取剧集信息
    * @static
    * @param {SendResponse} sendResponse 发送通信的方法

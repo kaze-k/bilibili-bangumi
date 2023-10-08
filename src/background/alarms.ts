@@ -7,6 +7,13 @@ import { settings } from "~/utils"
  */
 class Handler {
   /**
+   * 处理类
+   * @private
+   * @memberof Handler
+   */
+  private constructor() {}
+
+  /**
    * @description 请求当天的时间表的信息
    * @private
    * @static
@@ -150,6 +157,13 @@ class Handler {
  * @class Creator
  */
 class Creator {
+  /**
+   * 创建类
+   * @private
+   * @memberof Creator
+   */
+  private constructor() {}
+
   /**
    * @description 更新信息alarms
    * - 每隔1个小时获取并存储一次番剧时间表

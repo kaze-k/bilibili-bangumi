@@ -14,7 +14,7 @@ class Creator {
    * @type {string}
    * @memberof Creator
    */
-  private static displayName: string = chrome.runtime.getManifest().name
+  private static readonly displayName: string = chrome.runtime.getManifest().name
 
   /**
    * @description 插件版本
@@ -23,7 +23,14 @@ class Creator {
    * @type {string}
    * @memberof Creator
    */
-  private static version: string = chrome.runtime.getManifest().version
+  private static readonly version: string = chrome.runtime.getManifest().version
+
+  /**
+   * 创建类
+   * @private
+   * @memberof Creator
+   */
+  private constructor() {}
 
   /**
    * @description 创建图片类型通知
@@ -89,6 +96,13 @@ class Creator {
  * @class Handler
  */
 class Handler {
+  /**
+   * 处理类
+   * @private
+   * @memberof Handler
+   */
+  private constructor() {}
+
   /**
    * @description 创建Tab
    * @static

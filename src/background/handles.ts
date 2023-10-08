@@ -8,6 +8,13 @@ import { settings } from "~/utils"
  */
 class Data {
   /**
+   * 数据类
+   * @private
+   * @memberof Data
+   */
+  private constructor() {}
+
+  /**
    * @description 获取剧集信息
    * @private
    * @static
