@@ -60,7 +60,7 @@ function NavItem(props: NavItmeProps): React.ReactElement {
         className={style.label}
       >
         <div className={style.container}>
-          <div>
+          <div className={style.time_box}>
             <Day
               className={style.day}
               today={Boolean(props.today)}
