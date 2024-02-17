@@ -1,6 +1,7 @@
 import CopyWebpackPlugin from "copy-webpack-plugin"
 import EslintWebpackPlugin from "eslint-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
+import MarkedWebpackPlugin from "marked-webpack-plugin"
 import path from "path"
 import StylelintWebpackPlugin from "stylelint-webpack-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
@@ -16,8 +17,8 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
       preset: "minimal",
     },
     entry: {
-      background: path.resolve(__dirname, "../src/background", "index.ts"),
-      popup: path.resolve(__dirname, "../src/popup", "index.tsx"),
+      background: path.resolve(__dirname, "../src/background/", "index.ts"),
+      popup: path.resolve(__dirname, "../src/popup/", "index.tsx"),
     },
     output: {
       filename(pathData: PathData): string {
@@ -106,7 +107,7 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
       new CopyWebpackPlugin({
         patterns: [
           {
-            from: path.resolve(__dirname, "../public/icon.png"),
+            from: path.resolve(__dirname, "../public/", "icon.png"),
             to: path.resolve(__dirname, "../build/", packageDir, "./icon.png"),
           },
           {
@@ -120,7 +121,7 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
       }),
       new WebpackExtensionManifestPlugin({
         config: {
-          base: path.resolve(__dirname, "../public/manifest.js"),
+          base: path.resolve(__dirname, "../public/", "manifest.js"),
           extend: {
             manifest_version: 3,
             name: `${pkg.displayName}`,
@@ -130,6 +131,12 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
           },
         },
         pkgJsonProps: ["version", "author"],
+      }),
+      new MarkedWebpackPlugin({
+        input: path.resolve(__dirname, "../CHANGELOG.md"),
+        output: path.resolve(__dirname, "../build/", packageDir, "CHANGELOG.html"),
+        title: "更新日志",
+        template: path.resolve(__dirname, "../public/", "CHANGELOG.html"),
       }),
     ],
   }

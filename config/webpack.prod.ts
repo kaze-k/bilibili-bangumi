@@ -1,6 +1,5 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { Configuration } from "webpack"
-import WebpackPrettierPlugin from "webpack-prettier-plugin"
 import WebpackBar from "webpackbar"
 
 const config: Configuration = {
@@ -41,7 +40,6 @@ const config: Configuration = {
     ],
   },
   plugins: [
-    new WebpackPrettierPlugin(),
     new MiniCssExtractPlugin({
       filename: "static/styles/[name].css",
       chunkFilename: "static/styles/[name].css",

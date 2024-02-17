@@ -11,7 +11,7 @@ module.exports = {
     { value: "style", name: "style:       代码格式化" },
     { value: "refactor", name: "refactor:    代码重构" },
     { value: "perf", name: "perf:        性能优化" },
-    { value: "ci", name: "ci:          修改项目配置文件" },
+    { value: "ci", name: "ci:          持续集成" },
     { value: "test", name: "test:        添加测试" },
     { value: "chore", name: "chore:       变更构建流程或辅助工具" },
     { value: "revert", name: "revert:      代码回退" },

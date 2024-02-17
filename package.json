@@ -21,8 +21,8 @@
     "format": "prettier --write src",
     "commit": "cz",
     "log": "pnpm run log:changelog && pnpm run log:changelogs",
-    "log:changelog": "conventional-changelog -p angular -n changelog.config.js -o CHANGELOG.md",
-    "log:changelogs": "conventional-changelog -p angular -i CHANGELOGS.md -s -r 0"
+    "log:changelog": "conventional-changelog -n changelog.config.js -o CHANGELOG.md",
+    "log:changelogs": "conventional-changelog -i CHANGELOGS.md -s -r 0"
   },
   "config": {
     "commitizen": {

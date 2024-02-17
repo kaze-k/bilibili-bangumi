@@ -1,21 +1,34 @@
 # github: https://github.com/editorconfig/editorconfig
 # configuration: https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties
 
-root = true                             # 根目录标识
+# 根目录标识
+root = true
 
 [*]
-indent_style = space                    # 缩进样式
-indent_size = 2                         # 缩进大小
-tab_widthe = 4                          # tab宽度
-end_of_line = lf                        # 结尾换行符
-charset = utf-8                         # 文件编码
-trim_trailing_whitespace = true         # 行末空格
-insert_final_newline = true             # 文件末尾空行
-max_line_length = off                   # 一行最大长度
-quote_type = auto                       # 引号样式
-curly_bracket_next_line = true          # 花括号后换行
-spaces_around_operators = true          # 算术运算符周围空格
-spaces_around_brackets = outside        # 括号周围的空格
+# 缩进样式
+indent_style = space
+# 缩进大小
+indent_size = 2
+# tab宽度
+tab_widthe = 4
+# 结尾换行符
+end_of_line = lf
+# 文件编码
+charset = utf-8
+# 行末空格
+trim_trailing_whitespace = true
+# 文件末尾空行
+insert_final_newline = true
+# 一行最大长度
+max_line_length = off
+# 引号样式
+quote_type = auto
+# 花括号后换行
+curly_bracket_next_line = true
+# 算术运算符周围空格
+spaces_around_operators = true
+# 括号周围的空格
+spaces_around_brackets = outside
 
 [*.{ts,js}]
 quote_type = double
