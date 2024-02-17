@@ -11,6 +11,7 @@ class Creator {
    * @description 插件名称
    * @private
    * @static
+   * @readonly
    * @type {string}
    * @memberof Creator
    */
@@ -20,13 +21,14 @@ class Creator {
    * @description 插件版本
    * @private
    * @static
+   * @readonly
    * @type {string}
    * @memberof Creator
    */
   private static readonly version: string = chrome.runtime.getManifest().version
 
   /**
-   * 创建类
+   * 私有创建类构造函数
    * @private
    * @memberof Creator
    */
@@ -35,6 +37,7 @@ class Creator {
   /**
    * @description 创建图片类型通知
    * @static
+   * @async
    * @param {NotificationsParams} params 通知需要的参数
    * @param {number} param.id 通知id(剧集id)
    * @param {string} param.cover 封面图片
@@ -87,6 +90,7 @@ class Creator {
       message: `v${previousVersion} ~ v${this.version}`,
       contextMessage: this.displayName,
       iconUrl: icon,
+      buttons: [{ title: "更新日志" }],
     })
   }
 }
@@ -97,7 +101,7 @@ class Creator {
  */
 class Handler {
   /**
-   * 处理类
+   * 私有处理类构造函数
    * @private
    * @memberof Handler
    */
@@ -106,6 +110,7 @@ class Handler {
   /**
    * @description 创建Tab
    * @static
+   * @async
    * @param {string} id 通知id(剧集id)
    * @return {*}  {Promise<void>} 无返回值
    * @memberof Handler

@@ -4,7 +4,7 @@
  */
 class Popup {
   /**
-   * popup类
+   * 私有popup类构造函数
    * @private
    * @memberof Popup
    */
@@ -13,6 +13,7 @@ class Popup {
   /**
    * @description 获取剧集信息
    * @static
+   * @async
    * @param {SendResponse} sendResponse 发送通信的方法
    * @param {EpisodesKey} episodesKey 存储剧集信息的键名
    * @return {*}  {Promise<void>} 无返回值
@@ -31,6 +32,7 @@ class Popup {
   /**
    * @description 获取日期信息
    * @static
+   * @async
    * @param {SendResponse} sendResponse 发送通信的方法
    * @param {DatesKey} datesKey 存储日期信息的键名
    * @return {*}  {Promise<void>} 无返回值
@@ -49,6 +51,7 @@ class Popup {
   /**
    * @description 获取全部剧集信息
    * @static
+   * @async
    * @param {SendResponse} sendResponse 发送通信的方法
    * @return {*}  {Promise<void>} 无返回值
    * @memberof Popup

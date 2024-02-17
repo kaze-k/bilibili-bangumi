@@ -7,7 +7,7 @@ import { settings } from "~/utils"
  */
 class Handler {
   /**
-   * 处理类
+   * 私有处理类构造函数
    * @private
    * @memberof Handler
    */
@@ -17,6 +17,7 @@ class Handler {
    * @description 请求当天的时间表的信息
    * @private
    * @static
+   * @async
    * @param {EpisodesKey} episodesKey 查询信息的键名
    * @return {*}  {Promise<{}[]>} 返回当天的时间表信息
    * @memberof Handler
@@ -44,6 +45,7 @@ class Handler {
    * @description 提取时间表信息
    * @private
    * @static
+   * @async
    * @param {EpisodesKey} episodesKey 查询信息的键名
    * @return {*}  {Promise<{}[]>} 返回时间表信息
    * @memberof Handler
@@ -64,6 +66,7 @@ class Handler {
    * @description 处理通知信息
    * @private
    * @static
+   * @async
    * @param {EpisodesKey} episodesKey 查询信息的键名
    * @param {number} scheduledTime 即将更新的时间
    * @return {*}  {Promise<NotificationsParams[]>} 返回处理后的通知信息
@@ -100,6 +103,7 @@ class Handler {
   /**
    * @description 推送通知
    * @static
+   * @async
    * @param {Notifications.creator} noticeCreate 创建通知的对象
    * @param {EpisodesKey} episodesKey 查询信息的键名
    * @param {number} scheduledTime 即将更新的时间
@@ -128,6 +132,7 @@ class Handler {
   /**
    * @description 获取即将更新的时间
    * @static
+   * @async
    * @param {EpisodesKey} episodesKey 查询信息的键名
    * @return {*}  {Promise<number>} 返回即将更新的时间
    * @memberof Handler
@@ -158,7 +163,7 @@ class Handler {
  */
 class Creator {
   /**
-   * 创建类
+   * 私有创建类构造函数
    * @private
    * @memberof Creator
    */
@@ -179,6 +184,7 @@ class Creator {
   /**
    * @description 创建通知alarms
    * @static
+   * @async
    * @param {EpisodesKey} episodesKey 查询信息的键名
    * @return {*}  {Promise<void>} 无返回值
    * @memberof Creator
@@ -201,6 +207,7 @@ class Creator {
   /**
    * @description 自动清除通知
    * @static
+   * @async
    * @param {string} id 通知的id
    * @return {*}  {Promise<void>} 无返回值
    * @memberof Creator
