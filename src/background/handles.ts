@@ -8,7 +8,7 @@ import { settings } from "~/utils"
  */
 class Data {
   /**
-   * 数据类
+   * 私有数据类构造函数
    * @private
    * @memberof Data
    */
@@ -18,30 +18,33 @@ class Data {
    * @description 获取剧集信息
    * @private
    * @static
-   * @param {EpisodesObj} episodesObj 剧集对象
-   * @return {*}  {Promise<EpisodesObj>} 返回处理后的剧集对象
+   * @async
+   * @param {any} episodesObj 剧集对象
+   * @return {*}  {Promise<any>} 返回处理后的剧集对象
    * @memberof Data
    */
-  private static async get_episode_info(episodesObj: EpisodesObj): Promise<EpisodesObj> {
+  private static async get_episode_info(episodesObj: any): Promise<any> {
     const episodes: any[] = episodesObj.episodes
 
     const promises: Promise<APIResponse>[] = []
 
-    for (const episode in episodes) {
-      const data: Promise<APIResponse> = getInfo({ season_id: episodes[episode].season_id })
+    for (const episode of episodes) {
+      const data: Promise<APIResponse> = getInfo({ season_id: episode.season_id })
       promises.push(data)
     }
 
-    return Promise.all(promises).then((data: APIResponse[]): EpisodesObj => {
-      for (const result in data) {
-        if (data[result].result) {
-          const { rating, stat, styles } = data[result].result
-          episodes[result].info = { rating, stat, styles }
+    await Promise.allSettled(promises).then((result: PromiseFulfilledResult<APIResponse>[]): void => {
+      for (const index in result) {
+        if (result[index].status === "fulfilled") {
+          if (result[index].value && result[index].value.result) {
+            const { rating, stat, styles } = result[index].value.result
+            episodes[index].info = { rating, stat, styles }
+          }
         }
       }
-
-      return episodesObj
     })
+
+    return episodesObj
   }
 
   /**
@@ -68,42 +71,39 @@ class Data {
    * @description 过滤剧集信息
    * @private
    * @static
+   * @async
    * @param {any[]} result 获取的信息结果
    * @return {*}  {Promise<[][]>} 返回过滤后的剧集信息
    * @memberof Data
    */
   private static async filter_episodes(result: any[]): Promise<[][]> {
-    const result_episodes: [][] = Array(result?.length).fill([])
+    const results_episodes: [][] = Array(result?.length).fill([])
 
-    const promises: Promise<EpisodesObj>[] = []
+    const promises: Promise<any>[] = []
 
-    for (const index in result) {
-      const episodes_obj: EpisodesObj = {
-        id: index,
-        episodes: result[index].episodes,
-      }
-
-      const get_episodes_obj: Promise<EpisodesObj> = this.get_episode_info(episodes_obj)
-      promises.push(get_episodes_obj)
+    for (const res of result) {
+      const episodes: Promise<any> = this.get_episode_info(res)
+      promises.push(episodes)
     }
 
-    return Promise.all(promises).then((obj: EpisodesObj[]): [][] => {
+    await Promise.allSettled(promises).then((result: PromiseFulfilledResult<any>[]): void => {
       for (const index in result) {
-        for (const episode in obj) {
-          if (obj[episode].id === index) {
-            result_episodes[obj[episode].id] = obj[episode].episodes
+        if (result[index].status === "fulfilled") {
+          if (result[index].value && result[index].value.episodes) {
+            results_episodes[index] = result[index].value.episodes
           }
         }
       }
-
-      return result_episodes
     })
+
+    return results_episodes
   }
 
   /**
    * @description 存储信息
    * @private
    * @static
+   * @async
    * @param {any[]} result 获取的信息结果
    * @param {EpisodesKey} episodesKey 存储剧集信息的键名
    * @param {DatesKey} datesKey 存储日期信息的键名
@@ -134,6 +134,7 @@ class Data {
   /**
    * @description 处理信息
    * @static
+   * @async
    * @param {TimelineParams} timelineParams 时间表接口的参数
    * @return {*}  {Promise<boolean | undefined>} 返回true或undefined
    * @memberof Data
