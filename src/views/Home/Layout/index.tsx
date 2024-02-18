@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import ErrorPage from "~/components/common/ErrorPage"
 import Loading from "~/components/common/Loading"
 import Main from "~/components/common/Main"
 import Refresh from "~/components/common/Refresh"
-import { getAllEpisodes, getAnimeEpisodes, getGuoChuangEpisodes, setIndex, update } from "~/store/features/data"
+import { getAllEpisodes, getAnimeEpisodes, getGuoChuangEpisodes, setIndex } from "~/store/features/data"
 
-import { Container, ContentWrapper, EmptyPage, Page } from "./components"
+import { Container, ContentWrapper, EmptyPage, Wrapper } from "./components"
 import style from "./style.module.scss"
 
 /**
@@ -99,22 +99,6 @@ function Layout(props: DarkModeProps): React.ReactElement {
     }
   }
 
-  /**
-   * @description 监听事件的回调函数
-   * @param {React.WheelEvent<HTMLElement>} event 滚动event
-   */
-  const listener: (event: React.WheelEvent<HTMLElement>) => void = (event: React.WheelEvent<HTMLElement>): void => {
-    if (event.ctrlKey) {
-      return
-    }
-
-    const scrollTop: number = pageRef?.current?.childNodes[currentIndex]?.scrollTop
-
-    if (!refreshRef.current?.visible && scrollTop === 0 && event?.deltaY < 0) {
-      dispatch(update())
-    }
-  }
-
   // 当剧集类别改变时/当索引值改变时/当存储信息改变时: 发送通信
   useEffect((): void => {
     if (currentIndex !== null) {
@@ -123,28 +107,25 @@ function Layout(props: DarkModeProps): React.ReactElement {
   }, [episodeStyle, currentIndex, change])
 
   // 当剧集信息获取成功时/当错误状态改变时: 停止加载动画
-  useEffect((): void => {
+  useEffect((): (() => void) => {
+    let timer: NodeJS.Timeout
+
     if (episodes.length) {
       setLoading(false)
     } else {
       setLoading(true)
 
       if (isError) {
-        setTimeout((): void => {
+        timer = setTimeout((): void => {
           setLoading(false)
         }, 500)
       }
     }
-  }, [episodes.length, isError])
 
-  // 当刷新组件可见状态改变时/当加载动画改变时: 监听页面组件的鼠标滚轮事件
-  // 卸载时: 移除页面组件的鼠标滚轮事件的监听
-  useEffect((): (() => void) => {
-    if (!refreshRef.current?.visible || !isLoading) {
-      pageRef?.current?.childNodes[currentIndex]?.addEventListener("wheel", listener, false)
+    return (): void => {
+      clearTimeout(timer)
     }
-    return (): void => pageRef?.current?.childNodes[currentIndex]?.removeEventListener("wheel", listener, false)
-  })
+  }, [episodes.length, isError])
 
   // 有数据时渲染的组件
   const containers: (items: {}[]) => React.ReactElement[] = (items: {}[]): React.ReactElement[] =>
@@ -185,18 +166,12 @@ function Layout(props: DarkModeProps): React.ReactElement {
 
   const pages: React.ReactElement[] = episodes?.map(
     (items: [][], indexs: number): React.ReactElement => (
-      <Page
+      <div
         key={indexs}
         className={style.page}
-        index={currentIndex}
       >
-        <Refresh
-          darkMode={props.darkMode}
-          isLoading={isLoading}
-          ref={refreshRef}
-        />
         {items.length ? containers(items) : noUpdate}
-      </Page>
+      </div>
     ),
   )
 
@@ -222,15 +197,21 @@ function Layout(props: DarkModeProps): React.ReactElement {
 
   return (
     <Main darkMode={props.darkMode}>
-      <div
+      <Refresh
+        darkMode={props.darkMode}
+        isLoading={isLoading}
+        ref={refreshRef}
+      />
+      <Wrapper
         className={style.wrapper}
+        index={currentIndex}
         onWheel={(e: React.WheelEvent<HTMLElement>): void => handleScroll(e)}
         ref={pageRef}
       >
         {pages}
-      </div>
+      </Wrapper>
     </Main>
   )
 }
 
-export default Layout
+export default memo(Layout)
