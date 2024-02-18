@@ -34,7 +34,7 @@ const NavDefault: StyledComponent<"nav", any, DarkModeProps, never> = styled.nav
  */
 const HoverWrapper: StyledComponent<"div", any, HoverWrapperProps, never> = styled.div(
   (props: HoverWrapperProps): CSSProp => ({
-    transform: `translateX(${51.43 * props.index}px)`,
+    transform: `translateX(${(document.body.clientWidth / 7) * props.index}px)`,
   }),
 )
 

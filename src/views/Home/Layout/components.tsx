@@ -32,9 +32,9 @@ const Content: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
  * @param {number} props.index 页面索引值
  * @return {*}  {CSSProp}
  */
-const Page: StyledComponent<"div", any, PageProps, never> = styled.div(
+const Wrapper: StyledComponent<"div", any, PageProps, never> = styled.div(
   (props: PageProps): CSSProp => ({
-    transform: `translateX(${-360 * props.index}px)`,
+    transform: `translateX(${-document.body.clientWidth * props.index}px)`,
   }),
 )
 
@@ -151,4 +151,4 @@ function EmptyPage(text: string): React.ReactElement {
   )
 }
 
-export { Page, ContentWrapper, Container, EmptyPage }
+export { Wrapper, ContentWrapper, Container, EmptyPage }

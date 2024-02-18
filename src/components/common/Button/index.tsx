@@ -63,22 +63,22 @@ function Button(props: ButtonProps): React.ReactElement {
         </a>
       </MiniButtonDiv>
     )
-  } else {
-    return (
-      <ButtonDiv
-        className={style.button}
-        title={props.title}
-        darkMode={props.darkMode}
-      >
-        <a
-          onClick={props.onClick}
-          className={style.icon_box}
-        >
-          {props.children}
-        </a>
-      </ButtonDiv>
-    )
   }
+
+  return (
+    <ButtonDiv
+      className={style.button}
+      title={props.title}
+      darkMode={props.darkMode}
+    >
+      <a
+        onClick={props.onClick}
+        className={style.icon_box}
+      >
+        {props.children}
+      </a>
+    </ButtonDiv>
+  )
 }
 
 export default Button
