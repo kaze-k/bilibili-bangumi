@@ -108,7 +108,7 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
         plugins: [
           new ArchiveWebpackPlugin({
             source: path.resolve(__dirname, "./build/", packageDir),
-            destination: path.resolve(__dirname, `./build/${packageDir}.zip`),
+            destination: path.resolve(__dirname, `./release/${packageDir}.zip`),
             format: "zip",
           }),
         ],
