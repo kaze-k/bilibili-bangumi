@@ -3,7 +3,7 @@ name: Create Release
 on:
   push:
     tag:
-      - "chore(release): v*"
+      - "v*"
 
 jobs:
   build:
