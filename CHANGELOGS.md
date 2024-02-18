@@ -1,3 +1,24 @@
+## <small>0.2.2 (2024-02-18)</small>
+
+* chore: 更新日志 ([6dd9d85](https://github.com/kaze-k/bilibili-bangumi/commit/6dd9d85))
+* chore: 更新依赖 ([77fb715](https://github.com/kaze-k/bilibili-bangumi/commit/77fb715))
+* chore(release): v0.2.2 ([c97ed2f](https://github.com/kaze-k/bilibili-bangumi/commit/c97ed2f))
+* chore(tools): 添加changelog工具和升级工具版本 ([14a5bad](https://github.com/kaze-k/bilibili-bangumi/commit/14a5bad))
+* chore(tools): 修改工具配置 ([3bc86d1](https://github.com/kaze-k/bilibili-bangumi/commit/3bc86d1))
+* chore(tools): changelog工具配置 ([b186c94](https://github.com/kaze-k/bilibili-bangumi/commit/b186c94))
+* chore(tools): commit工具配置 ([5242ff4](https://github.com/kaze-k/bilibili-bangumi/commit/5242ff4))
+* chore(tools): commit工具配置 ([0c47bcd](https://github.com/kaze-k/bilibili-bangumi/commit/0c47bcd))
+* update(popup): 弹出页面宽度增加 ([b0eeb9e](https://github.com/kaze-k/bilibili-bangumi/commit/b0eeb9e))
+* update(views): 调整页面显示 ([5f15776](https://github.com/kaze-k/bilibili-bangumi/commit/5f15776))
+* refactor(background): 重构部分代码 ([a1be66a](https://github.com/kaze-k/bilibili-bangumi/commit/a1be66a))
+* refactor(components): 重写刷新组件 ([4052a19](https://github.com/kaze-k/bilibili-bangumi/commit/4052a19))
+* perf(views): 优化页面和避免重复请求数据 ([3d40f48](https://github.com/kaze-k/bilibili-bangumi/commit/3d40f48))
+* refactor(components, views): 部分代码修改 ([40a2028](https://github.com/kaze-k/bilibili-bangumi/commit/40a2028))
+* feat: 新增刷新按钮 ([ecb7335](https://github.com/kaze-k/bilibili-bangumi/commit/ecb7335))
+* style(background): 修改注释 ([0bfd5f4](https://github.com/kaze-k/bilibili-bangumi/commit/0bfd5f4))
+
+
+
 ## <small>0.2.1 (2023-10-10)</small>
 
 * 0.2.1 ([07529c8](https://github.com/kaze-k/bilibili-bangumi/commit/07529c8))
