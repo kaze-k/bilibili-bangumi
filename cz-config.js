@@ -46,6 +46,7 @@ module.exports = {
     { name: "locales" },
     { name: "pubilc" },
     { name: "tools" },
+    { name: "release" },
   ], // 指定修改范围
   usePreparedCommit: false, // 重用旧commit
   allowCustomScopes: true, // 允许自定义范围
