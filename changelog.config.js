@@ -1,8 +1,6 @@
 module.exports = {
   writerOpts: {
     transform: (commit, context) => {
-      commit.scope = null
-
       if (commit.type === "update") {
         commit.type = "更新"
       } else if (commit.type === "feat") {
@@ -32,6 +30,10 @@ module.exports = {
       } else {
         return
       }
+
+      commit.scope = null
+
+      commit.shortHash = typeof commit.hash === "string" ? commit.hash.substring(0, 7) : commit.shortHash
 
       return commit
     },
