@@ -49,7 +49,7 @@ jobs:
 
       - name: 6. 打包
         if: contains(github.ref, 'tags')
-        run: pnpm zip
+        run: mkdir release && pnpm zip
 
       - name: 7. 创建GitHub Release
         id: create_release
