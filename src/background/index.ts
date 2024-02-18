@@ -16,7 +16,7 @@ chrome.runtime.onInstalled.addListener((details: chrome.runtime.InstalledDetails
 
 // 浏览器启动触发的事件
 chrome.runtime.onStartup.addListener((): void => {
-  Promise.all([
+  Promise.allSettled([
     handles.data.handleData({ types: 1, before: 7, after: 7 }),
     handles.data.handleData({ types: 4, before: 7, after: 7 }),
   ])
@@ -119,7 +119,7 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
   switch (alarm.name) {
     // 更新信息
     case "update_data":
-      Promise.all([
+      Promise.allSettled([
         handles.data.handleData({ types: 1, before: 7, after: 7 }),
         handles.data.handleData({ types: 4, before: 7, after: 7 }),
       ])
@@ -128,7 +128,7 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
     // 推送日漫更新通知
     case "anime_episodes_push_notice":
       alarms.handle.pushNotice(notifications.create, "anime_episodes", alarm.scheduledTime)
-      Promise.all([
+      Promise.allSettled([
         handles.data.handleData({ types: 1, before: 7, after: 7 }),
         handles.data.handleData({ types: 4, before: 7, after: 7 }),
       ])
@@ -137,7 +137,7 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
     // 推送国创更新通知
     case "guochuang_episodes_push_notice":
       alarms.handle.pushNotice(notifications.create, "guochuang_episodes", alarm.scheduledTime)
-      Promise.all([
+      Promise.allSettled([
         handles.data.handleData({ types: 1, before: 7, after: 7 }),
         handles.data.handleData({ types: 4, before: 7, after: 7 }),
       ])
@@ -148,4 +148,13 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
 // 点击通知触发的事件
 chrome.notifications.onClicked.addListener((notificationId: string): void => {
   notifications.handle.createTab(notificationId)
+})
+
+// 点击通知按钮触发的事件
+chrome.notifications.onButtonClicked.addListener((notificationId: string, buttonIndex: number): void => {
+  if (notificationId === "update-notice" && buttonIndex === 0) {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("CHANGELOG.html"),
+    })
+  }
 })
