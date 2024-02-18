@@ -1,6 +1,8 @@
+import { memo } from "react"
 import { useSelector } from "react-redux"
 
 import NoticeButton from "~/components/Buttons/NoticeButton"
+import RefreshButton from "~/components/Buttons/RefreshButton"
 import SetupButton from "~/components/Buttons/SetupButton"
 import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
 import Disconnection from "~/components/common/Disconnection"
@@ -35,10 +37,11 @@ function HomeHeader(props: DarkModeProps): React.ReactElement {
       <div className={style.right}>
         <NoticeButton darkMode={props.darkMode} />
         <SwitchThemeButton darkMode={props.darkMode} />
+        <RefreshButton darkMode={props.darkMode} />
         <SetupButton darkMode={props.darkMode} />
       </div>
     </Header>
   )
 }
 
-export default HomeHeader
+export default memo(HomeHeader)

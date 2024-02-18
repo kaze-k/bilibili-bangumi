@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { DebouncedFunc, throttle } from "lodash"
-import { useCallback, useEffect, useState } from "react"
+import { memo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import Button from "~/components/common/Button"
@@ -16,41 +15,23 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
+  const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
   const isError: boolean = useSelector((state: State): boolean => state.data.isError)
-  const [spinned, setSpinned] = useState<boolean>(false)
-
-  // 节流
-  const handleThrottle: DebouncedFunc<() => void> = useCallback(
-    throttle((): void => {
-      setSpinned(false)
-    }, 2000),
-    [],
-  )
 
   /**
    * @description 处理更新的方法: 发送更新信息通信
    */
   const handleUpdate: () => void = (): void => {
-    if (!spinned) {
+    if (!isLoading && !isError) {
       dispatch(update())
     }
-    setSpinned(true)
   }
-
-  // 当有错误时/当组件不旋转时: 延迟停止旋转
-  useEffect((): void => {
-    if (isError) {
-      setTimeout((): void => {
-        handleThrottle()
-      }, 2000)
-    }
-  })
 
   const icon: React.ReactElement = (
     <FontAwesomeIcon
-      icon={"sync-alt"}
-      size="2xl"
-      spin={spinned}
+      icon={"redo-alt"}
+      size="xl"
+      spin={isLoading}
     />
   )
 
@@ -65,4 +46,4 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   )
 }
 
-export default RefreshButton
+export default memo(RefreshButton)

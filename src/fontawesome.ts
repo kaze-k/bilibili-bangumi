@@ -12,9 +12,9 @@ import {
   faFilter,
   faGear,
   faMagnifyingGlass,
+  faRedoAlt,
   faSpinner,
   faSun,
-  faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
@@ -33,5 +33,5 @@ library.add(
   faDizzy,
   faCircleNotch,
   faCompactDisc,
-  faSyncAlt,
+  faRedoAlt,
 )
