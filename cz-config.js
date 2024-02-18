@@ -47,6 +47,7 @@ module.exports = {
     { name: "pubilc" },
     { name: "tools" },
     { name: "release" },
+    { name: "changelog" },
   ], // 指定修改范围
   usePreparedCommit: false, // 重用旧commit
   allowCustomScopes: true, // 允许自定义范围
