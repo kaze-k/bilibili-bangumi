@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import styled, { CSSProp, StyledComponent } from "styled-components"
+
+import { setController } from "~/store/features/data"
 
 import style from "./style.module.scss"
 
@@ -14,6 +16,8 @@ import style from "./style.module.scss"
 const Wrapper: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
   (props: DarkModeProps): CSSProp => ({
     color: props.darkMode ? "#ffffff" : "#000000",
+    backgroundColor: props.darkMode ? "rgba(0 0 0 / 20%)" : "rgba(255 255 255 / 20%)",
+    borderColor: props.darkMode ? "rgba(255 255 255 / 50%)" : "rgba(0 0 0 / 50%)",
   }),
 )
 
@@ -27,7 +31,7 @@ const Wrapper: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
  */
 function Refresh(props: RefreshProp, ref: React.Ref<RefreshInit>): React.ReactElement {
   // 状态
-  const [controller, setController] = useState<boolean>(false)
+  const [controlled, setControlled] = useState<boolean>(false)
   const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
   const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 
@@ -35,24 +39,48 @@ function Refresh(props: RefreshProp, ref: React.Ref<RefreshInit>): React.ReactEl
   const refreshRef: React.RefObject<HTMLDivElement> = useRef(null)
 
   // 当加载状态改变时: 改变加载组件的显示
-  useEffect((): void => {
+  useEffect((): (() => void) => {
+    let controller_timer: NodeJS.Timeout
+    let controlled_timer: NodeJS.Timeout
+
     if (isLoading) {
       setController(true)
+      setControlled(true)
     } else {
-      setTimeout((): void => {
+      controller_timer = setTimeout((): void => {
         setController(false)
+      }, 1600)
+      controlled_timer = setTimeout((): void => {
+        setControlled(false)
       }, 1500)
+    }
+
+    return (): void => {
+      clearTimeout(controller_timer)
+      clearTimeout(controlled_timer)
     }
   }, [isLoading])
 
   // 当错误状态改变时: 改变加载组件的显示
-  useEffect((): void => {
+  useEffect((): (() => void) => {
+    let controller_timer: NodeJS.Timeout
+    let controlled_timer: NodeJS.Timeout
+
     if (isError) {
       setController(true)
+      setControlled(true)
     } else {
-      setTimeout((): void => {
+      controller_timer = setTimeout((): void => {
         setController(false)
+      }, 1600)
+      controlled_timer = setTimeout((): void => {
+        setControlled(false)
       }, 1500)
+    }
+
+    return (): void => {
+      clearTimeout(controller_timer)
+      clearTimeout(controlled_timer)
     }
   }, [isError])
 
@@ -64,7 +92,7 @@ function Refresh(props: RefreshProp, ref: React.Ref<RefreshInit>): React.ReactEl
     }),
   )
 
-  if (controller) {
+  if (controlled) {
     if (props.isLoading) {
       return (
         <Wrapper
@@ -93,4 +121,4 @@ function Refresh(props: RefreshProp, ref: React.Ref<RefreshInit>): React.ReactEl
   }
 }
 
-export default forwardRef(Refresh)
+export default memo(forwardRef(Refresh))

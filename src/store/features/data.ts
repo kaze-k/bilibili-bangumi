@@ -79,6 +79,7 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
     guochuang_dates: [],
     isLoading: false,
     isError: false,
+    isController: false,
   },
   reducers: {
     /**
@@ -99,6 +100,15 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
       const checked: boolean[] = [...state.checked].fill(false)
       checked[actions.payload] = true
       state.checked = checked
+    },
+
+    /**
+     * @description 设置控制器
+     * @param {DataState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置控制器
+     */
+    setController(state: DataState, actions: PayloadAction<boolean>): void {
+      state.isController = actions.payload
     },
 
     /**
@@ -159,11 +169,12 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
   },
 })
 
-const { setIndex, setChecked, clearData } = data.actions
+const { setIndex, setChecked, setController, clearData } = data.actions
 
 export {
   setIndex,
   setChecked,
+  setController,
   clearData,
   update,
   getAllEpisodes,

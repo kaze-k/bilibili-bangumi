@@ -47,6 +47,7 @@ type DataState = {
   guochuang_dates: [][]
   isLoading: boolean
   isError: boolean
+  isController: boolean
 }
 
 type EpisodeStyleState = {
@@ -87,6 +88,7 @@ type AppState = {
 type DataReducers = {
   setIndex(state: DataState, actions: PayloadAction<number>): void
   setChecked(state: DataState, actions: PayloadAction<number>): void
+  setController(state: DataState, actions: PayloadAction<boolean>): void
   clearData(state: DataState): void
 }
 
