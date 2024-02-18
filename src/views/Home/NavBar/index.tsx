@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import NavItem from "~/components/common/NavItem"
@@ -180,4 +180,4 @@ function NavBar(props: DarkModeProps): React.ReactElement {
   }
 }
 
-export default NavBar
+export default memo(NavBar)

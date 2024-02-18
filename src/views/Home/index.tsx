@@ -19,7 +19,6 @@ function Home(): React.ReactElement {
 
   // 状态
   const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
-  const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.episodeStyle)
 
   // 节流
   const handleThrottle: DebouncedFunc<() => void> = useCallback(
@@ -50,9 +49,10 @@ function Home(): React.ReactElement {
     storageChange()
   })
 
-  // 首次挂载时: 更新自动更换主题的状态/启用存储
-  // 卸载时: 禁用存储
+  // 首次挂载时: 发生更新信息通信/更新自动更换主题的状态/启用存储
+  // 卸载时: 禁用存储/清除数据
   useEffect((): (() => void) => {
+    dispatch(update())
     dispatch(updateAutoTheme())
     dispatch(enableStorage())
 
@@ -61,11 +61,6 @@ function Home(): React.ReactElement {
       dispatch(clearData(null))
     }
   }, [])
-
-  // 当剧集类别改变时: 发送更新信息通信
-  useEffect((): void => {
-    dispatch(update())
-  }, [episodeStyle])
 
   return (
     <>
