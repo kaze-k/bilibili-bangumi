@@ -23,7 +23,7 @@ function HomeHeader(props: DarkModeProps): React.ReactElement {
 
   const selectElement: React.ReactElement = <Select darkMode={props.darkMode} />
 
-  const disconnectionElement: React.ReactElement = <Disconnection darkMode={props.darkMode} />
+  const disconnectionElement: React.ReactElement = <Disconnection />
 
   return (
     <Header

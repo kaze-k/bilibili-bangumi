@@ -9,6 +9,7 @@ import {
   faCircleXmark,
   faCloudMoon,
   faCompactDisc,
+  faExclamationCircle,
   faFilter,
   faGear,
   faMagnifyingGlass,
@@ -34,4 +35,5 @@ library.add(
   faCircleNotch,
   faCompactDisc,
   faRedoAlt,
+  faExclamationCircle,
 )
