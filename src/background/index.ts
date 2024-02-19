@@ -38,11 +38,7 @@ chrome.runtime.onMessage.addListener(
                 obj.status === "fulfilled" && typeof obj.value !== "undefined",
             )
 
-            if (result) {
-              sendResponse(false)
-            } else {
-              sendResponse(null)
-            }
+            result ? sendResponse(true) : sendResponse(false)
           },
         )
         break

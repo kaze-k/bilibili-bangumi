@@ -79,7 +79,6 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
     guochuang_dates: [],
     isLoading: false,
     isError: false,
-    isController: false,
   },
   reducers: {
     /**
@@ -103,15 +102,6 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
     },
 
     /**
-     * @description 设置控制器
-     * @param {DataState} state 状态
-     * @param {PayloadAction<boolean>} actions 设置控制器
-     */
-    setController(state: DataState, actions: PayloadAction<boolean>): void {
-      state.isController = actions.payload
-    },
-
-    /**
      * @description 恢复初始状态
      * @param {DataState} state 状态
      */
@@ -131,16 +121,16 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
   extraReducers: (builder: ActionReducerMapBuilder<DataState>): void => {
     builder
       .addCase(update.pending, (state: DataState): void => {
+        state.isError = false
         state.isLoading = true
       })
       .addCase(update.fulfilled, (state: DataState, actions: PayloadAction<boolean>): void => {
-        if (actions.payload === null) {
-          state.isError = true
+        state.isError = !actions.payload
+        if (!state.isError) {
+          state.isLoading = !actions.payload
         } else {
-          state.isError = false
+          state.isLoading = false
         }
-
-        state.isLoading = actions.payload
       })
 
       .addCase(getAllEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
@@ -169,12 +159,11 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
   },
 })
 
-const { setIndex, setChecked, setController, clearData } = data.actions
+const { setIndex, setChecked, clearData } = data.actions
 
 export {
   setIndex,
   setChecked,
-  setController,
   clearData,
   update,
   getAllEpisodes,
