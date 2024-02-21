@@ -50,6 +50,15 @@ const theme: Slice<ThemeState, ThemeReducers, "theme"> = createSlice({
     },
 
     /**
+     * @description 设置深色模式
+     * @param {ThemeState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置深色模式的状态
+     */
+    setDarkMode(state: ThemeState, actions: PayloadAction<boolean>): void {
+      state.darkMode = actions.payload
+    },
+
+    /**
      * @description 更新自动更换主题的状态
      * @param {ThemeState} state 状态
      */
@@ -81,6 +90,7 @@ const theme: Slice<ThemeState, ThemeReducers, "theme"> = createSlice({
   },
 })
 
-export const { toggleDarkMode, toggleSysTheme, toggleAutoTheme, updateAutoTheme, resetTheme } = theme.actions
+export const { toggleDarkMode, toggleSysTheme, toggleAutoTheme, setDarkMode, updateAutoTheme, resetTheme } =
+  theme.actions
 
 export default theme.reducer

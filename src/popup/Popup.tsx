@@ -7,6 +7,8 @@ import Loading from "~/components/common/Loading"
 import RouterView from "~/routes"
 import { persistor, store } from "~/store"
 
+import Global from "./Global"
+
 /**
  * @description popup页面根组件
  * @return {*}  {React.ReactElement}
@@ -20,7 +22,9 @@ function Popup(): React.ReactElement {
             loading={<Loading />}
             persistor={persistor}
           >
-            <RouterView />
+            <Global>
+              <RouterView />
+            </Global>
           </PersistGate>
         </Suspense>
       </Provider>

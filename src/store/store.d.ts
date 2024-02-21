@@ -114,6 +114,7 @@ type ThemeReducers = {
   toggleDarkMode(state: ThemeState): void
   toggleSysTheme(state: ThemeState): void
   toggleAutoTheme(state: ThemeState): void
+  setDarkMode(state: ThemeState, actions: PayloadAction<boolean>): void
   updateAutoTheme(state: ThemeState): void
   resetTheme(state: ThemeState): void
 }
