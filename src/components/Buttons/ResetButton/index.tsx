@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux"
 
 import Button from "~/components/common/Button"
+import { useMessage } from "~/components/common/Message"
 import { resetStyle } from "~/store/features/episodeStyle"
 import { resetNotice } from "~/store/features/notice"
 import { resetTheme } from "~/store/features/theme"
@@ -13,6 +14,7 @@ import { resetTheme } from "~/store/features/theme"
  */
 function ResetButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
+  const message: Message = useMessage()
 
   const text = "重置"
 
@@ -23,6 +25,7 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
     dispatch(resetTheme(null))
     dispatch(resetNotice(null))
     dispatch(resetStyle(null))
+    message("已重置设置")
   }
 
   return (

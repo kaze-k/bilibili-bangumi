@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux"
 import ErrorPage from "~/components/common/ErrorPage"
 import Loading from "~/components/common/Loading"
 import Main from "~/components/common/Main"
-import Refresh from "~/components/common/Refresh"
 import { getAllEpisodes, getAnimeEpisodes, getGuoChuangEpisodes, setIndex } from "~/store/features/data"
 
 import { Container, ContentWrapper, EmptyPage, Wrapper } from "./components"
@@ -26,12 +25,10 @@ function Layout(props: DarkModeProps): React.ReactElement {
   const currentIndex: number = useSelector((state: State): number => state.data.currentIndex)
   const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.episodeStyle)
   const dates: [][] = useSelector((state: State): [][] => state.data.dates)
-  const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
   const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 
   // 节点实例
   const pageRef = useRef(null)
-  const refreshRef = useRef(null)
 
   /**
    * @description 处理滚动的方法: 当按住`CTRL`键并滚动鼠标滚轮时滚动
@@ -197,11 +194,6 @@ function Layout(props: DarkModeProps): React.ReactElement {
 
   return (
     <Main darkMode={props.darkMode}>
-      <Refresh
-        darkMode={props.darkMode}
-        isLoading={isLoading}
-        ref={refreshRef}
-      />
       <Wrapper
         className={style.wrapper}
         index={currentIndex}

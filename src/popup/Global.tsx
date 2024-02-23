@@ -1,11 +1,18 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+import { useMessage } from "~/components/common/Message"
 import { update } from "~/store/features/data"
 import { setDarkMode } from "~/store/features/theme"
 
+/**
+ * @description 全局组件
+ * @param {{ children: React.ReactElement }} props 全局组件Props
+ * @return {*}  {React.ReactElement}
+ */
 function Global(props: { children: React.ReactElement }): React.ReactElement {
   const dispath: Dispatch = useDispatch()
+  const message: Message = useMessage()
 
   // 状态
   const system: boolean = useSelector((state: State): boolean => state.theme.system)
@@ -33,10 +40,9 @@ function Global(props: { children: React.ReactElement }): React.ReactElement {
   /**
    * @description 监听离线: 当网络离线时，提示离线
    */
-  // TODO: 离线提示
   const offlineListener: () => void = (): void => {
     if (!window.navigator.onLine) {
-      console.log("当前处于离线状态")
+      message("当前处于离线状态")
     }
   }
 
