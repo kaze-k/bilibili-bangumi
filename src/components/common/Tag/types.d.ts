@@ -1,3 +1,0 @@
-type TagProps = {
-  children: string
-}

@@ -4,11 +4,10 @@ import style from "./style.module.scss"
 
 /**
  * @description 时间组件
- * @param {TimeProps} props 时间组件Props
- * @param {string} props.children 时间
+ * @param {{ children: string }} props 时间组件Props
  * @return {*}  {React.ReactElement}
  */
-function Time(props: TimeProps): React.ReactElement {
+function Time(props: { children: string }): React.ReactElement {
   return (
     <div>
       <div>

@@ -1,3 +1,0 @@
-type TimeProps = {
-  children: string
-}
