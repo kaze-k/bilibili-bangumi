@@ -37,7 +37,7 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   return (
     <Button
       title="刷新"
-      onClick={!isLoading && handleUpdate}
+      onClick={isLoading ? null : handleUpdate}
       darkMode={props.darkMode}
     >
       {icon}
