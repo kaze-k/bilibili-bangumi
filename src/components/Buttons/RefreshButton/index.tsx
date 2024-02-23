@@ -16,13 +16,12 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
 
   // 状态
   const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
-  const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 
   /**
    * @description 处理更新的方法: 发送更新信息通信
    */
   const handleUpdate: () => void = (): void => {
-    if (!isLoading && !isError) {
+    if (!isLoading) {
       dispatch(update())
     }
   }
@@ -38,7 +37,7 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   return (
     <Button
       title="刷新"
-      onClick={handleUpdate}
+      onClick={!isLoading && handleUpdate}
       darkMode={props.darkMode}
     >
       {icon}
