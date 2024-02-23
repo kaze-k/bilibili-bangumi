@@ -1,4 +1,4 @@
-import { lazy } from "react"
+import React, { lazy } from "react"
 import { useRoutes } from "react-router-dom"
 
 const Home: LazyElement = lazy((): HomeLazyElement => import("Home"))

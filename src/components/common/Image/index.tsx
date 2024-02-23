@@ -1,3 +1,5 @@
+import React from "react"
+
 import not_found from "~/assets/images/not_found.jpg"
 
 import style from "./style.module.scss"

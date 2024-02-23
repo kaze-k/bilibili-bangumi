@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import ResetButton from "~/components/Buttons/ResetButton"
 import Row from "~/components/common/Row"

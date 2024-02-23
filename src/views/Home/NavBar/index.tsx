@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import NavItem from "~/components/common/NavItem"

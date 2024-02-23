@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { memo } from "react"
+import React, { memo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import Button from "~/components/common/Button"

@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import React, { createContext, useContext } from "react"
 
 // 创建消息上下文
 export const MessageContext: React.Context<Message> = createContext(null)

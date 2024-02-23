@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"

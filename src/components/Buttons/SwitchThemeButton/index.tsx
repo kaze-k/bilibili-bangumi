@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from "react"
 import { useDispatch } from "react-redux"
 
 import Button from "~/components/common/Button"

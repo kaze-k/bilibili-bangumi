@@ -1,3 +1,4 @@
+import React from "react"
 import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import style from "./style.module.scss"

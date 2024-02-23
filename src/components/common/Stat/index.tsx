@@ -1,3 +1,5 @@
+import React from "react"
+
 import IconFont from "~/components/common/IconFont"
 
 import style from "./style.module.scss"

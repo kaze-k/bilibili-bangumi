@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from "react"
 import styled, { CSSProp, StyledComponent } from "styled-components"
 
 import Card from "~/components/common/Card"

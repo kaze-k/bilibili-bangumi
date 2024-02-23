@@ -1,3 +1,5 @@
+import React from "react"
+
 import GoBackButton from "~/components/Buttons/GobackButton"
 import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
 import Header from "~/components/common/Header"

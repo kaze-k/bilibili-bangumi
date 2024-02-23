@@ -1,4 +1,4 @@
-import { Suspense } from "react"
+import React, { Suspense } from "react"
 import { Provider } from "react-redux"
 import { MemoryRouter } from "react-router-dom"
 import { PersistGate } from "redux-persist/integration/react"
