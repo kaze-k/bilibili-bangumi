@@ -2,7 +2,6 @@ import React from "react"
 import { useDispatch } from "react-redux"
 
 import Button from "~/components/common/Button"
-import { useMessage } from "~/components/common/Message"
 import { clearData } from "~/store/features/data"
 
 /**
@@ -13,7 +12,6 @@ import { clearData } from "~/store/features/data"
  */
 function ClearButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message: Message = useMessage()
 
   const text = "清理"
 
@@ -23,7 +21,6 @@ function ClearButton(props: DarkModeProps): React.ReactElement {
   const handleClear: () => void = (): void => {
     chrome.storage.local.clear()
     dispatch(clearData(null))
-    message("已清理本地存储")
   }
 
   return (
