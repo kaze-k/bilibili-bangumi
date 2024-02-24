@@ -1,8 +1,7 @@
-import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React from "react"
+import { useSelector } from "react-redux"
 
 import Main from "~/components/common/Main"
-import { updateAutoTheme } from "~/store/features/theme"
 
 import NoticeRow from "./Rows/NoticeRow"
 import ResetRow from "./Rows/ResetRow"
@@ -17,15 +16,8 @@ import style from "./style.module.scss"
  * @return {*}  {React.ReactElement}
  */
 function Setup(): React.ReactElement {
-  const dispatch: Dispatch = useDispatch()
-
   // 状态
   const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
-
-  // 首次挂载时: 更新自动更换主题的状态
-  useEffect((): void => {
-    dispatch(updateAutoTheme())
-  }, [])
 
   return (
     <>
