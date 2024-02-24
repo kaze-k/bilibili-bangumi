@@ -32,15 +32,18 @@ function Refresh(props: DarkModeProps): React.ReactElement {
   const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 
   // 当加载状态改变时: 改变加载组件的显示
-  useEffect((): void => {
+  useEffect((): (() => void) => {
     let timer: NodeJS.Timeout
     if (isLoading) {
       setShow(true)
     } else {
       timer = setTimeout((): void => {
         setShow(false)
-        clearTimeout(timer)
       }, 2000)
+    }
+
+    return (): void => {
+      clearTimeout(timer)
     }
   }, [isLoading])
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { useMessage } from "~/components/common/Message"
 import { update } from "~/store/features/data"
-import { setDarkMode } from "~/store/features/theme"
+import { setDarkMode, updateAutoTheme } from "~/store/features/theme"
 
 /**
  * @description 全局组件
@@ -11,7 +11,7 @@ import { setDarkMode } from "~/store/features/theme"
  * @return {*}  {React.ReactElement}
  */
 function Global(props: { children: React.ReactElement }): React.ReactElement {
-  const dispath: Dispatch = useDispatch()
+  const dispatch: Dispatch = useDispatch()
   const message: Message = useMessage()
 
   // 状态
@@ -25,7 +25,7 @@ function Global(props: { children: React.ReactElement }): React.ReactElement {
    * @param {MediaQueryListEvent} event 事件
    */
   const themeListener: (event: MediaQueryListEvent) => void = (event: MediaQueryListEvent): void => {
-    dispath(setDarkMode(event.matches))
+    dispatch(setDarkMode(event.matches))
   }
 
   /**
@@ -33,7 +33,7 @@ function Global(props: { children: React.ReactElement }): React.ReactElement {
    */
   const onlineListener: () => void = (): void => {
     if (window.navigator.onLine) {
-      dispath(update())
+      dispatch(update())
     }
   }
 
@@ -45,6 +45,11 @@ function Global(props: { children: React.ReactElement }): React.ReactElement {
       message("当前处于离线状态")
     }
   }
+
+  // 首次挂载时: 更新自动更换主题的状态
+  useEffect((): void => {
+    dispatch(updateAutoTheme())
+  }, [])
 
   // 当网络状态改变时: 监听在线/监听离线
   useEffect((): (() => void) => {

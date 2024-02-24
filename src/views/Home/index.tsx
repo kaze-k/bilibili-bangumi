@@ -2,10 +2,9 @@ import { DebouncedFunc, throttle } from "lodash"
 import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { useMessage } from "~/components/common/Message"
+import Refresh from "~/components/common/Refresh"
 import { clearData, update } from "~/store/features/data"
 import { disableStorage, enableStorage, toggleChange } from "~/store/features/storage"
-import { updateAutoTheme } from "~/store/features/theme"
 
 import HomeHeader from "./HomeHeader"
 import Layout from "./Layout"
@@ -17,12 +16,9 @@ import NavBar from "./NavBar"
  */
 function Home(): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message: Message = useMessage()
 
   // 状态
   const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
-  const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
-  const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 
   // 节流
   const handleThrottle: DebouncedFunc<() => void> = useCallback(
@@ -53,11 +49,10 @@ function Home(): React.ReactElement {
     storageChange()
   })
 
-  // 首次挂载时: 发生更新信息通信/更新自动更换主题的状态/启用存储
+  // 首次挂载时: 发生更新信息通信/启用存储
   // 卸载时: 禁用存储/清除数据
   useEffect((): (() => void) => {
     dispatch(update())
-    dispatch(updateAutoTheme())
     dispatch(enableStorage())
 
     return (): void => {
@@ -66,13 +61,9 @@ function Home(): React.ReactElement {
     }
   }, [])
 
-  // 当错误状态改变时/加载状态改变时: 更新提示信息
-  useEffect((): void => {
-    message(isError ? "更新失败" : "时间表信息已更新", { isLoading })
-  }, [isError, isLoading])
-
   return (
     <>
+      <Refresh darkMode={darkMode} />
       <HomeHeader darkMode={darkMode} />
       <Layout darkMode={darkMode} />
       <NavBar darkMode={darkMode} />
