@@ -1,21 +1,39 @@
-.wrapper {
+@mixin message-wrapper {
+  width: 200px;
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.message_container {
   position: absolute;
   left: 50%;
   z-index: 999;
   transform: translateX(-50%);
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
   margin-top: 5px;
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  border-width: 1px;
-  border-style: solid;
 }
 
-.content {
+.message_type_wrapper {
+  @include message-wrapper;
+
+  justify-content: space-between;
+}
+
+.message_default_wrapper {
+  @include message-wrapper;
+
+  justify-content: center;
+}
+
+.message_content {
   padding: 1px;
+}
+
+.message_button {
+  cursor: pointer;
 }

@@ -1,80 +1,58 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
+import { useSelector } from "react-redux"
 
-import { MessageContext } from "."
-import Message from "./Message"
+import MessageContext from "./MessageContext"
+import Messager from "./Messager"
+import message from "./handler"
+import useMessageStore from "./useMessageStore"
 
 /**
- * @description 消息配置器
- * @param {MessageProviderProps} props 消息配置器Props
- * @param {number} props.top 顶部距离 [可选]
- * @param {number} props.duration 消息显示时间 [可选]
- * @param {React.ReactElement} props.children 子组件
+ * @description 消息提供器
+ * @param {MessageProviderProps} props 消息提供器Props
+ * @param {React.ReactNode} props.children 子组件
+ * @param {MessageProviderOptions} props.options 消息提供器配置项
+ * @param {number} props.options.limit 消息数量
+ * @param {boolean} props.options.reverse 消息顺序
+ * @param {number} props.options.duration 消息持续时间
  * @return {*}  {React.ReactElement}
  */
 function MessageProvider(props: MessageProviderProps): React.ReactElement {
+  const messageStoreOptions = {
+    limit: props?.options?.limit,
+    reverse: props?.options?.reverse,
+    storeOptions: {
+      duration: props?.options?.duration,
+    },
+  }
+
+  // 消息状态队列
+  const state: MessageState[] = useMessageStore(messageStoreOptions)
+
   // 状态
   const [show, setShow] = useState<boolean>(false)
-  const [msg, setMsg] = useState<string>("")
-  const [msgOpts, setMsgOpts] = useState<MessageOptions>({
-    duration: props.duration,
-  })
+  const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
 
-  /**
-   * @description 消息组件方法
-   * @param {string} message 消息内容
-   * @param {Partial<MessageOptions>} [options] 选项配置 [可选]
-   * @param {number} [options.top] 顶部距离 [可选]
-   * @param {boolean} [options.isLoading] 加载中 [可选]
-   * @param {number} [options.duration] 消息显示时间 [可选]
-   */
-  const callback: MessageMethod = (message: string, options?: Partial<MessageOptions>): void => {
-    setShow(true)
-    setMsg(message)
-    setMsgOpts((opts: MessageOptions): MessageOptions => ({ ...opts, ...options }))
-  }
-
-  /**
-   * @description 创建消息组件
-   * @return {*}  {React.ReactPortal}
-   */
-  const createMessage: () => React.ReactPortal = (): React.ReactPortal => {
-    return (
-      show &&
-      createPortal(
-        <Message
-          message={msg}
-          top={msgOpts.top}
-          loading={msgOpts.isLoading}
-        />,
-        document.body,
-      )
-    )
-  }
-
-  // 当持续时间改变/显示状态改变时/加载状态改变: 改变消息组件的显示
-  useEffect((): (() => void) => {
-    let timer: NodeJS.Timeout
-
-    if (msgOpts.isLoading) {
+  // 当有消息时: 显示消息发送器
+  // 当没有消息时: 移除消息发送器
+  useEffect((): void => {
+    if (state.length) {
       setShow(true)
     } else {
-      timer = setTimeout((): void => {
-        setShow(false)
-      }, msgOpts.duration)
+      setShow(false)
     }
-
-    return (): void => {
-      clearTimeout(timer)
-    }
-  }, [msgOpts.duration, show, msgOpts.isLoading])
-
-  // 消息组件方法
-  const messageMethod: MessageMethod = useCallback(callback, [])
+  }, [state])
 
   return (
-    <MessageContext.Provider value={messageMethod}>
-      {createMessage()}
+    <MessageContext.Provider value={message}>
+      {show &&
+        createPortal(
+          <Messager
+            state={state}
+            darkMode={darkMode}
+          />,
+          document.body,
+        )}
       {props.children}
     </MessageContext.Provider>
   )

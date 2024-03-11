@@ -1,10 +1,11 @@
-import React, { createContext, useContext } from "react"
+import { useContext } from "react"
 
-// 创建消息上下文
-export const MessageContext: React.Context<Message> = createContext(null)
+import MessageContext from "./MessageContext"
+import MessageProvider from "./MessageProvider"
 
 /**
  * @description 消息组件hook方法
- * @return {*}  {Message} 消息组件方法
  */
-export const useMessage: () => Message = (): Message => useContext(MessageContext)
+const useMessage = () => useContext(MessageContext)
+
+export { useMessage, MessageProvider }

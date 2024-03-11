@@ -1,43 +1,176 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
-import { useSelector } from "react-redux"
-import styled, { CSSProp, StyledComponent } from "styled-components"
 
+import { MessageButtonWrapper, MessageWrapper } from "./components"
+import message from "./handler"
 import style from "./style.module.scss"
 
+// 消息类型图标
+const MESSAGE_TYPE_ICON = {
+  info: (
+    <FontAwesomeIcon
+      icon="circle-info"
+      size="xl"
+      style={{ color: "blue" }}
+    />
+  ),
+  warning: (
+    <FontAwesomeIcon
+      icon="triangle-exclamation"
+      size="xl"
+      style={{ color: "orange" }}
+    />
+  ),
+  error: (
+    <FontAwesomeIcon
+      icon="bomb"
+      size="xl"
+      style={{ color: "red" }}
+    />
+  ),
+  success: (
+    <FontAwesomeIcon
+      icon="circle-check"
+      size="xl"
+      style={{ color: "green" }}
+    />
+  ),
+}
+
 /**
- * @description 包裹层
- * @param {DarkModeProps} props 深色主题Props
+ * @description 消息清除按钮
+ * @param {MessageClearButtonProps} props 消息清除按钮Props
  * @param {boolean} props.darkMode 深色主题 [可选]
- * @return {*}  {CSSProp}
+ * @param {string} props.id 消息id
+ * @return {*}  {React.ReactElement}
  */
-const Wrapper: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
-  (props: DarkModeProps): CSSProp => ({
-    color: props.darkMode ? "#ffffff" : "#000000",
-    backgroundColor: props.darkMode ? "rgba(0 0 0 / 20%)" : "rgba(255 255 255 / 20%)",
-    borderColor: props.darkMode ? "rgba(255 255 255 / 50%)" : "rgba(0 0 0 / 50%)",
-    top: document.querySelector("header").clientHeight,
-  }),
-)
+function MessageClearButton(props: MessageClearButtonProps): React.ReactElement {
+  /**
+   * @description 删除消息方法
+   */
+  const handleClear: () => void = (): void => {
+    message.remove(props.id)
+  }
+
+  return (
+    <MessageButtonWrapper
+      darkMode={props.darkMode}
+      onClick={handleClear}
+    >
+      <FontAwesomeIcon
+        icon="circle-xmark"
+        size="xl"
+        className={style.message_button}
+      />
+    </MessageButtonWrapper>
+  )
+}
+
+/**
+ * @description 默认消息组件
+ * @param {MessageDefaultProps} props 默认消息组件Props
+ * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {string} props.id 消息id
+ * @param {string} props.message 消息内容
+ * @return {*}  {React.ReactElement}
+ */
+function MessageDefault(props: MessageDefaultProps): React.ReactElement {
+  return (
+    <MessageWrapper
+      className={style.message_default_wrapper}
+      darkMode={props.darkMode}
+      id={props.id}
+    >
+      <span className={style.message_content}>{props.message}</span>
+    </MessageWrapper>
+  )
+}
+
+/**
+ * @description 类型消息组件
+ * @param {MessageTypeProps} props 类型消息组件Props
+ * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {string} props.id 消息id
+ * @param {"success" | "info" | "warning" | "error"} props.type 消息类型
+ * @param {string} props.message 消息内容
+ * @return {*}  {React.ReactElement}
+ */
+function MessageType(props: MessageTypeProps): React.ReactElement {
+  return (
+    <MessageWrapper
+      className={style.message_type_wrapper}
+      darkMode={props.darkMode}
+      id={props.id}
+    >
+      {MESSAGE_TYPE_ICON[props.type]}
+      <span className={style.message_content}>{props.message}</span>
+      <MessageClearButton
+        id={props.id}
+        darkMode={props.darkMode}
+      />
+    </MessageWrapper>
+  )
+}
+
+/**
+ * @description 加载消息组件
+ * @param {MessageLoadingProps} props 加载消息组件Props
+ * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {string} props.id 消息id
+ * @return {*}  {React.ReactElement}
+ */
+function MessageLoading(props: MessageLoadingProps): React.ReactElement {
+  return (
+    <MessageWrapper
+      className={style.message_default_wrapper}
+      darkMode={props.darkMode}
+      id={props.id}
+    >
+      <FontAwesomeIcon
+        icon="circle-notch"
+        size="xl"
+        spin
+      />
+    </MessageWrapper>
+  )
+}
 
 /**
  * @description 消息组件
  * @param {MessageProps} props 消息组件Props
- * @param {number} props.top 顶部距离 [可选]
- * @param {boolean} props.loading 加载中 [可选]
+ * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {string} props.id 消息id
+ * @param {MessageType} props.type 消息类型
  * @param {string} props.message 消息内容
  * @return {*}  {React.ReactElement}
  */
 function Message(props: MessageProps): React.ReactElement {
-  // 状态
-  const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
+  if (props.type === "default") {
+    return (
+      <MessageDefault
+        message={props.message}
+        id={props.id}
+        darkMode={props.darkMode}
+      />
+    )
+  }
+
+  if (props.type === "loading") {
+    return (
+      <MessageLoading
+        id={props.id}
+        darkMode={props.darkMode}
+      />
+    )
+  }
 
   return (
-    <Wrapper
-      className={style.wrapper}
-      darkMode={darkMode}
-    >
-      <span className={style.content}>{props.message}</span>
-    </Wrapper>
+    <MessageType
+      type={props.type}
+      message={props.message}
+      id={props.id}
+      darkMode={props.darkMode}
+    />
   )
 }
 
