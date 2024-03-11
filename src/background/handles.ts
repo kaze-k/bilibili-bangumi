@@ -8,7 +8,7 @@ import { settings } from "~/utils"
  */
 class Data {
   /**
-   * 私有数据类构造函数
+   * 私有数据类构造方法
    * @private
    * @memberof Data
    */

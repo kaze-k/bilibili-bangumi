@@ -7,7 +7,7 @@ import { settings } from "~/utils"
  */
 class Handler {
   /**
-   * 私有处理类构造函数
+   * 私有处理类构造方法
    * @private
    * @memberof Handler
    */
@@ -163,7 +163,7 @@ class Handler {
  */
 class Creator {
   /**
-   * 私有创建类构造函数
+   * 私有创建类构造方法
    * @private
    * @memberof Creator
    */

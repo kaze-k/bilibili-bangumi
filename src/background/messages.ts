@@ -4,7 +4,7 @@
  */
 class Popup {
   /**
-   * 私有popup类构造函数
+   * 私有popup类构造方法
    * @private
    * @memberof Popup
    */

@@ -28,7 +28,7 @@ class Creator {
   private static readonly version: string = chrome.runtime.getManifest().version
 
   /**
-   * 私有创建类构造函数
+   * 私有创建类构造方法
    * @private
    * @memberof Creator
    */
@@ -101,7 +101,7 @@ class Creator {
  */
 class Handler {
   /**
-   * 私有处理类构造函数
+   * 私有处理类构造方法
    * @private
    * @memberof Handler
    */
