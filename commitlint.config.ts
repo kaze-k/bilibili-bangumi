@@ -13,16 +13,17 @@ const Configuration: UserConfig = {
       "always",
       [
         "update", // 更新
-        "feat", // 新增功能
+        "feat", // 新功能
         "fix", // 修复
         "docs", // 文档变更
-        "style", // 代码格式化
+        "style", // 代码格式
         "refactor", // 代码重构
-        "perf", // 性能优化
-        "ci", // 修改项目配置文件
-        "test", // 添加测试
-        "chore", // 变更构建流程或辅助工具
+        "perf", // 优化
+        "ci", // 持续集成
+        "test", // 测试用例
+        "chore", // 构建过程、依赖或辅助工具
         "revert", // 代码回退
+        "merge", // 合并分支
         "build", // 构建
         "WIP", // 尚未完成
       ],

@@ -1,6 +1,6 @@
 {
   "plugins": ["stylelint-prettier"],
-  "extends": ["stylelint-config-standard"],
+  "extends": ["stylelint-config-standard", "stylelint-config-standard-scss"],
   "rules": {
     "prettier/prettier": true,
     "color-hex-length": "long",

@@ -43,6 +43,13 @@
       {
         "allow": ["constructors"]
       }
+    ],
+    "@typescript-eslint/no-inferrable-types": [
+      "error",
+      {
+        "ignoreParameters": true,
+        "ignoreProperties": true
+      }
     ]
   }
 }
