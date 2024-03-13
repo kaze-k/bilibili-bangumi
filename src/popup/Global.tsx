@@ -1,18 +1,18 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { useMessage } from "~/components/common/Message"
+import { MessageProvider, useMessage } from "~/components/common/Message"
 import { update } from "~/store/features/data"
 import { setDarkMode, updateAutoTheme } from "~/store/features/theme"
 
 /**
  * @description 全局组件
- * @param {{ children: React.ReactElement }} props 全局组件Props
+ * @param {{ children: React.ReactNode }} props 全局组件Props
  * @return {*}  {React.ReactElement}
  */
-function Global(props: { children: React.ReactElement }): React.ReactElement {
+function Global(props: { children: React.ReactNode }): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message: Message = useMessage()
+  const message = useMessage()
 
   // 状态
   const system: boolean = useSelector((state: State): boolean => state.theme.system)
@@ -42,7 +42,7 @@ function Global(props: { children: React.ReactElement }): React.ReactElement {
    */
   const offlineListener: () => void = (): void => {
     if (!window.navigator.onLine) {
-      message("当前处于离线状态")
+      message.warning("当前处于离线状态")
     }
   }
 
@@ -75,7 +75,7 @@ function Global(props: { children: React.ReactElement }): React.ReactElement {
     }
   }, [theme.matches, system])
 
-  return <>{props.children}</>
+  return <MessageProvider options={{ limit: 3, reverse: true, duration: 3000 }}>{props.children}</MessageProvider>
 }
 
 export default Global
