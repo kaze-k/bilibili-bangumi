@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 
 import ClearButton from "~/components/Buttons/ClearButton"
 import Row from "~/components/common/Row"
+import useGetStorageInUse from "~/hooks/useGetStorageInUse"
 import { formatSize } from "~/utils"
 
 import style from "./style.module.scss"
@@ -14,7 +15,7 @@ import style from "./style.module.scss"
  */
 function StorageRow(props: DarkModeProps): React.ReactElement {
   // 状态
-  const [size, setSize] = useState<number>(0)
+  const [size, setSize] = useGetStorageInUse()
 
   const titleText = "存储"
   const text: string = formatSize(size)
@@ -28,24 +29,6 @@ function StorageRow(props: DarkModeProps): React.ReactElement {
       setSize(localSize)
     })
   }
-
-  /**
-   * @description 获取已被使用的存储大小的方法: 实时获取本地存储已被使用的存储大小
-   */
-  const getStorageInUse: () => void = (): void => {
-    chrome.storage.onChanged.addListener((changes: StorageChanges, areaName: StorageAreaName): void => {
-      if (changes && areaName === "local") {
-        chrome.storage.local.getBytesInUse(null, (localSize: number): void => {
-          setSize(localSize)
-        })
-      }
-    })
-  }
-
-  // 在size改变时: 获取已被使用的存储大小
-  useEffect((): void => {
-    getStorageInUse()
-  }, [size])
 
   // 在页面有改变时: 获取本地存储
   useEffect((): void => {
