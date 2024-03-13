@@ -1,8 +1,8 @@
 import { DebouncedFunc, throttle } from "lodash"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import Refresh from "~/components/common/Refresh"
+import { useMessage } from "~/components/common/Message"
 import { clearData, update } from "~/store/features/data"
 import { disableStorage, enableStorage, toggleChange } from "~/store/features/storage"
 
@@ -16,9 +16,13 @@ import NavBar from "./NavBar"
  */
 function Home(): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
+  const message = useMessage()
 
   // 状态
   const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
+  const isError: boolean = useSelector((state: State): boolean => state.data.isError)
+  const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
+  const [id] = useState<string>(crypto.randomUUID())
 
   // 节流
   const handleThrottle: DebouncedFunc<() => void> = useCallback(
@@ -61,9 +65,26 @@ function Home(): React.ReactElement {
     }
   }, [])
 
+  // 当错误状态改变时/当加载状态改变时: 改变消息提示
+  useEffect(() => {
+    if (isLoading) {
+      message.loading(null, { id })
+      return
+    }
+
+    if (isError) {
+      message("更新失败", { id })
+      return
+    }
+
+    if (isError !== null && isLoading !== null && !isError && !isLoading) {
+      message("时间表信息已更新", { id, duration: 2000 })
+      return
+    }
+  }, [isError, isLoading])
+
   return (
     <>
-      <Refresh darkMode={darkMode} />
       <HomeHeader darkMode={darkMode} />
       <Layout darkMode={darkMode} />
       <NavBar darkMode={darkMode} />
