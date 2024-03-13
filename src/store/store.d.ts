@@ -50,12 +50,12 @@ type DataState = {
 }
 
 type EpisodeStyleState = {
-  episodeStyle?: "all" | "anime" | "guochuang"
+  style?: "all" | "anime" | "guochuang"
   index?: number
 }
 
 type NoticeState = {
-  notice: boolean
+  toggle: boolean
   silent: boolean
   autoClear: boolean
   animeNotice: boolean

@@ -77,8 +77,8 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
     anime_dates: [],
     guochuang_episodes: [],
     guochuang_dates: [],
-    isLoading: false,
-    isError: false,
+    isLoading: null,
+    isError: null,
   },
   reducers: {
     /**
@@ -114,8 +114,8 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
       state.anime_dates = []
       state.guochuang_episodes = []
       state.guochuang_dates = []
-      state.isLoading = false
-      state.isError = false
+      state.isLoading = null
+      state.isError = null
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<DataState>): void => {

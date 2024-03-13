@@ -63,7 +63,7 @@ const disableGuoChuangNotice: AsyncThunk<void, void, void> = createAsyncThunk(
 const notice: Slice<NoticeState, NoticeReducers, "notice"> = createSlice({
   name: "notice",
   initialState: {
-    notice: false,
+    toggle: false,
     silent: false,
     autoClear: false,
     animeNotice: false,
@@ -76,9 +76,9 @@ const notice: Slice<NoticeState, NoticeReducers, "notice"> = createSlice({
      * @param {NoticeState} state 状态
      */
     toggleNotice(state: NoticeState): void {
-      state.notice = !state.notice
-      state.animeNotice = state.notice ? true : false
-      state.guochuangNotice = state.notice ? true : false
+      state.toggle = !state.toggle
+      state.animeNotice = state.toggle
+      state.guochuangNotice = state.toggle
     },
 
     /**
@@ -118,7 +118,7 @@ const notice: Slice<NoticeState, NoticeReducers, "notice"> = createSlice({
      * @param {NoticeState} state 状态
      */
     resetNotice(state: NoticeState): void {
-      state.notice = false
+      state.toggle = false
       state.silent = false
       state.autoClear = false
       state.animeNotice = false

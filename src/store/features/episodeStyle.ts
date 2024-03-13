@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const episodeStyle: Slice<EpisodeStyleState, EpisodeStyleReducers, "episodeStyle"> = createSlice({
   name: "episodeStyle",
   initialState: {
-    episodeStyle: "all",
+    style: "all",
     index: 0,
   },
   reducers: {
@@ -13,7 +13,7 @@ const episodeStyle: Slice<EpisodeStyleState, EpisodeStyleReducers, "episodeStyle
      * @param {PayloadAction<string>} actions 设置的类别
      */
     setStyle(state: EpisodeStyleState, actions: PayloadAction<"all" | "anime" | "guochuang">): void {
-      state.episodeStyle = actions.payload
+      state.style = actions.payload
 
       switch (actions.payload) {
         case "all":
@@ -35,7 +35,7 @@ const episodeStyle: Slice<EpisodeStyleState, EpisodeStyleReducers, "episodeStyle
      * @param {EpisodeStyleState} state 状态
      */
     resetStyle(state: EpisodeStyleState): void {
-      state.episodeStyle = "all"
+      state.style = "all"
       state.index = 0
     },
   },

@@ -86,6 +86,8 @@ const theme: Slice<ThemeState, ThemeReducers, "theme"> = createSlice({
       state.darkMode = false
       state.system = false
       state.auto = false
+      state.am = 7
+      state.pm = 19
     },
   },
 })
