@@ -3,6 +3,7 @@ import React from "react"
 import { NavigateFunction, useNavigate } from "react-router-dom"
 
 import Button from "~/components/common/Button"
+import { useMessage } from "~/components/common/Message"
 
 /**
  * @description 返回按钮组件
@@ -12,6 +13,15 @@ import Button from "~/components/common/Button"
  */
 function GoBackButton(props: DarkModeProps): React.ReactElement {
   const navigation: NavigateFunction = useNavigate()
+  const message = useMessage()
+
+  /**
+   * @description 返回的方法: 返回上一页并清除消息
+   */
+  const handleGoback: () => void = (): void => {
+    navigation(-1)
+    message.clear()
+  }
 
   const icon: React.ReactElement = (
     <FontAwesomeIcon
@@ -22,7 +32,7 @@ function GoBackButton(props: DarkModeProps): React.ReactElement {
 
   return (
     <Button
-      onClick={(): void => navigation(-1)}
+      onClick={handleGoback}
       darkMode={props.darkMode}
     >
       {icon}

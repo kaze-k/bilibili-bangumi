@@ -15,7 +15,7 @@ function NoticeButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
-  const notice: boolean = useSelector((state: State): boolean => state.notice.notice)
+  const notice: boolean = useSelector((state: State): boolean => state.notice.toggle)
 
   /**
    * @description 切换通知的方法

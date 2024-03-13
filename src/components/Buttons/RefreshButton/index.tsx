@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React, { memo } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import Button from "~/components/common/Button"
@@ -15,6 +15,7 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
+  const [allowed, setAllowed] = useState<boolean>(true)
   const isLoading: boolean = useSelector((state: State): boolean => state.data.isLoading)
 
   /**
@@ -25,6 +26,15 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
       dispatch(update())
     }
   }
+
+  // 当加载状态改变时: 改变按钮的可用性
+  useEffect((): void => {
+    if (isLoading) {
+      setAllowed(false)
+    } else {
+      setAllowed(true)
+    }
+  }, [isLoading])
 
   const icon: React.ReactElement = (
     <FontAwesomeIcon
@@ -37,7 +47,8 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   return (
     <Button
       title="刷新"
-      onClick={isLoading ? null : handleUpdate}
+      onClick={handleUpdate}
+      clickable={allowed}
       darkMode={props.darkMode}
     >
       {icon}
