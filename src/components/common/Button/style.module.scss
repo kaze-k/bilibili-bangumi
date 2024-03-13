@@ -11,12 +11,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .mini_button {
   border-radius: 1em;
   transition: all 0.3s ease;
+  color: #f1f1f1;
+  background-color: #fb7299;
 }
 
 .mini_icon_box {
@@ -25,5 +26,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }

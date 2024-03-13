@@ -5,36 +5,45 @@ import style from "./style.module.scss"
 
 /**
  * @description mini div按钮
- * @param {DarkModeProps} props 深色主题Props
+ * @param {MiniButtonDivProps} props mini div按钮Props
  * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {boolean} props.clickable 是否可点击
  * @return {*}  {CSSProp}
  */
-const MiniButtonDiv: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
-  (props: DarkModeProps): CSSProp => ({
-    color: props.darkMode ? "#fb7299" : "#ffffff",
-    backgroundColor: props.darkMode ? "#24282d" : "#fb7299",
-    ":hover": {
-      color: props.darkMode ? "#fb7299" : "#ffffff",
-      backgroundColor: props.darkMode ? "#24282d" : "#fb7299",
+const MiniButtonDiv: StyledComponent<"div", MiniButtonDivProps, any, never> = styled.div(
+  (props: MiniButtonDivProps): CSSProp => ({
+    ":hover": props.clickable && {
+      filter: "opacity(85%)",
     },
-    ":active": {
-      backgroundColor: props.darkMode ? "#777777" : "#f791ae",
-    },
+    filter: !props.clickable && "grayscale(100%)",
   }),
 )
 
 /**
  * @description div按钮
- * @param {DarkModeProps} props 深色主题Props
+ * @param {ButtonDivProps} props div按钮Props
  * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {boolean} props.clickable 是否可点击
  * @return {*}  {CSSProp}
  */
-const ButtonDiv: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
-  (props: DarkModeProps): CSSProp => ({
-    ":hover": {
+const ButtonDiv: StyledComponent<"div", any, ButtonDivProps, never> = styled.div(
+  (props: ButtonDivProps): CSSProp => ({
+    ":hover": props.clickable && {
       color: props.darkMode ? "#343a43" : "#fb7299",
       backgroundColor: "#ffffff",
     },
+  }),
+)
+
+/**
+ * @description 按钮盒子
+ * @param {ButtonBoxProps} props 按钮盒子Props
+ * @param {boolean} props.clickable 是否可点击
+ * @return {*}  {CSSProp}
+ */
+const ButtonBox: StyledComponent<"a", any, ButtonBoxProps, never> = styled.a(
+  (props: ButtonBoxProps): CSSProp => ({
+    cursor: props.mini ? (props.clickable ? "pointer" : "not-allowed") : props.clickable ? "pointer" : "default",
   }),
 )
 
@@ -46,22 +55,28 @@ const ButtonDiv: StyledComponent<"div", any, DarkModeProps, never> = styled.div(
  * @param {string} props.title 标题 [可选]
  * @param {boolean} props.darkMode 深色主题 [可选]
  * @param {boolean} props.mini mini类型 [可选]
+ * @param {boolean} props.clickable 是否可点击
  * @return {*}  {React.ReactElement}
  */
 function Button(props: ButtonProps): React.ReactElement {
+  const clickable: boolean = props.clickable ?? true
+
   if (props.mini) {
     return (
       <MiniButtonDiv
         className={style.mini_button}
         title={props.title}
         darkMode={props.darkMode}
+        clickable={clickable}
       >
-        <a
-          onClick={props.onClick}
+        <ButtonBox
+          onClick={clickable ? props.onClick : null}
           className={style.mini_icon_box}
+          clickable={clickable}
+          mini
         >
           {props.children}
-        </a>
+        </ButtonBox>
       </MiniButtonDiv>
     )
   }
@@ -71,13 +86,15 @@ function Button(props: ButtonProps): React.ReactElement {
       className={style.button}
       title={props.title}
       darkMode={props.darkMode}
+      clickable={clickable}
     >
-      <a
-        onClick={props.onClick}
+      <ButtonBox
+        onClick={clickable ? props.onClick : null}
         className={style.icon_box}
+        clickable={clickable}
       >
         {props.children}
-      </a>
+      </ButtonBox>
     </ButtonDiv>
   )
 }
