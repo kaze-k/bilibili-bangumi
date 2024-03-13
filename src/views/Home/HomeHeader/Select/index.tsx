@@ -147,7 +147,7 @@ function SelectBox(props: DarkModeProps): React.ReactElement {
 function Select(props: DarkModeProps): React.ReactElement {
   // 状态
   const [showSelect, setShowSelect] = useState<boolean>(false)
-  const episodeStyle: Style = useSelector((state: State): Style => state.episodeStyle.episodeStyle)
+  const episodeStyle: Style = useSelector((state: State): Style => state.episodeStyle.style)
 
   // 节点实例
   const selectRef: React.RefObject<HTMLDivElement> = useRef(null)
@@ -160,7 +160,7 @@ function Select(props: DarkModeProps): React.ReactElement {
   }
 
   /**
-   * @description 监听事件的回调函数
+   * @description 监听事件的回调方法
    * @param {Event} event document event
    */
   const listener: (event: Event) => void = (event: Event): void => {

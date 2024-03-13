@@ -23,7 +23,7 @@ function Layout(props: DarkModeProps): React.ReactElement {
   const change: boolean = useSelector((state: State): boolean => state.storage.change)
   const episodes: [][] = useSelector((state: State): [][] => state.data.episodes)
   const currentIndex: number = useSelector((state: State): number => state.data.currentIndex)
-  const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.episodeStyle)
+  const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.style)
   const dates: [][] = useSelector((state: State): [][] => state.data.dates)
   const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 

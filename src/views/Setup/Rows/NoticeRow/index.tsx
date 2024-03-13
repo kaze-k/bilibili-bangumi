@@ -207,7 +207,7 @@ function SubscribeRow(props: DarkModeProps): React.ReactElement {
   const text = "追番"
 
   // 状态
-  const notice: boolean = useSelector((state: State): boolean => state.notice.notice)
+  const notice: boolean = useSelector((state: State): boolean => state.notice.toggle)
 
   /**
    * @description 处理切换的方法: 切换追番通知开关
@@ -260,7 +260,7 @@ function NoticeRow(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 状态
-  const notice: boolean = useSelector((state: State): boolean => state.notice.notice)
+  const notice: boolean = useSelector((state: State): boolean => state.notice.toggle)
   const animeNotice: boolean = useSelector((state: State): boolean => state.notice.animeNotice)
   const guochuangNotice: boolean = useSelector((state: State): boolean => state.notice.guochuangNotice)
 

@@ -23,7 +23,7 @@ function NavBar(props: DarkModeProps): React.ReactElement {
   const change: boolean = useSelector((state: State): boolean => state.storage.change)
   const dates: [][] = useSelector((state: State): [][] => state.data.dates)
   const currentIndex: number = useSelector((state: State): number => state.data.currentIndex)
-  const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.episodeStyle)
+  const episodeStyle: string = useSelector((state: State): string => state.episodeStyle.style)
   const checked: boolean[] = useSelector((state: State): boolean[] => state.data.checked)
 
   // nav的节点实例
