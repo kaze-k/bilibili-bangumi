@@ -121,7 +121,7 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
       }),
       new WebpackExtensionManifestPlugin({
         config: {
-          base: path.resolve(__dirname, "../public/", "manifest.js"),
+          base: path.resolve(__dirname, "../manifest.config.js"),
           extend: {
             manifest_version: 3,
             name: `${pkg.displayName}`,
