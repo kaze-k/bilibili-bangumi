@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 import ClearButton from "~/components/Buttons/ClearButton"
 import Row from "~/components/common/Row"
@@ -15,7 +15,8 @@ import style from "./style.module.scss"
  */
 function StorageRow(props: DarkModeProps): React.ReactElement {
   // 状态
-  const [size, setSize] = useGetStorageInUse()
+  const [size, setSize] = useState<number>(0)
+  const usedSize: number = useGetStorageInUse()
 
   const titleText = "存储"
   const text: string = formatSize(size)
@@ -29,6 +30,11 @@ function StorageRow(props: DarkModeProps): React.ReactElement {
       setSize(localSize)
     })
   }
+
+  // 当已被使用的存储大小改变时: 更新size的值
+  useEffect((): void => {
+    setSize(usedSize)
+  }, [usedSize])
 
   // 在页面有改变时: 获取本地存储
   useEffect((): void => {

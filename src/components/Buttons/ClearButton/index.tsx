@@ -20,7 +20,7 @@ function ClearButton(props: DarkModeProps): React.ReactElement {
 
   // 状态
   const [allowed, setAllowed] = useState<boolean>(true)
-  const [size] = useGetStorageInUse()
+  const usedSize: number = useGetStorageInUse()
 
   /**
    * @description 清除本地存储的方法: 清除本地存储并恢复缓存状态
@@ -38,12 +38,12 @@ function ClearButton(props: DarkModeProps): React.ReactElement {
     )
   }
 
-  // 当size变化时: 允许按钮点击
+  // 当已使用存储变化时: 允许按钮点击
   useEffect((): void => {
-    if (size !== 0) {
+    if (usedSize !== 0) {
       setAllowed(true)
     }
-  }, [size])
+  }, [usedSize])
 
   return (
     <Button

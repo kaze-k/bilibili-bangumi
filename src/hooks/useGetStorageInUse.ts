@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
-function useGetStorageInUse(): [number, React.Dispatch<React.SetStateAction<number>>] {
+/**
+ * @description 获取已被使用的存储大小的hook
+ * @return {*}  {number} 已被使用的存储大小
+ */
+function useGetStorageInUse(): number {
   // 状态
-  const [size, setSize] = useState<number>(0)
+  const [usedSize, setUsedSize] = useState<number>(0)
 
   /**
    * @description 获取已被使用的存储大小的方法: 实时获取本地存储已被使用的存储大小
@@ -11,7 +15,7 @@ function useGetStorageInUse(): [number, React.Dispatch<React.SetStateAction<numb
     chrome.storage.onChanged.addListener((changes: StorageChanges, areaName: StorageAreaName): void => {
       if (changes && areaName === "local") {
         chrome.storage.local.getBytesInUse(null, (localSize: number): void => {
-          setSize(localSize)
+          setUsedSize(localSize)
         })
       }
     })
@@ -20,9 +24,9 @@ function useGetStorageInUse(): [number, React.Dispatch<React.SetStateAction<numb
   // 在size改变时: 获取已被使用的存储大小
   useEffect((): void => {
     getStorageInUse()
-  }, [size])
+  }, [usedSize])
 
-  return [size, setSize]
+  return usedSize
 }
 
 export default useGetStorageInUse
