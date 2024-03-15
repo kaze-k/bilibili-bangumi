@@ -14,7 +14,7 @@ import { clearData } from "~/store/features/data"
  */
 function ClearButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message = useMessage()
+  const message: ReturnType<typeof useMessage> = useMessage()
 
   const text = "清理"
 

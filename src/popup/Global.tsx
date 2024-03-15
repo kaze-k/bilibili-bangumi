@@ -12,7 +12,7 @@ import { setDarkMode, updateAutoTheme } from "~/store/features/theme"
  */
 function Global(props: { children: React.ReactNode }): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message = useMessage()
+  const message: ReturnType<typeof useMessage> = useMessage()
 
   // 状态
   const system: boolean = useSelector((state: State): boolean => state.theme.system)

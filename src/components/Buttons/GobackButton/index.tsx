@@ -13,7 +13,7 @@ import { useMessage } from "~/components/common/Message"
  */
 function GoBackButton(props: DarkModeProps): React.ReactElement {
   const navigation: NavigateFunction = useNavigate()
-  const message = useMessage()
+  const message: ReturnType<typeof useMessage> = useMessage()
 
   /**
    * @description 返回的方法: 返回上一页并清除消息

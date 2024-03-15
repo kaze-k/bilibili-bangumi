@@ -13,7 +13,7 @@ import { useMessage } from "~/components/common/Message"
  */
 function SetupButton(props: DarkModeProps): React.ReactElement {
   const navigation: NavigateFunction = useNavigate()
-  const message = useMessage()
+  const message: ReturnType<typeof useMessage> = useMessage()
 
   const icon: React.ReactElement = (
     <FontAwesomeIcon

@@ -16,7 +16,7 @@ import NavBar from "./NavBar"
  */
 function Home(): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message = useMessage()
+  const message: ReturnType<typeof useMessage> = useMessage()
 
   // 状态
   const darkMode: boolean = useSelector((state: State): boolean => state.theme.darkMode)
