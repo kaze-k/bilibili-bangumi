@@ -43,4 +43,6 @@ const episodeStyle: Slice<EpisodeStyleState, EpisodeStyleReducers, "episodeStyle
 
 export const { setStyle, resetStyle } = episodeStyle.actions
 
+export const episodeStyleInitialState: () => EpisodeStyleState = episodeStyle.getInitialState
+
 export default episodeStyle.reducer

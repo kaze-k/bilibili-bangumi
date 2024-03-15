@@ -173,4 +173,6 @@ export {
   getGuoChuangEpisodes,
 }
 
+export const dataInitialState: () => DataState = data.getInitialState
+
 export default data.reducer

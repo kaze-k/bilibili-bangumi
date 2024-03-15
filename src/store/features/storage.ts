@@ -35,4 +35,6 @@ const storage: Slice<StorageState, StorageReducers, "storage"> = createSlice({
 
 export const { enableStorage, disableStorage, toggleChange } = storage.actions
 
+export const storageInitialState: () => StorageState = storage.getInitialState
+
 export default storage.reducer

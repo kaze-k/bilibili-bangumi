@@ -95,4 +95,6 @@ const theme: Slice<ThemeState, ThemeReducers, "theme"> = createSlice({
 export const { toggleDarkMode, toggleSysTheme, toggleAutoTheme, setDarkMode, updateAutoTheme, resetTheme } =
   theme.actions
 
+export const themeInitialState: () => ThemeState = theme.getInitialState
+
 export default theme.reducer

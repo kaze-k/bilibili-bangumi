@@ -146,4 +146,6 @@ export {
   disableGuoChuangNotice,
 }
 
+export const noticeInitialState: () => NoticeState = notice.getInitialState
+
 export default notice.reducer
