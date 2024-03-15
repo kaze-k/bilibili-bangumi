@@ -1,20 +1,22 @@
-## [0.2.2](https://github.com/kaze-k/bilibili-bangumi/compare/v0.2.1...v0.2.2) (2024-02-18)
+## [0.2.3](https://github.com/kaze-k/bilibili-bangumi/compare/v0.2.2...v0.2.3) (2024-03-15)
 
 
 ### 更新
 
-* 弹出页面宽度增加 ([b0eeb9e](https://github.com/kaze-k/bilibili-bangumi/commit/b0eeb9efc11ac260e16244c3708667e3d3820679))
-* 调整页面显示 ([5f15776](https://github.com/kaze-k/bilibili-bangumi/commit/5f157768af29decb23f134697baa1c7445c21a81))
+* 调整加载失败时的图标 ([a0676ce](https://github.com/kaze-k/bilibili-bangumi/commit/a0676ce5fad105035c8b56b43fef2908c5048665))
+* 实现动态监听系统主题变化和恢复网络自动更新数据 ([ebd5a02](https://github.com/kaze-k/bilibili-bangumi/commit/ebd5a02af0a7ccc54e62b330703ada8847ff87b9))
+* 新增消息提示 ([878312e](https://github.com/kaze-k/bilibili-bangumi/commit/878312e41d7034f7caee4fd76879662301171745))
 
 
-### 新增功能
+### 新功能
 
-* 新增刷新按钮 ([ecb7335](https://github.com/kaze-k/bilibili-bangumi/commit/ecb73352cc349d795d0d56968bf046b361089857))
+* 新增消息提示组件 ([1ac80cb](https://github.com/kaze-k/bilibili-bangumi/commit/1ac80cb7705788beb9c3054779c135308d29dc1a))
+* 新增消息组件 ([97a9795](https://github.com/kaze-k/bilibili-bangumi/commit/97a97952da001fb4b5cd8134d5df174699800879))
 
 
-### 性能优化
+### 修复
 
-* 优化页面和避免重复请求数据 ([3d40f48](https://github.com/kaze-k/bilibili-bangumi/commit/3d40f4860064d0488bb93225e907f7b447343766))
+* 修复点击事件报错 ([52eddcf](https://github.com/kaze-k/bilibili-bangumi/commit/52eddcfbb10d348fc14a62f0a1441dc875091df8))
 
 
 
