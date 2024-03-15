@@ -22,7 +22,7 @@ const MessageWrapper: StyledComponent<"div", any, DarkModeProps, never> = styled
   (props: DarkModeProps): CSSProp => ({
     color: props.darkMode ? "#ffffff" : "#000000",
     backgroundColor: props.darkMode ? "#000000" : "#fffdfa",
-    boxShadow: props.darkMode ? "0 0 0 2px #fffdfa" : "0 0 0 #000000, 0 0 0 #000000, 0px 1px 2px rgba(126, 56, 0, 50%)",
+    boxShadow: props.darkMode ? "0 0 0 1px #fffdfa" : "0 0 0 #000000, 0 0 0 #000000, 0px 1px 2px rgba(126, 56, 0, 50%)",
   }),
 )
 
