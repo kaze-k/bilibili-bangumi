@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 import Button from "~/components/common/Button"
 import { useMessage } from "~/components/common/Message"
+import useInitialConfigStore from "~/hooks/useIsInitialConfigStore"
 import { resetStyle } from "~/store/features/episodeStyle"
 import { resetNotice } from "~/store/features/notice"
 import { resetTheme } from "~/store/features/theme"
@@ -15,15 +16,13 @@ import { resetTheme } from "~/store/features/theme"
  */
 function ResetButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
-  const message = useMessage()
+  const message: ReturnType<typeof useMessage> = useMessage()
 
   const text = "重置"
 
   // 状态
   const [allowed, setAllowed] = useState<boolean>(true)
-  const theme = useSelector((state: State): ThemeState => state.theme)
-  const notice = useSelector((state: State): NoticeState => state.notice)
-  const episodeStyle = useSelector((state: State): EpisodeStyleState => state.episodeStyle)
+  const isInitial: boolean = useInitialConfigStore()
 
   /**
    * @description 重置设置的方法
@@ -40,34 +39,10 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
 
   // 当设置改变时: 改变按钮的可用性
   useEffect((): void => {
-    if (
-      theme.darkMode !== false ||
-      theme.system !== false ||
-      theme.auto !== false ||
-      theme.am !== 7 ||
-      theme.pm !== 19
-    ) {
+    if (!isInitial) {
       setAllowed(true)
-      return
     }
-
-    if (
-      notice.toggle !== false ||
-      notice.silent !== false ||
-      notice.autoClear !== false ||
-      notice.animeNotice !== false ||
-      notice.guochuangNotice !== false ||
-      notice.timeout !== 5 * 60 * 1000
-    ) {
-      setAllowed(true)
-      return
-    }
-
-    if (episodeStyle.style !== "all" || episodeStyle.index !== 0) {
-      setAllowed(true)
-      return
-    }
-  }, [theme, notice, episodeStyle])
+  }, [isInitial])
 
   return (
     <Button
