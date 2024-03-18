@@ -28,7 +28,7 @@ function Layout(props: DarkModeProps): React.ReactElement {
   const isError: boolean = useSelector((state: State): boolean => state.data.isError)
 
   // 节点实例
-  const pageRef = useRef(null)
+  const pageRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理滚动的方法: 当按住`CTRL`键并滚动鼠标滚轮时滚动

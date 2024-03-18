@@ -29,7 +29,7 @@ const useMessageStore: (messageStoreOptions?: MessageStoreOptions) => MessageSta
 
     const now: number = Date.now()
 
-    const timeouts: NodeJS.Timeout[] = state.map((m) => {
+    const timeouts: NodeJS.Timeout[] = state.map((m: MessageState): NodeJS.Timeout => {
       if (m.duration === Infinity) {
         return
       }

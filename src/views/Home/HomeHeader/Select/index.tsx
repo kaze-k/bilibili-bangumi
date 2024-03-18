@@ -77,7 +77,7 @@ function SelectBox(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
 
   // 节点实例
-  const selectItemsRef: React.RefObject<HTMLUListElement> = useRef(null)
+  const selectItemsRef: React.RefObject<HTMLUListElement> = useRef<HTMLUListElement>(null)
 
   // 状态
   const [hover, setHover] = useState<boolean[]>(Array(selectItemsRef?.current?.children?.length).fill(false))
