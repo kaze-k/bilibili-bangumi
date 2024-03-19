@@ -22,7 +22,7 @@ const useMessageStore: (messageStoreOptions?: MessageStoreOptions) => MessageSta
   useEffect((): (() => void) => {
     if (state.length > messageStoreOptions.limit) {
       setTimeout((): void => {
-        message.remove(state[0].id)
+        message.remove(messageStoreOptions.reverse ? state[state.length - 1].id : state[0].id)
       }, 100)
       return
     }

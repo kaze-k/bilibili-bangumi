@@ -35,13 +35,21 @@ function MessageProvider(props: MessageProviderProps): React.ReactElement {
 
   // 当有消息时: 显示消息发送器
   // 当没有消息时: 移除消息发送器
-  useEffect((): void => {
-    if (state.length) {
+  useEffect((): (() => void) => {
+    let timer: NodeJS.Timeout
+
+    if (state.length > 0) {
       setShow(true)
     } else {
-      setShow(false)
+      timer = setTimeout((): void => {
+        setShow(false)
+      }, 100)
     }
-  }, [state])
+
+    return (): void => {
+      clearTimeout(timer)
+    }
+  }, [state.length])
 
   return (
     <MessageContext.Provider value={message}>

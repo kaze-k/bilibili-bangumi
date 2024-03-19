@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
 
 import Message from "./Message"
 import { MessageContainer } from "./components"
 import style from "./style.module.scss"
+import transitions from "./transition.module.scss"
+
+// 过渡动画类名
+const classNames = {
+  exit: transitions.exit,
+  exitActive: transitions.exit_active,
+}
 
 /**
  * @description 消息发送器组件
@@ -27,17 +35,25 @@ function Messager(props: MessagerProps): React.ReactElement {
       top={top}
       className={style.message_container}
     >
-      {props.state.map(
-        (m: MessageState): React.ReactElement => (
-          <Message
-            id={m.id}
-            key={m.id}
-            message={m.message}
-            type={m.type}
-            darkMode={props.darkMode}
-          />
-        ),
-      )}
+      <TransitionGroup component={null}>
+        {props.state.map(
+          (m: MessageState): React.ReactElement => (
+            <CSSTransition
+              key={m.id}
+              timeout={300}
+              classNames={classNames}
+            >
+              <Message
+                id={m.id}
+                key={m.id}
+                message={m.message}
+                type={m.type}
+                darkMode={props.darkMode}
+              />
+            </CSSTransition>
+          ),
+        )}
+      </TransitionGroup>
     </MessageContainer>
   )
 }
