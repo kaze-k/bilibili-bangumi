@@ -22,24 +22,10 @@ function StorageRow(props: DarkModeProps): React.ReactElement {
   const text: string = formatSize(size)
   const explain = `本地缓存所占用的空间: ${text}`
 
-  /**
-   * @description 获取本地存储的方法: 获取本地存储中已被使用的存储大小
-   */
-  const getLocalStorage: () => void = (): void => {
-    chrome.storage.local.getBytesInUse(null, (localSize: number): void => {
-      setSize(localSize)
-    })
-  }
-
   // 当已被使用的存储大小改变时: 更新size的值
   useEffect((): void => {
     setSize(usedSize)
   }, [usedSize])
-
-  // 在页面有改变时: 获取本地存储
-  useEffect((): void => {
-    getLocalStorage()
-  })
 
   return (
     <div className={style.wrapper}>

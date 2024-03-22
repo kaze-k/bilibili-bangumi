@@ -9,6 +9,15 @@ function useGetStorageInUse(): number {
   const [usedSize, setUsedSize] = useState<number>(0)
 
   /**
+   * @description 获取本地存储的方法: 获取本地存储中已被使用的存储大小
+   */
+  const getLocalStorage: () => void = (): void => {
+    chrome.storage.local.getBytesInUse(null, (localSize: number): void => {
+      setUsedSize(localSize)
+    })
+  }
+
+  /**
    * @description 获取已被使用的存储大小的方法: 实时获取本地存储已被使用的存储大小
    */
   const getStorageInUse: () => void = (): void => {
@@ -20,6 +29,11 @@ function useGetStorageInUse(): number {
       }
     })
   }
+
+  // 当页面渲染时: 获取本地存储
+  useEffect((): void => {
+    getLocalStorage()
+  }, [])
 
   // 在size改变时: 获取已被使用的存储大小
   useEffect((): void => {
