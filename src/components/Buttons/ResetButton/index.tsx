@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
-import Button from "~/components/common/Button"
+import { BlockButton } from "~/components/common/Button"
 import { useMessage } from "~/components/common/Message"
 import useInitialConfigStore from "~/hooks/useIsInitialConfigStore"
+import { persistor } from "~/store"
 import { resetStyle } from "~/store/features/episodeStyle"
 import { resetNotice } from "~/store/features/notice"
 import { resetTheme } from "~/store/features/theme"
@@ -18,7 +19,7 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
   const dispatch: Dispatch = useDispatch()
   const message: ReturnType<typeof useMessage> = useMessage()
 
-  const text = "重置"
+  const text = "重置设置"
 
   // 状态
   const [allowed, setAllowed] = useState<boolean>(true)
@@ -29,7 +30,14 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
    */
   const handleReset: () => void = (): void => {
     message.promise(
-      Promise.all([dispatch(resetTheme(null)), dispatch(resetNotice(null)), dispatch(resetStyle(null))]).then(
+      Promise.all([
+        persistor.purge(),
+        persistor.pause(),
+        dispatch(resetTheme(null)),
+        dispatch(resetNotice(null)),
+        dispatch(resetStyle(null)),
+        persistor.persist(),
+      ]).then(
         () => setAllowed(false),
         () => setAllowed(true),
       ),
@@ -45,15 +53,19 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
   }, [isInitial])
 
   return (
-    <Button
+    <BlockButton
       title="重置设置"
       onClick={handleReset}
       clickable={allowed}
       darkMode={props.darkMode}
-      mini
+      btnHeight={"35px"}
+      btnTheme={{
+        color: { light: "#fb7299", dark: "#fb7299" },
+        backgroundColor: { light: "#f1f1f1", dark: "#343a43" },
+      }}
     >
       {text}
-    </Button>
+    </BlockButton>
   )
 }
 
