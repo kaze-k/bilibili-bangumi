@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import Button from "~/components/common/Button"
+import { Button } from "~/components/common/Button"
 import { disableNotice, enableNotice, toggleNotice } from "~/store/features/notice"
 
 /**

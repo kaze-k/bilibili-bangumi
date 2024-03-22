@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
-import Button from "~/components/common/Button"
+import { BlockButton } from "~/components/common/Button"
 import { useMessage } from "~/components/common/Message"
 import useGetStorageInUse from "~/hooks/useGetStorageInUse"
 import { clearData } from "~/store/features/data"
@@ -46,15 +46,18 @@ function ClearButton(props: DarkModeProps): React.ReactElement {
   }, [usedSize])
 
   return (
-    <Button
+    <BlockButton
       title="清理存储"
       onClick={handleClear}
       clickable={allowed}
       darkMode={props.darkMode}
-      mini
+      btnTheme={{
+        color: { light: "#f1f1f1", dark: "#f1f1f1" },
+        backgroundColor: { light: "#fb7299", dark: "#fb7299" },
+      }}
     >
       {text}
-    </Button>
+    </BlockButton>
   )
 }
 

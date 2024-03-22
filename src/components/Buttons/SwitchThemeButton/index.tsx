@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
 import { useDispatch } from "react-redux"
 
-import Button from "~/components/common/Button"
+import { Button } from "~/components/common/Button"
 import { toggleDarkMode } from "~/store/features/theme"
 
 /**
