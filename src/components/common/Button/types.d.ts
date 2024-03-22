@@ -1,5 +1,16 @@
-interface MiniButtonDivProps extends DarkModeProps {
+type ButtonColor = {
+  light: string
+  dark: string
+}
+
+type BtnTheme = {
+  color: ButtonColor
+  backgroundColor: ButtonColor
+}
+
+interface BlockButtonDivProps extends DarkModeProps {
   clickable: boolean
+  btnTheme?: BtnTheme
 }
 
 interface ButtonDivProps extends DarkModeProps {
@@ -8,13 +19,18 @@ interface ButtonDivProps extends DarkModeProps {
 
 type ButtonBoxProps = {
   clickable: boolean
-  mini?: boolean
+  btnHeight?: string
+  block?: boolean
 }
 
 interface ButtonProps extends DarkModeProps {
   children: React.ReactElement | string
   onClick?: React.MouseEventHandler<HTMLAnchorElement>
   title?: string
-  mini?: boolean
   clickable?: boolean
+}
+
+interface BlockButtonProps extends ButtonProps {
+  btnHeight?: string
+  btnTheme?: BtnTheme
 }
