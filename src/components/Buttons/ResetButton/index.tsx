@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 
 import { BlockButton } from "~/components/common/Button"
 import { useMessage } from "~/components/common/Message"
-import useInitialConfigStore from "~/hooks/useIsInitialConfigStore"
+import useIsInitialConfigStore from "~/hooks/useIsInitialConfigStore"
 import { persistor } from "~/store"
 import { resetStyle } from "~/store/features/episodeStyle"
 import { resetNotice } from "~/store/features/notice"
@@ -23,7 +23,7 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
 
   // 状态
   const [allowed, setAllowed] = useState<boolean>(true)
-  const isInitial: boolean = useInitialConfigStore()
+  const isInitial: boolean = useIsInitialConfigStore()
 
   /**
    * @description 重置设置的方法

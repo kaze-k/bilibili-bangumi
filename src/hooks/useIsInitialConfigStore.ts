@@ -10,7 +10,7 @@ import { themeInitialState } from "~/store/features/theme"
  * @description 判断是否为初始设置hook
  * @return {*}  {boolean} 判断结果
  */
-function useInitialConfigStore(): boolean {
+function useIsInitialConfigStore(): boolean {
   // 状态
   const [isInitial, setIsInitial] = useState<boolean>(false)
   const theme: ThemeState = useSelector((state: State): ThemeState => state.theme)
@@ -45,4 +45,4 @@ function useInitialConfigStore(): boolean {
   return isInitial
 }
 
-export default useInitialConfigStore
+export default useIsInitialConfigStore
