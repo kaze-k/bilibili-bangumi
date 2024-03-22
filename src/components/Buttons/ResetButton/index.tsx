@@ -60,8 +60,8 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
       darkMode={props.darkMode}
       btnHeight={"35px"}
       btnTheme={{
-        color: { light: "#fb7299", dark: "#fb7299" },
-        backgroundColor: { light: "#f1f1f1", dark: "#343a43" },
+        color: { light: "#f1f1f1", dark: "#f1f1f1" },
+        backgroundColor: { light: "#fb7299", dark: "#fb7299" },
       }}
     >
       {text}
