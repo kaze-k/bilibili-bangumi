@@ -1,5 +1,15 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist"
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  createMigrate,
+  persistReducer,
+  persistStore,
+} from "redux-persist"
 import { syncStorage } from "redux-persist-webextension-storage"
 
 import data from "./features/data"
@@ -7,6 +17,9 @@ import episodeStyle from "./features/episodeStyle"
 import notice from "./features/notice"
 import storage from "./features/storage"
 import theme from "./features/theme"
+import migrations from "./migrations"
+
+const DEBUG: boolean = process.env.NODE_ENV === "development"
 
 const combinedReducers: CombinedReducers = combineReducers({
   theme,
@@ -19,6 +32,9 @@ const combinedReducers: CombinedReducers = combineReducers({
 const storageConfig = {
   key: "syncStorage",
   storage: syncStorage,
+  version: 0,
+  migrate: createMigrate(migrations, { debug: DEBUG }),
+  debug: DEBUG,
   blacklist: ["data"],
 }
 
