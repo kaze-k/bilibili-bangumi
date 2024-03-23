@@ -30,14 +30,7 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
    */
   const handleReset: () => void = (): void => {
     message.promise(
-      Promise.all([
-        persistor.purge(),
-        persistor.pause(),
-        dispatch(resetTheme(null)),
-        dispatch(resetNotice(null)),
-        dispatch(resetStyle(null)),
-        persistor.persist(),
-      ]).then(
+      Promise.all([persistor.purge(), dispatch(resetTheme()), dispatch(resetNotice()), dispatch(resetStyle())]).then(
         () => setAllowed(false),
         () => setAllowed(true),
       ),
