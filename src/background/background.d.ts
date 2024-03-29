@@ -29,7 +29,7 @@ type MessageRequest = {
 
 type NotificationsParams = {
   id: number
-  cover: string
+  ep_cover: string
   title: string
   index: string
   time?: number

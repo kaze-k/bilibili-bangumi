@@ -26,8 +26,14 @@ chrome.runtime.onStartup.addListener((): void => {
 chrome.runtime.onMessage.addListener(
   (request: MessageRequest, sender: chrome.runtime.MessageSender, sendResponse: SendResponse): boolean | undefined => {
     switch (request.message) {
+      // 中止请求
+      case "abort":
+        handles.data.abort(true)
+        break
+
       // 更新信息
       case "update":
+        handles.data.abort(false)
         Promise.allSettled([
           handles.data.handleData({ types: 1, before: 7, after: 7 }),
           handles.data.handleData({ types: 4, before: 7, after: 7 }),

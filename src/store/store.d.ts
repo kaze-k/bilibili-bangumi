@@ -49,8 +49,8 @@ type DataState = {
   isError: boolean
 }
 
-type EpisodeStyleState = {
-  style?: "all" | "anime" | "guochuang"
+type EpisodeState = {
+  type?: "all" | "anime" | "guochuang"
   index?: number
 }
 
@@ -64,8 +64,8 @@ type NoticeState = {
 }
 
 type StorageState = {
-  storage: boolean
-  change: boolean
+  toggle: boolean
+  // change: boolean
 }
 
 type ThemeState = {
@@ -79,7 +79,7 @@ type ThemeState = {
 type AppState = {
   theme: ThemeState
   notice: NoticeState
-  episodeStyle: EpisodeStyleState
+  episode: EpisodeState
   storage: StorageState
   data: DataState
 }
@@ -90,9 +90,9 @@ type DataReducers = {
   clearData(state: DataState): void
 }
 
-type EpisodeStyleReducers = {
-  setStyle(state: EpisodeStyleState, actions: PayloadAction<string>): void
-  resetStyle(state: EpisodeStyleState): void
+type EpisodeReducers = {
+  setType(state: EpisodeState, actions: PayloadAction<string>): void
+  resetType(state: EpisodeState): void
 }
 
 type NoticeReducers = {
@@ -107,7 +107,7 @@ type NoticeReducers = {
 type StorageReducers = {
   enableStorage(state: StorageState): void
   disableStorage(state: StorageState): void
-  toggleChange(state: StorageState): void
+  // toggleChange(state: StorageState): void
 }
 
 type ThemeReducers = {

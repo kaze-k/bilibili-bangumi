@@ -30,6 +30,9 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
       asyncChunks: true,
     },
     resolve: {
+      alias: {
+        "~": path.resolve(__dirname, "../src/"),
+      },
       extensions: [".ts", ".tsx", ".js", ".jsx", ".scss", ".json"],
       modules: ["node_modules"],
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, "../tsconfig.json") })],

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
 import { useDispatch } from "react-redux"
 
-import { Button } from "~/components/common/Button"
+import { RoundButton } from "~/components/common/Button"
 import { toggleDarkMode } from "~/store/features/theme"
 
 /**
@@ -18,7 +18,7 @@ function SwitchThemeButton(props: DarkModeProps): React.ReactElement {
    * @description 切换深浅色主题的方法
    */
   const toggleThemeBtn: () => void = (): void => {
-    dispatch(toggleDarkMode(null))
+    dispatch(toggleDarkMode())
   }
 
   let icon: React.ReactElement
@@ -39,13 +39,13 @@ function SwitchThemeButton(props: DarkModeProps): React.ReactElement {
   }
 
   return (
-    <Button
+    <RoundButton
       title="切换主题"
       onClick={toggleThemeBtn}
       darkMode={props.darkMode}
     >
       {icon}
-    </Button>
+    </RoundButton>
   )
 }
 

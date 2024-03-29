@@ -1,0 +1,17 @@
+@use "~/styles/common/animations.scss";
+
+.enter {
+  animation: fade-in 0.5s ease-in-out;
+}
+
+.enter_active {
+  transition: fade-in 0.5s ease-in-out;
+}
+
+.exit {
+  animation: fade-out 0.5s ease-in-out;
+}
+
+.exit_active {
+  transition: fade-out 0.5s ease-in-out;
+}

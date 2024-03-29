@@ -1,10 +1,10 @@
-import React, { Suspense } from "react"
+import React from "react"
 import { Provider } from "react-redux"
 import { MemoryRouter } from "react-router-dom"
 import { PersistGate } from "redux-persist/integration/react"
 
 import Loading from "~/components/common/Loading"
-import RouterView from "~/routes"
+import RouterView from "~/router"
 import { persistor, store } from "~/store"
 
 import Global from "./Global"
@@ -15,20 +15,18 @@ import Global from "./Global"
  */
 function Popup(): React.ReactElement {
   return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <Suspense fallback={<Loading />}>
-          <PersistGate
-            loading={<Loading />}
-            persistor={persistor}
-          >
-            <Global>
-              <RouterView />
-            </Global>
-          </PersistGate>
-        </Suspense>
-      </Provider>
-    </MemoryRouter>
+    <Provider store={store}>
+      <PersistGate
+        loading={<Loading />}
+        persistor={persistor}
+      >
+        <Global>
+          <MemoryRouter>
+            <RouterView />
+          </MemoryRouter>
+        </Global>
+      </PersistGate>
+    </Provider>
   )
 }
 

@@ -4,7 +4,7 @@ type Params = {
   query?: TimelineParams | Info
 }
 
-type Style = "all" | "anime" | "guochuang"
+type episodeType = "all" | "anime" | "guochuang"
 
 type ToChineseStyleReturn = "全部" | "番剧" | "国创"
 

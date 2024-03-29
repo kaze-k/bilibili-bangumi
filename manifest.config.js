@@ -17,7 +17,11 @@ module.exports = {
     },
     default_popup: "popup.html",
   },
-  permissions: ["storage", "notifications", "alarms"],
+  side_panel: {
+    default_path: "CHANGELOG.html",
+  },
+  options_page: "CHANGELOG.html",
+  permissions: ["storage", "notifications", "alarms", "sidePanel"],
   default_locale: "zh_CN",
   host_permissions: ["https://*/*", "http://*/*"],
 }

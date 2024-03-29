@@ -8,7 +8,7 @@ import service from "~/service"
  * @param {number} param.after 结束的天数 [可选]
  * @return {*}  {Promise<APIResponse>} 返回接口获取的时间表信息
  */
-function getTimeline(params: TimelineParams): Promise<APIResponse> {
+function getTimeline(params: TimelineParams): ServiceReturn {
   return service({
     method: "GET",
     mode: "cors",

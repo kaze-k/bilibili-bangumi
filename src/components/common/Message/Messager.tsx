@@ -4,12 +4,12 @@ import { CSSTransition, TransitionGroup } from "react-transition-group"
 import Message from "./Message"
 import { MessageContainer } from "./components"
 import style from "./style.module.scss"
-import transitions from "./transition.module.scss"
+import transition from "./transition.module.scss"
 
 // 过渡动画类名
 const classNames = {
-  exit: transitions.exit,
-  exitActive: transitions.exit_active,
+  exit: transition.exit,
+  exitActive: transition.exit_active,
 }
 
 /**

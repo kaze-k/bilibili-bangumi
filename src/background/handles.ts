@@ -1,12 +1,20 @@
 import getInfo from "~/service/api/getInfo"
 import getTimeline from "~/service/api/getTimeline"
-import { settings } from "~/utils"
 
 /**
  * @description 信息处理
  * @class Data
  */
 class Data {
+  /**
+   * @description 中止请求
+   * @private
+   * @static
+   * @type {boolean}
+   * @memberof Data
+   */
+  private static isAbort: boolean = false
+
   /**
    * 私有数据类构造方法
    * @private
@@ -29,7 +37,14 @@ class Data {
     const promises: Promise<APIResponse>[] = []
 
     for (const episode of episodes) {
-      const data: Promise<APIResponse> = getInfo({ season_id: episode.season_id })
+      const request: ServiceReturn = getInfo({ season_id: episode.season_id })
+      const data: Promise<APIResponse> = request.ready
+
+      if (this.isAbort) {
+        request.abort()
+        return
+      }
+
       promises.push(data)
     }
 
@@ -123,12 +138,12 @@ class Data {
       [datesKey]: result_dates,
     }
 
-    const storage: boolean = await settings("storage")
-    if (storage) {
-      await chrome.storage.local.set(storages)
+    // const storage: boolean = await settings("storage")
+    // if (storage) {
+    await chrome.storage.local.set(storages)
 
-      return true
-    }
+    return true
+    // }
   }
 
   /**
@@ -143,7 +158,13 @@ class Data {
     const { types } = timelineParams
 
     if (types === 1) {
-      const anime_timeline: APIResponse = await getTimeline(timelineParams)
+      const request: ServiceReturn = getTimeline(timelineParams)
+      const anime_timeline: APIResponse = await request.ready
+
+      if (this.isAbort) {
+        request.abort()
+        return
+      }
 
       if (anime_timeline.result) {
         const anime: any[] = anime_timeline.result
@@ -154,7 +175,13 @@ class Data {
     }
 
     if (types === 4) {
-      const guochuang_timeline: APIResponse = await getTimeline(timelineParams)
+      const request: ServiceReturn = getTimeline(timelineParams)
+      const guochuang_timeline: APIResponse = await request.ready
+
+      if (this.isAbort) {
+        request.abort()
+        return
+      }
 
       if (guochuang_timeline.result) {
         const guochuang: any[] = guochuang_timeline.result
@@ -163,6 +190,10 @@ class Data {
         return result
       }
     }
+  }
+
+  public static abort(isAbort: boolean): void {
+    this.isAbort = isAbort
   }
 }
 

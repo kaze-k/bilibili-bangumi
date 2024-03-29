@@ -1,0 +1,28 @@
+@use "~/styles/common/mixins.scss" as common;
+
+@mixin flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  @include common.base-header;
+}
+
+.content {
+  @include flex-align-center;
+
+  justify-content: flex-end;
+  height: 35px;
+}
+
+.title {
+  @include flex-align-center;
+
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+}

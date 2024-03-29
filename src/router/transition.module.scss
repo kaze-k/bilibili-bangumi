@@ -1,0 +1,33 @@
+@use "~/styles/common/animations.scss";
+
+.enter_left {
+  animation: fade-in-left 0.1s ease;
+}
+
+.enter_active_left {
+  transition: animation 0.1s ease;
+}
+
+.enter_right {
+  animation: fade-in-right 0.1s ease;
+}
+
+.enter_active_right {
+  transition: animation 0.1s ease;
+}
+
+.exit_left {
+  animation: fade-out-left 0.1s ease;
+}
+
+.exit_active_left {
+  transition: animation 0.1s ease;
+}
+
+.exit_right {
+  animation: fade-out-right 0.1s ease;
+}
+
+.exit_active_right {
+  transition: animation 0.1s ease;
+}

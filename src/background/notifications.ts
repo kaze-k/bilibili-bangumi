@@ -40,7 +40,7 @@ class Creator {
    * @async
    * @param {NotificationsParams} params 通知需要的参数
    * @param {number} param.id 通知id(剧集id)
-   * @param {string} param.cover 封面图片
+   * @param {string} param.ep_cover 剧集封面图片
    * @param {string} param.title 标题
    * @param {string} param.index 最新的集数名称
    * @param {number} param.time 剧集更新的时间戳 [可选]
@@ -53,7 +53,15 @@ class Creator {
 
     if (params.length) {
       for (const obj in params) {
-        const { id, cover, title, index, time, published } = params[obj]
+        const { id, ep_cover, title, index, time, published } = params[obj]
+
+        // TODO: test
+        console.log("id: ", id)
+        console.log("ep_cover: ", ep_cover)
+        console.log("title: ", title)
+        console.log("index: ", index)
+        console.log("time: ", time)
+        console.log("published: ", published)
 
         if (published) {
           chrome.notifications.create(String(id), {
@@ -62,7 +70,7 @@ class Creator {
             message: index,
             contextMessage: this.displayName,
             iconUrl: icon,
-            imageUrl: cover,
+            imageUrl: ep_cover,
             silent: silent,
             eventTime: time * 1000,
           })
@@ -101,6 +109,16 @@ class Creator {
  */
 class Handler {
   /**
+   * @description 通知剧集基础链接
+   * @private
+   * @static
+   * @readonly
+   * @type {string}
+   * @memberof Handler
+   */
+  private static readonly baseUrl: string = "https://www.bilibili.com/bangumi/play/ep"
+
+  /**
    * 私有处理类构造方法
    * @private
    * @memberof Handler
@@ -117,7 +135,7 @@ class Handler {
    */
   public static async createTab(id: string): Promise<void> {
     chrome.tabs.create({
-      url: `https://www.bilibili.com/bangumi/play/ep${id}`,
+      url: `${this.baseUrl}${id}`,
     })
   }
 }

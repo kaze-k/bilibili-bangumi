@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
 import { NavigateFunction, useNavigate } from "react-router-dom"
 
-import { Button } from "~/components/common/Button"
+import { RoundButton } from "~/components/common/Button"
 import { useMessage } from "~/components/common/Message"
 
 /**
@@ -31,13 +31,13 @@ function SetupButton(props: DarkModeProps): React.ReactElement {
   }
 
   return (
-    <Button
+    <RoundButton
       title="设置"
       onClick={handleClick}
       darkMode={props.darkMode}
     >
       {icon}
-    </Button>
+    </RoundButton>
   )
 }
 

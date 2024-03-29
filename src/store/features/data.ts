@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 /**
+ * @description 发送中止请求的通信
+ * @return {*}  {Promise<void>} 无返回值
+ */
+const abort: AsyncThunk<void, void, void> = createAsyncThunk("data/abort", async (): Promise<void> => {
+  await chrome.runtime.sendMessage({ message: "abort" })
+})
+
+/**
  * @description 发送更新信息的通信
  * @return {*}  {Promise<boolean | null>} 返回布尔值
  */
@@ -165,6 +173,7 @@ export {
   setIndex,
   setChecked,
   clearData,
+  abort,
   update,
   getAllEpisodes,
   getAnimeDates,

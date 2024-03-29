@@ -5,7 +5,7 @@ import { BlockButton } from "~/components/common/Button"
 import { useMessage } from "~/components/common/Message"
 import useIsInitialConfigStore from "~/hooks/useIsInitialConfigStore"
 import { persistor } from "~/store"
-import { resetStyle } from "~/store/features/episodeStyle"
+import { resetType } from "~/store/features/episode"
 import { resetNotice } from "~/store/features/notice"
 import { resetTheme } from "~/store/features/theme"
 
@@ -30,7 +30,7 @@ function ResetButton(props: DarkModeProps): React.ReactElement {
    */
   const handleReset: () => void = (): void => {
     message.promise(
-      Promise.all([persistor.purge(), dispatch(resetTheme()), dispatch(resetNotice()), dispatch(resetStyle())]).then(
+      Promise.all([persistor.purge(), dispatch(resetTheme()), dispatch(resetNotice()), dispatch(resetType())]).then(
         () => setAllowed(false),
         () => setAllowed(true),
       ),

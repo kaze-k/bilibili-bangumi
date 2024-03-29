@@ -6,7 +6,7 @@ import service from "~/service"
  * @param {number} param.season_id 剧集id
  * @return {*}  {Promise<APIResponse>} 返回接口获取的剧集信息
  */
-function getInfo(params: Info): Promise<APIResponse> {
+function getInfo(params: Info): ServiceReturn {
   return service({
     method: "GET",
     mode: "cors",

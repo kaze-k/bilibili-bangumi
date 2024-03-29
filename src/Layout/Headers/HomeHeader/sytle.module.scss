@@ -1,0 +1,31 @@
+@use "~/styles/common/mixins.scss" as common;
+
+@mixin header-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.header {
+  @include common.base-header;
+
+  justify-content: space-around;
+}
+
+.left {
+  @include header-item;
+
+  justify-content: flex-start;
+}
+
+.center {
+  @include header-item;
+
+  justify-content: center;
+}
+
+.right {
+  @include header-item;
+
+  justify-content: flex-end;
+}

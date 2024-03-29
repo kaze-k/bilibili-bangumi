@@ -8,11 +8,16 @@ type Info = {
   season_id: number
 }
 
-type Query = {
+type ServiceParams = {
   method: string
-  mode: string
+  mode: RequestMode
   url: string
   query?: TimelineParams | Info
+}
+
+type ServiceReturn = {
+  abort: () => void
+  ready: Promise<APIResponse>
 }
 
 type APIResponse = {

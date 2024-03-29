@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const storage: Slice<StorageState, StorageReducers, "storage"> = createSlice({
   name: "storage",
   initialState: {
-    storage: true,
-    change: false,
+    toggle: true,
+    // change: false,
   },
   reducers: {
     /**
@@ -12,28 +12,28 @@ const storage: Slice<StorageState, StorageReducers, "storage"> = createSlice({
      * @param {StorageState} state 状态
      */
     enableStorage(state: StorageState): void {
-      state.storage = true
+      state.toggle = true
     },
 
     /**
-     * @description 关闭通知
+     * @description 关闭存储
      * @param {StorageState} state 状态
      */
     disableStorage(state: StorageState): void {
-      state.storage = false
+      state.toggle = false
     },
 
     /**
      * @description 存储内容是否改变
      * @param {StorageState} state
      */
-    toggleChange(state: StorageState): void {
-      state.change = !state.change
-    },
+    // toggleChange(state: StorageState): void {
+    //   state.change = !state.change
+    // },
   },
 })
 
-export const { enableStorage, disableStorage, toggleChange } = storage.actions
+export const { enableStorage, disableStorage } = storage.actions
 
 export const storageInitialState: () => StorageState = storage.getInitialState
 

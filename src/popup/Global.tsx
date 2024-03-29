@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { MessageProvider, useMessage } from "~/components/common/Message"
-import { update } from "~/store/features/data"
 import { setDarkMode, updateAutoTheme } from "~/store/features/theme"
 
 /**
@@ -29,15 +28,6 @@ function Global(props: { children: React.ReactNode }): React.ReactElement {
   }
 
   /**
-   * @description 监听在线: 当网络在线时，发送更新信息通信
-   */
-  const onlineListener: () => void = (): void => {
-    if (window.navigator.onLine) {
-      dispatch(update())
-    }
-  }
-
-  /**
    * @description 监听离线: 当网络离线时，提示离线
    */
   const offlineListener: () => void = (): void => {
@@ -51,13 +41,11 @@ function Global(props: { children: React.ReactNode }): React.ReactElement {
     dispatch(updateAutoTheme())
   }, [])
 
-  // 当网络状态改变时: 监听在线/监听离线
+  // 当网络状态改变时: 监听离线
   useEffect((): (() => void) => {
-    window.addEventListener("online", onlineListener)
     window.addEventListener("offline", offlineListener)
 
     return (): void => {
-      window.removeEventListener("online", onlineListener)
       window.removeEventListener("offline", offlineListener)
     }
   }, [window.navigator.onLine])

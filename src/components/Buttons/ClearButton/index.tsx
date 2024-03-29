@@ -27,7 +27,7 @@ function ClearButton(props: DarkModeProps): React.ReactElement {
    */
   const handleClear: () => void = (): void => {
     message.promise(
-      Promise.all([chrome.storage.local.clear(), dispatch(clearData(null))]).then(
+      Promise.all([chrome.storage.local.clear(), dispatch(clearData())]).then(
         () => setAllowed(false),
         () => setAllowed(true),
       ),

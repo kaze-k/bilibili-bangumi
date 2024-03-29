@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { memo, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Button } from "~/components/common/Button"
+import { RoundButton } from "~/components/common/Button"
 import { update } from "~/store/features/data"
 
 /**
@@ -45,14 +45,14 @@ function RefreshButton(props: DarkModeProps): React.ReactElement {
   )
 
   return (
-    <Button
+    <RoundButton
       title="刷新"
       onClick={handleUpdate}
       clickable={allowed}
       darkMode={props.darkMode}
     >
       {icon}
-    </Button>
+    </RoundButton>
   )
 }
 

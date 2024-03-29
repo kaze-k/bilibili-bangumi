@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Button } from "~/components/common/Button"
+import { RoundButton } from "~/components/common/Button"
 import { disableNotice, enableNotice, toggleNotice } from "~/store/features/notice"
 
 /**
@@ -21,7 +21,7 @@ function NoticeButton(props: DarkModeProps): React.ReactElement {
    * @description 切换通知的方法
    */
   const toggleNoticeBtn: () => void = (): void => {
-    dispatch(toggleNotice(null))
+    dispatch(toggleNotice())
     notice ? dispatch(disableNotice()) : dispatch(enableNotice())
   }
 
@@ -55,13 +55,13 @@ function NoticeButton(props: DarkModeProps): React.ReactElement {
   }
 
   return (
-    <Button
+    <RoundButton
       title="通知"
       onClick={toggleNoticeBtn}
       darkMode={props.darkMode}
     >
       {icon}
-    </Button>
+    </RoundButton>
   )
 }
 

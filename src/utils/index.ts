@@ -82,7 +82,7 @@ function formatTime(time: number): string {
  * @param {string} style 剧集类别
  * @return {*}  {string} 转换后的中文剧集类别
  */
-function toChineseStyle(style: Style): ToChineseStyleReturn {
+function toChineseStyle(style: episodeType): ToChineseStyleReturn {
   switch (style) {
     case "all":
       return "全部"

@@ -26,11 +26,11 @@ class Handler {
     let response: APIResponse
 
     if (episodesKey === "anime_episodes") {
-      response = await getTimeline({ types: 1, before: 0, after: 0 })
+      response = await getTimeline({ types: 1, before: 0, after: 0 }).ready
     }
 
     if (episodesKey === "guochuang_episodes") {
-      response = await getTimeline({ types: 4, before: 0, after: 0 })
+      response = await getTimeline({ types: 4, before: 0, after: 0 }).ready
     }
 
     const result: {}[] = response.result[0]["episodes"]
@@ -80,7 +80,7 @@ class Handler {
       .map((obj: {}): NotificationsParams => {
         if (time === obj["pub_ts"] * 1000) {
           const info: NotificationsParams = {
-            cover: obj["ep_cover"],
+            ep_cover: obj["ep_cover"],
             id: obj["episode_id"],
             index: obj["pub_index"],
             time: obj["pub_ts"],
@@ -115,13 +115,21 @@ class Handler {
     episodesKey: EpisodesKey,
     scheduledTime: number,
   ): Promise<void> {
-    const notice: boolean = await settings("notice")
+    const notice: boolean = await settings("notice", "toggle")
 
     const now: number = Math.floor(Date.now() / 1000)
     const time: number = Math.floor(scheduledTime / 1000)
 
+    // TODO: test
+    console.log("notice: ", notice)
+    console.log("now: ", now)
+    console.log("time: ", time)
+
     if (notice && now === time) {
       const notice_info: NotificationsParams[] = await this.get_noticeInfo(episodesKey, scheduledTime)
+
+      // TODO: test
+      console.log("notice_info: ", notice_info)
 
       await noticeCreate.imageNotice(alarms.create, notice_info)
 

@@ -1,7 +1,9 @@
 const migrations = {
   0: (state: AppState): ReturnType<typeof migrations> => ({
     ...state,
-    episodeStyle: { ...state.episodeStyle, episodeStyle: undefined, style: "all" },
+    episodeStyle: undefined,
+    storage: undefined,
+    episode: { type: "all" },
     notice: { ...state.notice, notice: undefined, toggle: false },
   }),
 }

@@ -13,7 +13,7 @@ import {
 import { syncStorage } from "redux-persist-webextension-storage"
 
 import data from "./features/data"
-import episodeStyle from "./features/episodeStyle"
+import episode from "./features/episode"
 import notice from "./features/notice"
 import storage from "./features/storage"
 import theme from "./features/theme"
@@ -24,7 +24,7 @@ const DEBUG: boolean = process.env.NODE_ENV === "development"
 const combinedReducers: CombinedReducers = combineReducers({
   theme,
   notice,
-  episodeStyle,
+  episode,
   storage,
   data,
 })
@@ -35,7 +35,7 @@ const storageConfig = {
   version: 0,
   migrate: createMigrate(migrations, { debug: DEBUG }),
   debug: DEBUG,
-  blacklist: ["data"],
+  blacklist: ["data", "storage"],
 }
 
 const persistedReducer: PersistedReducer = persistReducer(storageConfig, combinedReducers)

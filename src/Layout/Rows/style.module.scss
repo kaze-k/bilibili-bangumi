@@ -1,0 +1,38 @@
+@use "~/styles/common/colors.scss" as colors;
+
+@mixin content {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  padding-bottom: 20px;
+}
+
+.title {
+  color: colors.$title-text-color;
+  font-weight: bold;
+  padding: 0 15px 3px;
+}
+
+.container {
+  @include content;
+}
+
+.tips {
+  color: colors.$tips-text-color;
+  position: absolute;
+  font-size: 12px;
+  padding: 5px 15px;
+}
+
+.row_content {
+  @include content;
+}
+
+.button_container {
+  @include content;
+
+  font-size: 14px;
+  font-weight: bold;
+}
