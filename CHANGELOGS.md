@@ -1,5 +1,31 @@
+## <small>0.2.4 (2024-03-29)</small>
+
+* refactor: 更改方法名 ([132ab54](https://github.com/kaze-k/bilibili-bangumi/commit/132ab54))
+* refactor: 重构 ([4266970](https://github.com/kaze-k/bilibili-bangumi/commit/4266970))
+* refactor(*): 补充变量类型 ([23d3079](https://github.com/kaze-k/bilibili-bangumi/commit/23d3079))
+* refactor(components): 导入和使用公共按钮组件修改 ([01b2825](https://github.com/kaze-k/bilibili-bangumi/commit/01b2825))
+* refactor(components): 删除多余代码 ([123ffd3](https://github.com/kaze-k/bilibili-bangumi/commit/123ffd3))
+* refactor(components): 重构按钮组件 ([14e9ade](https://github.com/kaze-k/bilibili-bangumi/commit/14e9ade))
+* refactor(components): 重构reset按钮 ([ac96c5d](https://github.com/kaze-k/bilibili-bangumi/commit/ac96c5d))
+* fix(store): 修复缓存变更问题 ([bcaab9e](https://github.com/kaze-k/bilibili-bangumi/commit/bcaab9e))
+* fix(views): 修复存储大小显示错误 ([89f0f17](https://github.com/kaze-k/bilibili-bangumi/commit/89f0f17))
+* update: 更新重置按钮UI样式 ([60fc3ae](https://github.com/kaze-k/bilibili-bangumi/commit/60fc3ae))
+* perf(components): 消息组件增加过渡动画 ([6caaa0f](https://github.com/kaze-k/bilibili-bangumi/commit/6caaa0f))
+* chore: 增加依赖react-transition-group ([7cd730d](https://github.com/kaze-k/bilibili-bangumi/commit/7cd730d))
+
+
+
 ## <small>0.2.3 (2024-03-15)</small>
 
+* chore: 升级依赖 ([ef00844](https://github.com/kaze-k/bilibili-bangumi/commit/ef00844))
+* chore: 重命名manifest配置文件 ([9c6b3d8](https://github.com/kaze-k/bilibili-bangumi/commit/9c6b3d8))
+* chore: import React ([0949006](https://github.com/kaze-k/bilibili-bangumi/commit/0949006))
+* chore(background): 修改注释 ([3d2c5a8](https://github.com/kaze-k/bilibili-bangumi/commit/3d2c5a8))
+* chore(components): 删除刷新组件(由消息组件替代) ([12857a3](https://github.com/kaze-k/bilibili-bangumi/commit/12857a3))
+* chore(components): 重新添加刷新组件 ([f7aa03d](https://github.com/kaze-k/bilibili-bangumi/commit/f7aa03d))
+* chore(popup): 文件重命名 ([62bfdc7](https://github.com/kaze-k/bilibili-bangumi/commit/62bfdc7))
+* chore(release): 0.2.3 ([757bb50](https://github.com/kaze-k/bilibili-bangumi/commit/757bb50))
+* chore(tools): 修改规范工具配置 ([539d568](https://github.com/kaze-k/bilibili-bangumi/commit/539d568))
 * refactor: 补充变量类型 ([2ae64da](https://github.com/kaze-k/bilibili-bangumi/commit/2ae64da))
 * refactor(*): 提取复用hook代码逻辑 ([ec172c5](https://github.com/kaze-k/bilibili-bangumi/commit/ec172c5))
 * refactor(*): 重构获取已使用存储的hook方法 ([3aa4c54](https://github.com/kaze-k/bilibili-bangumi/commit/3aa4c54))
@@ -20,14 +46,6 @@
 * refactor(views): 部分代码重构 ([da16319](https://github.com/kaze-k/bilibili-bangumi/commit/da16319))
 * refactor(views): 部分页面重构 ([afbf85e](https://github.com/kaze-k/bilibili-bangumi/commit/afbf85e))
 * refactor(views): 页面部分状态变量修改 ([2ac34f9](https://github.com/kaze-k/bilibili-bangumi/commit/2ac34f9))
-* chore: 升级依赖 ([ef00844](https://github.com/kaze-k/bilibili-bangumi/commit/ef00844))
-* chore: 重命名manifest配置文件 ([9c6b3d8](https://github.com/kaze-k/bilibili-bangumi/commit/9c6b3d8))
-* chore: import React ([0949006](https://github.com/kaze-k/bilibili-bangumi/commit/0949006))
-* chore(background): 修改注释 ([3d2c5a8](https://github.com/kaze-k/bilibili-bangumi/commit/3d2c5a8))
-* chore(components): 删除刷新组件(由消息组件替代) ([12857a3](https://github.com/kaze-k/bilibili-bangumi/commit/12857a3))
-* chore(components): 重新添加刷新组件 ([f7aa03d](https://github.com/kaze-k/bilibili-bangumi/commit/f7aa03d))
-* chore(popup): 文件重命名 ([62bfdc7](https://github.com/kaze-k/bilibili-bangumi/commit/62bfdc7))
-* chore(tools): 修改规范工具配置 ([539d568](https://github.com/kaze-k/bilibili-bangumi/commit/539d568))
 * feat(components): 新增消息提示组件 ([1ac80cb](https://github.com/kaze-k/bilibili-bangumi/commit/1ac80cb))
 * feat(components): 新增消息组件 ([97a9795](https://github.com/kaze-k/bilibili-bangumi/commit/97a9795))
 * fix(components): 修复点击事件报错 ([52eddcf](https://github.com/kaze-k/bilibili-bangumi/commit/52eddcf))
