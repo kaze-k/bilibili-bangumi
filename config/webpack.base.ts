@@ -1,7 +1,6 @@
 import CopyWebpackPlugin from "copy-webpack-plugin"
 import EslintWebpackPlugin from "eslint-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
-import MarkedWebpackPlugin from "marked-webpack-plugin"
 import path from "path"
 import StylelintWebpackPlugin from "stylelint-webpack-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
@@ -18,16 +17,22 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
     },
     entry: {
       background: path.resolve(__dirname, "../src/background/", "index.ts"),
-      popup: path.resolve(__dirname, "../src/popup/", "index.tsx"),
+      popup: path.resolve(__dirname, "../src/pages/popup/", "index.tsx"),
+      options: path.resolve(__dirname, "../src/pages/options/", "index.tsx"),
+      panel: path.resolve(__dirname, "../src/pages/panel/", "index.tsx"),
+      changelog: path.resolve(__dirname, "../src/pages/changelog/", "index.tsx"),
     },
     output: {
       filename(pathData: PathData): string {
-        return pathData.chunk.name === "background" ? "[name].js" : "static/scripts/[name].js"
+        return pathData.chunk.name === "background" ? "[name].js" : "static/scripts/modules/[name].js"
       },
-      chunkFilename: "static/scripts/[name].js",
+      chunkFilename: "static/scripts/imports/[name].js",
       path: path.resolve(__dirname, "../build/", packageDir),
       clean: true,
       asyncChunks: true,
+    },
+    cache: {
+      type: "filesystem",
     },
     resolve: {
       alias: {
@@ -42,17 +47,25 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
         chunks(chunk: Chunk): boolean {
           return chunk.name !== "background"
         },
-        name: "vendors",
+        cacheGroups: {
+          commons: {
+            filename: "static/scripts/commons/common.[id].js",
+          },
+        },
       },
       minimizer: [
         new TerserWebpackPlugin({
-          extractComments: true,
+          extractComments: {
+            condition: "some",
+            filename: "licenses.txt",
+          },
         }),
       ],
     },
     performance: {
       maxAssetSize: 512000,
       maxEntrypointSize: 512000,
+      assetFilter: (assetFilename: string): boolean => !/\.(txt)$/.test(assetFilename),
     },
     module: {
       rules: [
@@ -62,6 +75,7 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
               test: /\.(ts|tsx)$/,
               exclude: /node_modules/,
               use: [
+                { loader: require.resolve("thread-loader") },
                 {
                   loader: require.resolve("babel-loader"),
                   options: {
@@ -85,6 +99,10 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
                 filename: "static/fonts/[name][ext]",
               },
             },
+            {
+              test: /\.(md)$/,
+              type: "asset/source",
+            },
           ],
         },
       ],
@@ -96,6 +114,27 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
         title: "Bilibili Bangumi",
         inject: "body",
         chunks: ["popup"],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, "../public/options.html"),
+        filename: path.resolve(__dirname, "../build/", packageDir, "./options.html"),
+        title: "设置选项",
+        inject: "body",
+        chunks: ["options"],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, "../public/panel.html"),
+        filename: path.resolve(__dirname, "../build/", packageDir, "./panel.html"),
+        title: "设置选项",
+        inject: "body",
+        chunks: ["panel"],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, "../public/CHANGELOG.html"),
+        filename: path.resolve(__dirname, "../build/", packageDir, "./CHANGELOG.html"),
+        title: "更新日志",
+        inject: "body",
+        chunks: ["changelog"],
       }),
       new EslintWebpackPlugin({
         cache: true,
@@ -134,12 +173,6 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
           },
         },
         pkgJsonProps: ["version", "author"],
-      }),
-      new MarkedWebpackPlugin({
-        input: path.resolve(__dirname, "../CHANGELOG.md"),
-        output: path.resolve(__dirname, "../build/", packageDir, "CHANGELOG.html"),
-        title: "更新日志",
-        template: path.resolve(__dirname, "../public/", "CHANGELOG.html"),
       }),
     ],
   }

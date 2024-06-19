@@ -23,8 +23,8 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
           reporters: ["basic"],
         }),
         new GenerateIconWebpackPlugin({
-          original: path.resolve(__dirname, "./public/icon.png"),
-          outputDir: path.resolve(__dirname, "./build/", packageDir, "./icons/"),
+          logo: path.resolve(__dirname, "./public/icon.png"),
+          dir: "icons",
           size: [128, 64, 48, 32, 16],
           log: false,
           grayscale: true,
@@ -52,8 +52,8 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
           reporters: ["fancy", "profile"],
         }),
         new GenerateIconWebpackPlugin({
-          original: path.resolve(__dirname, "./public/icon.png"),
-          outputDir: path.resolve(__dirname, "./build/", packageDir, "./icons/"),
+          logo: path.resolve(__dirname, "./public/icon.png"),
+          dir: "icons",
           size: [128, 64, 48, 32, 16],
           log: true,
           grayscale: true,
@@ -73,8 +73,8 @@ const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any
     const optionConfig: Configuration = {
       plugins: [
         new GenerateIconWebpackPlugin({
-          original: path.resolve(__dirname, "./public/icon.png"),
-          outputDir: path.resolve(__dirname, "./build/", packageDir, "/icons/"),
+          logo: path.resolve(__dirname, "./public/icon.png"),
+          dir: "icons",
           size: [128, 64, 48, 32, 16],
           log: true,
           grayscale: false,

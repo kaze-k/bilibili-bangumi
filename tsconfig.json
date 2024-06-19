@@ -13,12 +13,12 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "./build/",
-    "noEmit": false,
+    "noEmit": true,
     "removeComments": false,
     "importHelpers": false,
     "declaration": false,
     "declarationMap": false,
-    "strict": false,
+    "strict": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
     "noImplicitThis": false,
@@ -39,9 +39,12 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "typeRoots": ["node_modules/@types"],
     "paths": {
-      "~/*": ["./src/*"],
-      "Home": ["./src/views/Home"],
-      "Setup": ["./src/views/Setup"]
+      "~/*": ["src/*"],
+      "Home": ["src/views/Home"],
+      "Setup": ["src/views/Setup"],
+      "Contents/Changelog": ["src/Layout/Contents/ChangelogContent"],
+      "Contents/Setting": ["src/Layout/Contents/SettingContent"],
+      "Contents/Update": ["src/Layout/Contents/UpdateContent"]
     }
   }
 }
