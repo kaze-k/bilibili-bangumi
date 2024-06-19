@@ -1,40 +1,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import type { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit"
+
+import { MessageType } from "~/background/enums"
+import type { MessageRequest } from "~/background/types"
 
 /**
  * @description 发送中止请求的通信
- * @return {*}  {Promise<void>} 无返回值
+ * @return {*}  {Promise<void>}
  */
-const abort: AsyncThunk<void, void, void> = createAsyncThunk("data/abort", async (): Promise<void> => {
-  await chrome.runtime.sendMessage({ message: "abort" })
+const abort = createAsyncThunk("data/abort", async (): Promise<boolean> => {
+  const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ABORT })
+  return response
 })
 
 /**
  * @description 发送更新信息的通信
- * @return {*}  {Promise<boolean | null>} 返回布尔值
+ * @return {*}  {Promise<boolean>} 返回更新状态
  */
-const update: AsyncThunk<boolean | null, void, void> = createAsyncThunk(
-  "data/update",
-  async (): Promise<boolean | null> => {
-    const response: boolean | null = await chrome.runtime.sendMessage({ message: "update" })
-    return response
-  },
-)
+const update = createAsyncThunk("data/update", async (): Promise<boolean> => {
+  const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.UPDATE })
+  return response
+})
+
+/**
+ * @description 发送获取日期信息的通信
+ * @return {*}  {Promise<[][]>} 返回从background获取的日漫日期信息
+ */
+const getDates = createAsyncThunk("data/getDates", async (): Promise<[][]> => {
+  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DATES })
+  return response.data
+})
 
 /**
  * @description 发送获取全部剧集信息的通信
  * @return {*}  {Promise<[][]>} 返回从background获取的全部剧集信息
  */
-const getAllEpisodes: AsyncThunk<[][], void, void> = createAsyncThunk("data/all/episodes", async (): Promise<[][]> => {
-  const response: MessageResponse = await chrome.runtime.sendMessage({ message: "all_episodes" })
-  return response.data
-})
-
-/**
- * @description 发送获取日漫日期信息的通信
- * @return {*}  {Promise<[][]>} 返回从background获取的日漫日期信息
- */
-const getAnimeDates: AsyncThunk<[][], void, void> = createAsyncThunk("data/anime/dates", async (): Promise<[][]> => {
-  const response: MessageResponse = await chrome.runtime.sendMessage({ message: "anime_dates" })
+const getAllEpisodes = createAsyncThunk("data/getAllEpisodes", async (): Promise<[][]> => {
+  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
+    type: MessageType.GET_ALL_EPISODES,
+  })
   return response.data
 })
 
@@ -42,59 +46,54 @@ const getAnimeDates: AsyncThunk<[][], void, void> = createAsyncThunk("data/anime
  * @description 发送获取日漫剧集信息的通信
  * @return {*}  {Promise<[][]>} 返回从background获取的日漫剧集信息
  */
-const getAnimeEpisodes: AsyncThunk<[][], void, void> = createAsyncThunk(
-  "data/anime/episodes",
-  async (): Promise<[][]> => {
-    const response: MessageResponse = await chrome.runtime.sendMessage({ message: "anime_episodes" })
-    return response.data
-  },
-)
-
-/**
- * @description 发送获取国创日期信息的通信
- * @return {*}  {Promise<[][]>} 返回从background获取的国创日期信息
- */
-const getGuoChuangDates: AsyncThunk<[][], void, void> = createAsyncThunk(
-  "data/guochuang/dates",
-  async (): Promise<[][]> => {
-    const response: MessageResponse = await chrome.runtime.sendMessage({ message: "guochuang_dates" })
-    return response.data
-  },
-)
+const getAnimeEpisodes = createAsyncThunk("data/getAnimeEpisodes", async (): Promise<[][]> => {
+  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
+    type: MessageType.GET_ANIME_EPISODES,
+  })
+  return response.data
+})
 
 /**
  * @description 发送获取国创剧集信息的通信
  * @return {*}  {Promise<[][]>} 返回从background获取的国创剧集信息
  */
-const getGuoChuangEpisodes: AsyncThunk<[][], void, void> = createAsyncThunk(
-  "data/guochuang/episodes",
-  async (): Promise<[][]> => {
-    const response: MessageResponse = await chrome.runtime.sendMessage({ message: "guochuang_episodes" })
-    return response.data
-  },
-)
+const getGuoChuangEpisodes = createAsyncThunk("data/getGuoChuangEpisodes", async (): Promise<[][]> => {
+  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
+    type: MessageType.GET_GUOCHUANG_EPISODES,
+  })
+  return response.data
+})
 
-const data: Slice<DataState, DataReducers, "data"> = createSlice({
+export interface DataState {
+  episodes: [][]
+  dates: [][]
+  todayEpisodes: []
+  checked: boolean[]
+  currentIndex: number
+  isLoading: boolean
+  isError: boolean
+}
+
+const initialState: DataState = {
+  episodes: [],
+  dates: [],
+  todayEpisodes: null,
+  checked: [],
+  currentIndex: null,
+  isLoading: null,
+  isError: null,
+}
+
+const data = createSlice({
   name: "data",
-  initialState: {
-    episodes: [],
-    dates: [],
-    currentIndex: null,
-    checked: [],
-    anime_episodes: [],
-    anime_dates: [],
-    guochuang_episodes: [],
-    guochuang_dates: [],
-    isLoading: null,
-    isError: null,
-  },
+  initialState: initialState,
   reducers: {
     /**
      * @description 设置当前的页面索引
      * @param {DataState} state 状态
      * @param {PayloadAction<number>} actions 设置当前页面的索引值
      */
-    setIndex(state: DataState, actions: PayloadAction<number>): void {
+    setIndex: (state: DataState, actions: PayloadAction<number>): void => {
       state.currentIndex = actions.payload
     },
 
@@ -103,84 +102,106 @@ const data: Slice<DataState, DataReducers, "data"> = createSlice({
      * @param {DataState} state 状态
      * @param {PayloadAction<number>} actions 设置导航栏选中的值
      */
-    setChecked(state: DataState, actions: PayloadAction<number>): void {
+    setChecked: (state: DataState, actions: PayloadAction<number>): void => {
       const checked: boolean[] = [...state.checked].fill(false)
       checked[actions.payload] = true
       state.checked = checked
     },
 
     /**
+     * @description 重置状态
+     * @param {DataState} state 状态
+     */
+    resetState: (state: DataState): void => {
+      state.currentIndex = null
+      state.isLoading = null
+      state.isError = null
+    },
+
+    /**
      * @description 恢复初始状态
      * @param {DataState} state 状态
      */
-    clearData(state: DataState): void {
-      state.episodes = []
-      state.dates = []
-      state.currentIndex = null
-      state.checked = []
-      state.anime_episodes = []
-      state.anime_dates = []
-      state.guochuang_episodes = []
-      state.guochuang_dates = []
-      state.isLoading = null
-      state.isError = null
+    clearData: (state: DataState): void => {
+      Object.keys(initialState).forEach((key: string): void => {
+        state[key] = initialState[key]
+      })
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<DataState>): void => {
     builder
+      // 更新信息的通信的异步处理
       .addCase(update.pending, (state: DataState): void => {
-        state.isError = false
         state.isLoading = true
       })
       .addCase(update.fulfilled, (state: DataState, actions: PayloadAction<boolean>): void => {
         state.isError = !actions.payload
-        if (!state.isError) {
-          state.isLoading = !actions.payload
-        } else {
-          state.isLoading = false
+        state.isLoading = false
+      })
+      .addCase(update.rejected, (state: DataState): void => {
+        state.isError = true
+        state.isLoading = false
+      })
+
+      // 获取日期信息的通信的异步处理
+      .addCase(getDates.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
+        if (actions.payload === null) state.isError = true
+        if (actions.payload) state.dates = actions.payload
+      })
+
+      // 获取全部剧集信息的通信的异步处理
+      .addCase(getAllEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
+        if (actions.payload === null) state.isError = true
+        if (actions.payload) state.episodes = actions.payload
+
+        if (actions.payload && actions.payload.length) {
+          state.todayEpisodes = actions.payload.find(
+            (episodes: object[]): boolean => episodes === actions.payload[Math.floor(actions.payload.length / 2)],
+          )
+        }
+
+        if (state.currentIndex === null && actions.payload && actions.payload.length) {
+          state.currentIndex = Math.floor(actions.payload.length / 2)
         }
       })
 
-      .addCase(getAllEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
-        state.episodes = actions.payload
-      })
-
-      .addCase(getAnimeDates.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
-        state.anime_dates = actions.payload
-        state.dates = actions.payload
-      })
-
+      // 获取动漫剧集信息的通信的异步处理
       .addCase(getAnimeEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
-        state.anime_episodes = actions.payload
-        state.episodes = actions.payload
+        if (actions.payload === null) state.isError = true
+        if (actions.payload) state.episodes = actions.payload
+
+        if (actions.payload && actions.payload.length) {
+          state.todayEpisodes = actions.payload.find(
+            (episodes: object[]): boolean => episodes === actions.payload[Math.floor(actions.payload.length / 2)],
+          )
+        }
+
+        if (state.currentIndex === null && actions.payload && actions.payload.length) {
+          state.currentIndex = Math.floor(actions.payload.length / 2)
+        }
       })
 
-      .addCase(getGuoChuangDates.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
-        state.guochuang_dates = actions.payload
-        state.dates = actions.payload
-      })
-
+      // 获取国创剧集信息的通信的异步处理
       .addCase(getGuoChuangEpisodes.fulfilled, (state: DataState, actions: PayloadAction<[][]>): void => {
-        state.guochuang_episodes = actions.payload
-        state.episodes = actions.payload
+        if (actions.payload === null) state.isError = true
+        if (actions.payload) state.episodes = actions.payload
+
+        if (actions.payload && actions.payload.length) {
+          state.todayEpisodes = actions.payload.find(
+            (episodes: object[]): boolean => episodes === actions.payload[Math.floor(actions.payload.length / 2)],
+          )
+        }
+
+        if (state.currentIndex === null && actions.payload && actions.payload.length) {
+          state.currentIndex = Math.floor(actions.payload.length / 2)
+        }
       })
   },
 })
 
-const { setIndex, setChecked, clearData } = data.actions
+export const { setIndex, setChecked, resetState, clearData } = data.actions
 
-export {
-  setIndex,
-  setChecked,
-  clearData,
-  abort,
-  update,
-  getAllEpisodes,
-  getAnimeDates,
-  getAnimeEpisodes,
-  getGuoChuangDates,
-  getGuoChuangEpisodes,
-}
+export { abort, update, getDates, getAllEpisodes, getAnimeEpisodes, getGuoChuangEpisodes }
 
 export const dataInitialState: () => DataState = data.getInitialState
 

@@ -1,150 +1,109 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from "@reduxjs/toolkit"
 
-/**
- * @description 发送开启通知的通信
- * @return {*}  {Promise<void>} 无返回值
- */
-const enableNotice: AsyncThunk<void, void, void> = createAsyncThunk("notice/enable", async (): Promise<void> => {
-  await chrome.runtime.sendMessage({ message: "enable_notice" })
-})
+import { MessageType } from "~/background/enums"
+import type { MessageRequest } from "~/background/types"
 
-/**
- * @description 发送关闭通知的通信
- * @return {*}  {Promise<void>} 无返回值
- */
-const disableNotice: AsyncThunk<void, void, void> = createAsyncThunk("notice/disable", async (): Promise<void> => {
-  await chrome.runtime.sendMessage({ message: "disable_notice" })
-})
+export interface NoticeState {
+  toggle: boolean
+  silent: boolean
+  autoClear: boolean
+  animeNotice: boolean
+  guochuangNotice: boolean
+  timeout: number
+}
 
-/**
- * @description 发送开启番剧通知的通信
- * @return {*}  {Promise<void>} 无返回值
- */
-const enableAnimeNotice: AsyncThunk<void, void, void> = createAsyncThunk(
-  "notice/anime/enable",
-  async (): Promise<void> => {
-    await chrome.runtime.sendMessage({ message: "enable_anime_notice" })
-  },
-)
+const initialState: NoticeState = {
+  toggle: false,
+  silent: false,
+  autoClear: false,
+  animeNotice: false,
+  guochuangNotice: false,
+  timeout: 5 * 60 * 1000,
+}
 
-/**
- * @description 发送关闭番剧通知的通信
- * @return {*}  {Promise<void>} 无返回值
- */
-const disableAnimeNotice: AsyncThunk<void, void, void> = createAsyncThunk(
-  "notice/anime/disable",
-  async (): Promise<void> => {
-    await chrome.runtime.sendMessage({ message: "disable_anime_notice" })
-  },
-)
-
-/**
- * @description 发送开启国创通知的通信
- * @return {*}  {Promise<void>} 无返回值
- */
-const enableGuoChuangNotice: AsyncThunk<void, void, void> = createAsyncThunk(
-  "notice/guochuang/enable",
-  async (): Promise<void> => {
-    await chrome.runtime.sendMessage({ message: "enable_guochuang_notice" })
-  },
-)
-
-/**
- * @description 发送关闭国创通知的通信
- * @return {*}  {Promise<void>} 无返回值
- */
-const disableGuoChuangNotice: AsyncThunk<void, void, void> = createAsyncThunk(
-  "notice/guochuang/disable",
-  async (): Promise<void> => {
-    await chrome.runtime.sendMessage({ message: "disable_guochuang_notice" })
-  },
-)
-
-const notice: Slice<NoticeState, NoticeReducers, "notice"> = createSlice({
+const notice = createSlice({
   name: "notice",
-  initialState: {
-    toggle: false,
-    silent: false,
-    autoClear: false,
-    animeNotice: false,
-    guochuangNotice: false,
-    timeout: 5 * 60 * 1000,
-  },
+  initialState: initialState,
   reducers: {
     /**
-     * @description 切换通知开关
+     * @description 设置通知开关
      * @param {NoticeState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置通知的状态
      */
-    toggleNotice(state: NoticeState): void {
-      state.toggle = !state.toggle
+    setNotice: (state: NoticeState, actions: PayloadAction<boolean>): void => {
+      state.toggle = actions.payload
       state.animeNotice = state.toggle
       state.guochuangNotice = state.toggle
+
+      if (state.toggle) {
+        chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ENABLE_NOTICES })
+      } else {
+        chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DISABLE_NOTICES })
+      }
     },
 
     /**
-     * @description 切换静默通知开关
+     * @description 设置静默通知开关
      * @param {NoticeState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置静默通知的状态
      */
-    toggleSilent(state: NoticeState): void {
-      state.silent = !state.silent
+    setSilent: (state: NoticeState, actions: PayloadAction<boolean>): void => {
+      state.silent = actions.payload
     },
 
     /**
-     * @description 切换自动清除通知开关
+     * @description 设置自动清除通知开关
      * @param {NoticeState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置自动清除通知的状态
      */
-    toggleAutoClear(state: NoticeState): void {
-      state.autoClear = !state.autoClear
+    setAutoClear: (state: NoticeState, actions: PayloadAction<boolean>): void => {
+      state.autoClear = actions.payload
     },
 
     /**
-     * @description 切换番剧通知开关
+     * @description 设置番剧通知开关
      * @param {NoticeState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置番剧通知的状态
      */
-    toggleAnimeNotice(state: NoticeState): void {
-      state.animeNotice = !state.animeNotice
+    setAnimeNotice: (state: NoticeState, actions: PayloadAction<boolean>): void => {
+      state.animeNotice = actions.payload
+
+      if (state.animeNotice) {
+        chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ENABLE_ANIME_NOTICE })
+      } else {
+        chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DISABLE_ANIME_NOTICE })
+      }
     },
 
     /**
-     * @description 切换国创通知开关
+     * @description 设置国创通知开关
      * @param {NoticeState} state 状态
+     * @param {PayloadAction<boolean>} actions 设置国创通知的状态
      */
-    toggleGuoChuangNotice(state: NoticeState): void {
-      state.guochuangNotice = !state.guochuangNotice
+    setGuoChuangNotice: (state: NoticeState, actions: PayloadAction<boolean>): void => {
+      state.guochuangNotice = actions.payload
+
+      if (state.guochuangNotice) {
+        chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ENABLE_GUOCHUANG_NOTICE })
+      } else {
+        chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DISABLE_GUOCHUANG_NOTICE })
+      }
     },
 
     /**
      * @description 重置通知开关
      * @param {NoticeState} state 状态
      */
-    resetNotice(state: NoticeState): void {
-      state.toggle = false
-      state.silent = false
-      state.autoClear = false
-      state.animeNotice = false
-      state.guochuangNotice = false
-      state.timeout = 5 * 60 * 1000
+    resetNotice: (state: NoticeState): void => {
+      Object.keys(initialState).forEach((key: string): void => {
+        state[key] = initialState[key]
+      })
     },
   },
 })
 
-const { toggleNotice, toggleSilent, toggleAutoClear, toggleAnimeNotice, toggleGuoChuangNotice, resetNotice } =
-  notice.actions
-
-export {
-  toggleNotice,
-  toggleSilent,
-  toggleAutoClear,
-  toggleAnimeNotice,
-  toggleGuoChuangNotice,
-  resetNotice,
-  enableNotice,
-  disableNotice,
-  enableAnimeNotice,
-  disableAnimeNotice,
-  enableGuoChuangNotice,
-  disableGuoChuangNotice,
-}
+export const { setNotice, setSilent, setAutoClear, setAnimeNotice, setGuoChuangNotice, resetNotice } = notice.actions
 
 export const noticeInitialState: () => NoticeState = notice.getInitialState
 

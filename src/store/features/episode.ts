@@ -1,47 +1,53 @@
 import { createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from "@reduxjs/toolkit"
 
-const episode: Slice<EpisodeState, EpisodeReducers, "episode"> = createSlice({
+import { EpisodeType } from "../enums"
+
+export interface EpisodeState {
+  type: EpisodeType
+  todayType: EpisodeType
+}
+
+const initialState: EpisodeState = {
+  type: EpisodeType.ALL,
+  todayType: EpisodeType.ALL,
+}
+
+const episode = createSlice({
   name: "episode",
-  initialState: {
-    type: "all",
-    index: 0,
-  },
+  initialState: initialState,
   reducers: {
     /**
      * @description 设置类型
      * @param {EpisodeState} state 状态
      * @param {PayloadAction<string>} actions 设置的类型
      */
-    setType(state: EpisodeState, actions: PayloadAction<"all" | "anime" | "guochuang">): void {
+    setType: (state: EpisodeState, actions: PayloadAction<EpisodeType>): void => {
       state.type = actions.payload
+    },
 
-      switch (actions.payload) {
-        case "all":
-          state.index = 0
-          break
-
-        case "anime":
-          state.index = 1
-          break
-
-        case "guochuang":
-          state.index = 2
-          break
-      }
+    /**
+     * @description 设置今日类型
+     * @param {EpisodeState} state 状态
+     * @param {PayloadAction<EpisodeType>} actions 设置今日类型
+     */
+    setTodayType: (state: EpisodeState, actions: PayloadAction<EpisodeType>): void => {
+      state.todayType = actions.payload
     },
 
     /**
      * @description 重置类型
      * @param {EpisodeState} state 状态
      */
-    resetType(state: EpisodeState): void {
-      state.type = "all"
-      state.index = 0
+    resetType: (state: EpisodeState): void => {
+      Object.keys(initialState).forEach((key: string): void => {
+        state[key] = initialState[key]
+      })
     },
   },
 })
 
-export const { setType, resetType } = episode.actions
+export const { setType, setTodayType, resetType } = episode.actions
 
 export const episodeInitialState: () => EpisodeState = episode.getInitialState
 

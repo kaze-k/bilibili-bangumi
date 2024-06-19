@@ -1,55 +1,99 @@
+import type { PayloadAction } from "@reduxjs/toolkit"
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-  createMigrate,
-  persistReducer,
-  persistStore,
-} from "redux-persist"
+import { createLogger } from "redux-logger"
+import { persistReducer, persistStore } from "redux-persist"
 import { syncStorage } from "redux-persist-webextension-storage"
+import type { PersistPartial } from "redux-persist/lib/persistReducer"
 
+import { PersistKey } from "./enums"
 import data from "./features/data"
-import episode from "./features/episode"
-import notice from "./features/notice"
-import storage from "./features/storage"
-import theme from "./features/theme"
-import migrations from "./migrations"
+import episode, { episodeInitialState } from "./features/episode"
+import notice, { noticeInitialState } from "./features/notice"
+import theme, { themeInitialState } from "./features/theme"
+import type { DataState, EpisodeState, NoticeState, ThemeState } from "./types"
 
 const DEBUG: boolean = process.env.NODE_ENV === "development"
 
-const combinedReducers: CombinedReducers = combineReducers({
-  theme,
-  notice,
-  episode,
-  storage,
-  data,
-})
-
-const storageConfig = {
-  key: "syncStorage",
+const episodePersistConfig = {
+  key: PersistKey.EPISODE,
+  keyPrefix: PersistKey.PREFIX,
   storage: syncStorage,
+  serialize: true,
   version: 0,
-  migrate: createMigrate(migrations, { debug: DEBUG }),
   debug: DEBUG,
-  blacklist: ["data", "storage"],
+  blacklist: [],
 }
 
-const persistedReducer: PersistedReducer = persistReducer(storageConfig, combinedReducers)
+const noticePersistConfig = {
+  key: PersistKey.NOTICE,
+  keyPrefix: PersistKey.PREFIX,
+  storage: syncStorage,
+  serialize: true,
+  version: 0,
+  debug: DEBUG,
+  blacklist: [],
+}
 
-const store: Store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware: GetDefaultMiddleware): Middleware =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+const themePersistConfig = {
+  key: PersistKey.THEME,
+  keyPrefix: PersistKey.PREFIX,
+  storage: syncStorage,
+  serialize: true,
+  version: 0,
+  debug: DEBUG,
+  blacklist: [],
+}
+
+interface RootState {
+  data: DataState
+  episode: EpisodeState & PersistPartial
+  notice: NoticeState & PersistPartial
+  theme: ThemeState & PersistPartial
+}
+
+const logger = createLogger()
+
+const combineReducer = combineReducers({
+  data: data,
+  episode: persistReducer(episodePersistConfig, episode),
+  notice: persistReducer(noticePersistConfig, notice),
+  theme: persistReducer(themePersistConfig, theme),
+})
+
+const reducer: (state: RootState, action: PayloadAction<RootState>) => RootState = (
+  state: RootState,
+  action: PayloadAction<RootState>,
+): RootState => {
+  if (action.type === "SET_STATES") return action.payload
+  if (action.type === "RESET_STATES") {
+    const resetState = {
+      episode: { ...state.episode, ...episodeInitialState() },
+      notice: { ...state.notice, ...noticeInitialState() },
+      theme: { ...state.theme, ...themeInitialState() },
+    }
+    return combineReducer({ ...state, ...resetState }, action)
+  }
+  return combineReducer(state, action)
+}
+
+const store = configureStore({
+  reducer: reducer,
+  devTools: DEBUG,
+  middleware: (getDefaultMiddleware) =>
+    DEBUG
+      ? getDefaultMiddleware({
+          serializableCheck: false,
+        }).concat(logger)
+      : getDefaultMiddleware({
+          serializableCheck: false,
+        }),
 })
 
 const persistor = persistStore(store)
 
+type AppState = ReturnType<typeof store.getState>
+type AppDispatch = typeof store.dispatch
+
 export { store, persistor }
+
+export type { AppState, AppDispatch }
