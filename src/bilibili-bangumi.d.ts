@@ -13,6 +13,11 @@ declare module "*.png" {
   export default content
 }
 
+declare module "*.md" {
+  const content: string
+  export default content
+}
+
 declare module "archive-webpack-plugin" {
   interface Options {
     source: string
@@ -26,17 +31,3 @@ declare module "archive-webpack-plugin" {
   }
   export default ArchiveWebapckPlugin
 }
-
-interface Json {
-  [key: string]: any
-}
-
-interface DarkModeProps {
-  darkMode?: boolean
-}
-
-type StorageChanges = {
-  [key: string]: chrome.storage.StorageChange
-}
-
-type StorageAreaName = "sync" | "local" | "managed" | "session"
