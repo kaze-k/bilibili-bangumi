@@ -18,38 +18,14 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint", "eslint-plugin-react"],
+  "plugins": ["@typescript-eslint", "eslint-plugin-react", "react-hooks", "react-refresh"],
   "settings": {
     "react": {
       "pragma": "React",
       "version": "detect"
     }
-  },
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-types": [
-      "error",
-      {
-        "extendDefaults": true,
-        "types": {
-          "{}": false
-        }
-      }
-    ],
-    "@typescript-eslint/no-empty-function": [
-      "error",
-      {
-        "allow": ["constructors"]
-      }
-    ],
-    "@typescript-eslint/no-inferrable-types": [
-      "error",
-      {
-        "ignoreParameters": true,
-        "ignoreProperties": true
-      }
-    ]
   }
 }

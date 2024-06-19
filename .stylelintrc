@@ -3,9 +3,7 @@
   "extends": ["stylelint-config-standard", "stylelint-config-standard-scss"],
   "rules": {
     "prettier/prettier": true,
-    "color-hex-length": "long",
-    "selector-class-pattern": "^([a-z][a-z0-9]*)(_[a-z0-9]+)*$",
-    "selector-pseudo-class-no-unknown": null
+    "color-hex-length": "long"
   },
   "overrides": [
     {
