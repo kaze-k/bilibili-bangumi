@@ -1,33 +1,30 @@
-import React from "react"
+import type React from "react"
 import { Provider } from "react-redux"
 import { MemoryRouter } from "react-router-dom"
 import { PersistGate } from "redux-persist/integration/react"
 
-import Loading from "~/components/common/Loading"
-import RouterView from "~/router"
+import Loading from "~/components/Loading"
 import { persistor, store } from "~/store"
 
-import Global from "./Global"
+import Options from "./Options"
 
 /**
- * @description popup页面根组件
+ * @description options应用组件
  * @return {*}  {React.ReactElement}
  */
-function Popup(): React.ReactElement {
+function App(): React.ReactElement {
   return (
     <Provider store={store}>
       <PersistGate
-        loading={<Loading />}
+        loading={<Loading icon="spinner" />}
         persistor={persistor}
       >
-        <Global>
-          <MemoryRouter>
-            <RouterView />
-          </MemoryRouter>
-        </Global>
+        <MemoryRouter>
+          <Options />
+        </MemoryRouter>
       </PersistGate>
     </Provider>
   )
 }
 
-export default Popup
+export default App

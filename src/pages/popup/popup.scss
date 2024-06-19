@@ -1,0 +1,8 @@
+@use "~/styles/global/reset.scss";
+@use "~/styles/theme/dark.scss";
+@use "~/styles/theme/light.scss";
+
+#root {
+  width: 400px;
+  height: 500px;
+}
