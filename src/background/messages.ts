@@ -1,32 +1,44 @@
+import { AppState } from "~/store"
+
+import { DateTypeKey, EpisodeTypeKey, MessageType, StateType } from "./enums"
+import type { MessageRequest, SendResponse, SyncStatePayload } from "./types"
+
 /**
- * @description popup页面通信
- * @class Popup
+ * @description 剧集信息通信
+ * @class Episode
  */
-class Popup {
+class Episode {
   /**
    * 私有popup类构造方法
    * @private
    * @memberof Popup
    */
-  private constructor() {}
+  private constructor() {
+    return
+  }
 
   /**
    * @description 获取剧集信息
    * @static
    * @async
    * @param {SendResponse} sendResponse 发送通信的方法
-   * @param {EpisodesKey} episodesKey 存储剧集信息的键名
-   * @return {*}  {Promise<void>} 无返回值
+   * @param {MessageType.GET_ANIME_EPISODES | MessageType.GET_GUOCHUANG_EPISODES} episodeKey 存储剧集信息的键名
+   * @return {*}  {Promise<void>}
    * @memberof Popup
    */
-  public static async getEpisodes(sendResponse: SendResponse, episodesKey: EpisodesKey): Promise<void> {
-    const result: Storages = await chrome.storage.local.get(episodesKey)
+  public static async getEpisodes(
+    sendResponse: SendResponse,
+    episodeKey: MessageType.GET_ANIME_EPISODES | MessageType.GET_GUOCHUANG_EPISODES,
+  ): Promise<void> {
+    // 获取本地缓存的剧集信息
+    let key: EpisodeTypeKey
+    if (episodeKey === MessageType.GET_ANIME_EPISODES) key = EpisodeTypeKey.ANIME_EPISODES
+    if (episodeKey === MessageType.GET_GUOCHUANG_EPISODES) key = EpisodeTypeKey.GUOCHUANG_EPISODES
 
-    if (result[episodesKey]) {
-      sendResponse({ data: result[episodesKey] })
-    } else {
-      this.getEpisodes(sendResponse, episodesKey)
-    }
+    const result: object = await chrome.storage.local.get(key)
+    if (typeof result[key] === "undefined") return sendResponse({ data: [] })
+
+    sendResponse({ data: result[key] })
   }
 
   /**
@@ -34,18 +46,15 @@ class Popup {
    * @static
    * @async
    * @param {SendResponse} sendResponse 发送通信的方法
-   * @param {DatesKey} datesKey 存储日期信息的键名
-   * @return {*}  {Promise<void>} 无返回值
+   * @return {*}  {Promise<void>}
    * @memberof Popup
    */
-  public static async getDate(sendResponse: SendResponse, datesKey: DatesKey): Promise<void> {
-    const result: Storages = await chrome.storage.local.get(datesKey)
+  public static async getDate(sendResponse: SendResponse): Promise<void> {
+    // 获取本地缓存的日期信息
+    const result: object = await chrome.storage.local.get(DateTypeKey.DATES)
+    if (typeof result[DateTypeKey.DATES] === "undefined") return sendResponse({ data: [] })
 
-    if (result[datesKey]) {
-      sendResponse({ data: result[datesKey] })
-    } else {
-      this.getDate(sendResponse, datesKey)
-    }
+    sendResponse({ data: result[DateTypeKey.DATES] })
   }
 
   /**
@@ -53,34 +62,93 @@ class Popup {
    * @static
    * @async
    * @param {SendResponse} sendResponse 发送通信的方法
-   * @return {*}  {Promise<void>} 无返回值
+   * @return {*}  {Promise<void>}
    * @memberof Popup
    */
   public static async getAllEpisodes(sendResponse: SendResponse): Promise<void> {
-    const anime: Storages = await chrome.storage.local.get("anime_episodes")
-    const guochuang: Storages = await chrome.storage.local.get("guochuang_episodes")
+    // 获取本地缓存的日漫剧集信息
+    const anime: object = await chrome.storage.local.get(EpisodeTypeKey.ANIME_EPISODES)
+    // 获取本地缓存的国创剧集信息
+    const guochuang: object = await chrome.storage.local.get(EpisodeTypeKey.GUOCHUANG_EPISODES)
 
-    if (anime["anime_episodes"]?.length === guochuang["guochuang_episodes"]?.length) {
-      const episodes: {}[][] = []
+    const anime_episodes: object[][] = anime[EpisodeTypeKey.ANIME_EPISODES]
+    const guochuang_episodes: object[][] = guochuang[EpisodeTypeKey.GUOCHUANG_EPISODES]
 
-      for (const i in anime["anime_episodes"]) {
-        const episode: {}[] = [...anime["anime_episodes"][i], ...guochuang["guochuang_episodes"][i]]
-        episodes.push(episode)
-      }
+    if (typeof anime_episodes === "undefined" && Array.isArray(guochuang_episodes)) {
+      return sendResponse({ data: guochuang_episodes })
+    } else if (typeof guochuang_episodes === "undefined" && Array.isArray(anime_episodes)) {
+      return sendResponse({ data: anime_episodes })
+    } else if (typeof anime_episodes === "undefined" && typeof guochuang_episodes === "undefined") {
+      return sendResponse({ data: [] })
+    }
 
-      episodes.map((episode: {}[]): {}[] =>
-        episode.sort((obj1: {}, obj2: {}): number => obj1["pub_ts"] - obj2["pub_ts"]),
-      )
+    // 对剧集信息进行合并
+    const episodes: object[][] = Array(Math.max(anime_episodes.length, guochuang_episodes.length))
+      .fill(null)
+      .map((_episode: object[], index: number): object[] => [...anime_episodes[index], ...guochuang_episodes[index]])
 
-      sendResponse({ data: episodes })
-    } else {
-      this.getAllEpisodes(sendResponse)
+    // 对剧集信息进行排序
+    episodes.forEach((episode: object[]): object[] =>
+      episode.sort((obj1: object, obj2: object): number => obj1["pub_ts"] - obj2["pub_ts"]),
+    )
+
+    sendResponse({ data: episodes })
+  }
+}
+
+/**
+ * @description 状态信息通信
+ * @class State
+ */
+class State {
+  /**
+   * @description 状态
+   * @private
+   * @static
+   * @type {Omit<AppState, "data">}
+   * @memberof State
+   */
+  private static state: Omit<AppState, "data">
+
+  /**
+   * 私有状态类构造方法
+   * @memberof State
+   */
+  private constructor() {
+    return
+  }
+
+  /**
+   * @description 同步状态
+   * @static
+   * @param {MessageRequest<SyncStatePayload>} message 消息
+   * @memberof State
+   */
+  public static sync(message: MessageRequest<SyncStatePayload>): void {
+    const newState: Omit<AppState, "data"> = message.payload.state
+    const source: string = message.payload.source
+
+    if (JSON.stringify(newState) !== JSON.stringify(this.state)) {
+      this.state = newState
+
+      chrome.runtime.sendMessage<MessageRequest<SyncStatePayload>>({
+        type: StateType.UPDATE_STATES,
+        payload: { state: this.state, source: source },
+      })
     }
   }
 }
 
-const messages = {
-  popup: Popup,
+interface Messages {
+  episode: typeof Episode
+  state: typeof State
 }
+
+const messages: Messages = {
+  episode: Episode,
+  state: State,
+}
+
+export type { Messages }
 
 export default messages
