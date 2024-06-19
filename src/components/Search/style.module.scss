@@ -1,4 +1,6 @@
-.input_box {
+@use "~/styles/common/mixins.scss" as common;
+
+.input-box {
   flex: 1;
   display: flex;
   align-items: center;
@@ -9,6 +11,13 @@
   height: 30px;
   border-radius: 18px;
   margin: 0 2px;
+  border: var(--input-border);
+  background-color: var(--input-bg-color);
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    border: var(--input-hover-border);
+  }
 }
 
 .input {
@@ -18,28 +27,23 @@
   padding: 0 8px;
   outline: none;
   border: none;
-  caret-color: #fb7299;
+  color: var(--input-text-color);
+  background-color: var(--input-bg-color);
+  caret-color: var(--input-caret-color);
+  transition: all 0.4s ease-in-out;
 }
 
-.clear {
-  width: 15px;
-  height: 15px;
+.clear-button {
+  @include common.button;
+
+  color: var(--clear-button-text-color);
+
+  & :hover {
+    color: var(--clear-button-hover-text-color);
+  }
 }
 
 .icon {
-  color: rgb(251 114 153 / 50%);
-
-  &:hover {
-    color: #fb7299;
-    cursor: pointer;
-  }
-}
-
-.icon_dark_mode {
-  color: rgb(52 58 67 / 80%);
-
-  &:hover {
-    color: #343a43;
-    cursor: pointer;
-  }
+  color: var(--search-icon-color);
+  transition: all 0.4s ease-in-out;
 }

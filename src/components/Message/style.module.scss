@@ -1,0 +1,50 @@
+@use "~/styles/common/mixins.scss" as common;
+
+@mixin message-wrapper {
+  width: 200px;
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  border-radius: 20px;
+  transition: all 0.4s ease-in-out;
+  color: var(--message-text-color);
+  background-color: var(--message-bg-color);
+  box-shadow: var(--message-box-shadow);
+}
+
+.message-container {
+  position: absolute;
+  left: 50%;
+  z-index: 999;
+  transform: translateX(-50%);
+  margin-top: 5px;
+}
+
+.message-type-wrapper {
+  @include message-wrapper;
+
+  justify-content: space-between;
+}
+
+.message-default-wrapper {
+  @include message-wrapper;
+
+  justify-content: center;
+}
+
+.message-content {
+  padding: 1px;
+}
+
+.clear-button {
+  @include common.button;
+
+  color: var(--clear-button-text-color);
+
+  &:hover {
+    color: var(--clear-button-hover-text-color);
+  }
+}

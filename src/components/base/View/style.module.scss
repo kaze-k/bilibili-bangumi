@@ -1,0 +1,15 @@
+.view {
+  position: absolute;
+  inset: 0;
+  min-width: 300px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  transition:
+    color 0.4s ease-in-out,
+    background-color 0.4s ease-in-out;
+}

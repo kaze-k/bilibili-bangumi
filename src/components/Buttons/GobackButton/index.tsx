@@ -1,43 +1,42 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React from "react"
-import { NavigateFunction, useNavigate } from "react-router-dom"
+import { forwardRef, useCallback } from "react"
+import type React from "react"
+import { useNavigate } from "react-router-dom"
+import type { NavigateFunction } from "react-router-dom"
 
-import { RoundButton } from "~/components/common/Button"
-import { useMessage } from "~/components/common/Message"
+import { RoundButton } from "~/components/base"
+
+// 按钮标题属性
+const TITLE = "返回"
 
 /**
  * @description 返回按钮组件
- * @param {DarkModeProps} props 深色主题Props
- * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {unknown} _props 按钮props
+ * @param {React.Ref<HTMLButtonElement>} ref 按钮ref
  * @return {*}  {React.ReactElement}
  */
-function GoBackButton(props: DarkModeProps): React.ReactElement {
+function GoBackButton(_props: unknown, ref: React.Ref<HTMLButtonElement>): React.ReactElement {
   const navigation: NavigateFunction = useNavigate()
-  const message: ReturnType<typeof useMessage> = useMessage()
 
   /**
    * @description 返回的方法: 返回上一页并清除消息
    */
-  const handleGoback: () => void = (): void => {
+  const handleGoback: () => void = useCallback((): void => {
     navigation(-1)
-    message.clear()
-  }
-
-  const icon: React.ReactElement = (
-    <FontAwesomeIcon
-      icon="angle-left"
-      size="xl"
-    />
-  )
+  }, [navigation])
 
   return (
     <RoundButton
+      ref={ref}
+      title={TITLE}
       onClick={handleGoback}
-      darkMode={props.darkMode}
     >
-      {icon}
+      <FontAwesomeIcon
+        icon="chevron-left"
+        size="xl"
+      />
     </RoundButton>
   )
 }
 
-export default GoBackButton
+export default forwardRef(GoBackButton)

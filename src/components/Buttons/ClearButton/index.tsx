@@ -1,64 +1,65 @@
-import React, { useEffect, useState } from "react"
+import { forwardRef, useCallback, useEffect, useState } from "react"
+import type React from "react"
 import { useDispatch } from "react-redux"
 
-import { BlockButton } from "~/components/common/Button"
-import { useMessage } from "~/components/common/Message"
-import useGetStorageInUse from "~/hooks/useGetStorageInUse"
+import { useMessage } from "~/components/Message"
+import type { Message } from "~/components/Message/types"
+import { BlockButton } from "~/components/base"
+import { useGetStorageInUse } from "~/hooks"
+import type { AppDispatch } from "~/store"
 import { clearData } from "~/store/features/data"
 
+// 按钮文本
+const TEXT = "清理"
+// 按钮标题属性
+const TITLE = "清理存储"
+
 /**
- * @description 清理本地存储按键组件
- * @param {DarkModeProps} props 深色主题Props
- * @param {boolean} props.darkMode 深色主题 [可选]
+ * @description 清理本地存储按钮组件
+ * @param {unknown} _props 按钮props
+ * @param {React.Ref<HTMLButtonElement>} ref 按钮ref
  * @return {*}  {React.ReactElement}
  */
-function ClearButton(props: DarkModeProps): React.ReactElement {
-  const dispatch: Dispatch = useDispatch()
-  const message: ReturnType<typeof useMessage> = useMessage()
-
-  const text = "清理"
+function ClearButton(_props: unknown, ref: React.Ref<HTMLButtonElement>): React.ReactElement {
+  const dispatch: AppDispatch = useDispatch()
+  const message: Message = useMessage()
 
   // 状态
-  const [allowed, setAllowed] = useState<boolean>(true)
+  const [clearable, setClearable] = useState<boolean>(false)
   const usedSize: number = useGetStorageInUse()
 
   /**
    * @description 清除本地存储的方法: 清除本地存储并恢复缓存状态
    */
-  const handleClear: () => void = (): void => {
+  const handleClear: () => void = useCallback((): void => {
     message.promise(
       Promise.all([chrome.storage.local.clear(), dispatch(clearData())]).then(
-        () => setAllowed(false),
-        () => setAllowed(true),
+        (): void => setClearable(false),
+        (): void => setClearable(true),
       ),
       {
         success: "存储已清理",
         error: "存储清理失败",
       },
     )
-  }
+  }, [message, dispatch])
 
-  // 当已使用存储变化时: 允许按钮点击
+  // 当已使用存储变化时: 改变按钮的可用状态
   useEffect((): void => {
-    if (usedSize !== 0) {
-      setAllowed(true)
-    }
-  }, [usedSize])
+    if (usedSize !== 0) setClearable(true)
+    else setClearable(false)
+  }, [usedSize, dispatch])
 
   return (
     <BlockButton
-      title="清理存储"
+      ref={ref}
+      title={TITLE}
       onClick={handleClear}
-      clickable={allowed}
-      darkMode={props.darkMode}
-      btnTheme={{
-        color: { light: "#f1f1f1", dark: "#f1f1f1" },
-        backgroundColor: { light: "#fb7299", dark: "#fb7299" },
-      }}
+      clickable={clearable}
     >
-      {text}
+      {TEXT}
     </BlockButton>
   )
 }
 
-export default ClearButton
+export default forwardRef(ClearButton)

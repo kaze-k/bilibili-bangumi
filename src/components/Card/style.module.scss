@@ -1,0 +1,36 @@
+.card {
+  border-radius: 8px;
+  box-shadow: var(--card-box-shadow);
+  margin: 5px;
+  transition: all 0.4s ease-in-out;
+  color: var(--card-text-color);
+  background-color: var(--card-bg-color);
+}
+
+.header {
+  padding: 8px 3px;
+  margin: 0 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--card-header-text-color);
+}
+
+.footer {
+  padding: 5px 0;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-top: var(--card-content-border);
+  border-bottom: var(--card-content-border);
+}
+
+.context {
+  width: 65%;
+  margin: 0 10px;
+  text-align: center;
+}

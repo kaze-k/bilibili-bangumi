@@ -1,52 +1,62 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React from "react"
-import { useDispatch } from "react-redux"
+import { forwardRef, useCallback } from "react"
+import type React from "react"
+import { useDispatch, useSelector } from "react-redux"
 
-import { RoundButton } from "~/components/common/Button"
-import { toggleDarkMode } from "~/store/features/theme"
+import { RoundButton } from "~/components/base"
+import type { AppDispatch, AppState } from "~/store"
+import { setDarkMode } from "~/store/features/theme"
+
+// 按钮标题属性
+const TITLE = "切换主题"
+
+// 主题图标
+const ICON = {
+  light: (
+    <FontAwesomeIcon
+      icon="sun"
+      size="xl"
+    />
+  ),
+  dark: (
+    <FontAwesomeIcon
+      icon="cloud-moon"
+      size="xl"
+    />
+  ),
+}
 
 /**
  * @description 切换主题按钮组件
- * @param {DarkModeProps} props 深色主题Props
- * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {unknown} _props 按钮props
+ * @param {React.Ref<HTMLButtonElement>} ref 按钮ref
  * @return {*}  {React.ReactElement}
  */
-function SwitchThemeButton(props: DarkModeProps): React.ReactElement {
-  const dispatch: Dispatch = useDispatch()
+function SwitchThemeButton(_props: unknown, ref: React.Ref<HTMLButtonElement>): React.ReactElement {
+  const dispatch: AppDispatch = useDispatch()
+
+  // 状态
+  const darkMode: boolean = useSelector((state: AppState): boolean => state.theme.darkMode)
+
+  // 主题图标
+  const themeIcon: React.ReactElement = ICON[darkMode ? "dark" : "light"]
 
   /**
    * @description 切换深浅色主题的方法
    */
-  const toggleThemeBtn: () => void = (): void => {
-    dispatch(toggleDarkMode())
-  }
-
-  let icon: React.ReactElement
-  if (props.darkMode) {
-    icon = (
-      <FontAwesomeIcon
-        icon="cloud-moon"
-        size="xl"
-      />
-    )
-  } else {
-    icon = (
-      <FontAwesomeIcon
-        icon="sun"
-        size="xl"
-      />
-    )
-  }
+  const toggleThemeBtn: () => void = useCallback((): void => {
+    dispatch(setDarkMode(!darkMode))
+  }, [darkMode, dispatch])
 
   return (
     <RoundButton
-      title="切换主题"
+      ref={ref}
+      title={TITLE}
       onClick={toggleThemeBtn}
-      darkMode={props.darkMode}
     >
-      {icon}
+      {themeIcon}
     </RoundButton>
   )
 }
 
-export default SwitchThemeButton
+export default forwardRef(SwitchThemeButton)

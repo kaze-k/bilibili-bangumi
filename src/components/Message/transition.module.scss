@@ -1,0 +1,25 @@
+.enter {
+  opacity: 0;
+  transform: scale3d(0.3, 0.3, 0.3);
+}
+
+.enter-active {
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+}
+
+.exit {
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+}
+
+.exit-active {
+  opacity: 0;
+  transform: scale3d(0.3, 0.3, 0.3);
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+}

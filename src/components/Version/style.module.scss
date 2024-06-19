@@ -1,9 +1,18 @@
-.version {
+.version-wrapper {
   width: 100%;
-  display: block;
+  margin: 0 auto;
+  padding-top: 0.5rem;
+  text-align: center;
+  color: var(--version-text-color);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: var(--version-hover-text-color);
+  }
+}
+
+.version {
   text-align: center;
   margin: 0 auto;
-  color: #888888;
-  position: absolute;
-  bottom: 0;
 }

@@ -1,65 +1,71 @@
-import React, { useEffect, useState } from "react"
+import { forwardRef, useCallback, useEffect, useState } from "react"
+import type React from "react"
 import { useDispatch } from "react-redux"
 
-import { BlockButton } from "~/components/common/Button"
-import { useMessage } from "~/components/common/Message"
-import useIsInitialConfigStore from "~/hooks/useIsInitialConfigStore"
+import { useMessage } from "~/components/Message"
+import type { Message } from "~/components/Message/types"
+import { BlockButton } from "~/components/base"
+import { useIsInitialState } from "~/hooks"
 import { persistor } from "~/store"
-import { resetType } from "~/store/features/episode"
-import { resetNotice } from "~/store/features/notice"
-import { resetTheme } from "~/store/features/theme"
+import type { AppDispatch } from "~/store"
+import { resetStates } from "~/store/rootReducer"
+
+// 按钮文本
+const TEXT = "重置设置"
+// 按钮标题属性
+const TITLE = "重置设置"
 
 /**
  * @description 重置设置按钮组件
- * @param {DarkModeProps} props 深色主题Props
- * @param {boolean} props.darkMode 深色主题 [可选]
+ * @param {unknown} _props 按钮props
+ * @param {React.Ref<HTMLButtonElement>} ref 按钮ref
  * @return {*}  {React.ReactElement}
  */
-function ResetButton(props: DarkModeProps): React.ReactElement {
-  const dispatch: Dispatch = useDispatch()
-  const message: ReturnType<typeof useMessage> = useMessage()
-
-  const text = "重置设置"
+function ResetButton(_props: unknown, ref: React.Ref<HTMLButtonElement>): React.ReactElement {
+  const dispatch: AppDispatch = useDispatch()
+  const message: Message = useMessage()
 
   // 状态
-  const [allowed, setAllowed] = useState<boolean>(true)
-  const isInitial: boolean = useIsInitialConfigStore()
+  const [resettable, setResettable] = useState<boolean>(false)
+  const isInitial: boolean = useIsInitialState()
 
   /**
    * @description 重置设置的方法
    */
-  const handleReset: () => void = (): void => {
+  const handleReset: () => void = useCallback((): void => {
     message.promise(
-      Promise.all([persistor.purge(), dispatch(resetTheme()), dispatch(resetNotice()), dispatch(resetType())]).then(
-        () => setAllowed(false),
-        () => setAllowed(true),
-      ),
+      chrome.storage.sync
+        .clear()
+        .then(
+          (): void => setResettable(false),
+          (): void => setResettable(true),
+        )
+        .finally((): void => {
+          dispatch(resetStates())
+          persistor.persist()
+        }),
       { success: "设置已重置", error: "设置重置失败" },
     )
-  }
+  }, [message, dispatch])
 
-  // 当设置改变时: 改变按钮的可用性
+  // 当设置改变时: 改变按钮的可用状态
   useEffect((): void => {
-    if (!isInitial) {
-      setAllowed(true)
-    }
+    if (!isInitial) setResettable(true)
+    else setResettable(false)
   }, [isInitial])
 
   return (
     <BlockButton
-      title="重置设置"
+      ref={ref}
+      title={TITLE}
       onClick={handleReset}
-      clickable={allowed}
-      darkMode={props.darkMode}
+      clickable={resettable}
+      btnWidth={"100%"}
       btnHeight={"35px"}
-      btnTheme={{
-        color: { light: "#f1f1f1", dark: "#f1f1f1" },
-        backgroundColor: { light: "#fb7299", dark: "#fb7299" },
-      }}
     >
-      {text}
+      {TEXT}
     </BlockButton>
   )
 }
 
-export default ResetButton
+export default forwardRef(ResetButton)

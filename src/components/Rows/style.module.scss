@@ -1,0 +1,37 @@
+@mixin content {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  padding-bottom: 20px;
+}
+
+.title {
+  color: var(--row-title-text-color);
+  font-weight: bold;
+  padding: 0 15px 3px;
+}
+
+.container {
+  @include content;
+}
+
+.tips {
+  color: var(--row-tips-text-color);
+  position: absolute;
+  font-size: 12px;
+  padding: 5px 15px;
+}
+
+.row-content {
+  @include content;
+}
+
+.button-container {
+  @include content;
+
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+}

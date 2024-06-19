@@ -1,0 +1,16 @@
+.row {
+  display: flex;
+  height: 45px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 12px;
+  transition: all 0.4s ease-in-out;
+  background-color: var(--row-bg-color);
+}
+
+.text {
+  color: var(--row-text-color);
+  font-size: 14px;
+  font-weight: bold;
+}
