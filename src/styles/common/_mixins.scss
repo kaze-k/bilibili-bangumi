@@ -1,5 +1,19 @@
 @mixin base-header {
   display: flex;
   padding: 5px;
-  transition: all 0.4s;
+  z-index: 1;
+  background-color: var(--header-bg-color);
+  transition: all 0.4s ease-in-out;
+  border-bottom: var(--header-border-bottom);
+  box-shadow: var(--header-box-shadow);
+}
+
+@mixin button {
+  border: none;
+  outline: none;
+  color: inherit;
+  background-color: inherit;
+  border-radius: inherit;
+  font: inherit;
+  cursor: pointer;
 }
