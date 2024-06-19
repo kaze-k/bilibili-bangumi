@@ -1,12 +1,13 @@
-import React from "react"
 import { lazy } from "react"
+import type React from "react"
 import type { RouteObject } from "react-router-dom"
 
 const Home: React.LazyExoticComponent<() => React.ReactElement> = lazy(
-  (): Promise<typeof import("~/views/Home")> => import("Home"),
+  (): Promise<typeof import("Home")> => import("Home"),
 )
+
 const Setup: React.LazyExoticComponent<() => React.ReactElement> = lazy(
-  (): Promise<typeof import("~/views/Setup")> => import("Setup"),
+  (): Promise<typeof import("Setup")> => import("Setup"),
 )
 
 // 路由配置
@@ -18,7 +19,7 @@ const routes: RouteObject[] = [
   },
   {
     id: "setup",
-    path: "/settings",
+    path: "/setup",
     Component: Setup,
   },
 ]
