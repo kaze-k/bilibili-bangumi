@@ -1,22 +1,22 @@
 import type React from "react"
 
-import GoBackButton from "~/components/Buttons/GobackButton"
+import { GithubButton } from "~/components/Buttons/"
 import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
 
 import style from "./style.module.scss"
 
 // 头部标题
-const HEADER = "设置"
+const HEADER = "更新日志"
 
 /**
- * @description 设置页头部组件
+ * @description 更新日志页头部组件
  * @return {*}  {React.ReactElement}
  */
-function SetupHeader(): React.ReactElement {
+function ChangelogHeader(): React.ReactElement {
   return (
     <header className={style["header"]}>
       <div className={style["content"]}>
-        <GoBackButton />
+        <GithubButton />
       </div>
       <div className={style["title"]}>
         <span>{HEADER}</span>
@@ -28,4 +28,4 @@ function SetupHeader(): React.ReactElement {
   )
 }
 
-export default SetupHeader
+export default ChangelogHeader

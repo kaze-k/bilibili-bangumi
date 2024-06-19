@@ -7,10 +7,10 @@ import { Main } from "~/components/base"
 import style from "./style.module.scss"
 
 /**
- * @description 设置页面内容组件
+ * @description 设置选项页面内容组件
  * @return {*}  {React.ReactElement}
  */
-function SetupContent(): React.ReactElement {
+function SettingContent(): React.ReactElement {
   return (
     <Main className={style["main"]}>
       <div className={style["wrapper"]}>
@@ -24,4 +24,4 @@ function SetupContent(): React.ReactElement {
   )
 }
 
-export default SetupContent
+export default SettingContent

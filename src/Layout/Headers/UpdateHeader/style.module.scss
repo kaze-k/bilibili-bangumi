@@ -7,22 +7,21 @@
 
 .header {
   @include common.base-header;
+
+  justify-content: space-between;
 }
 
-.content {
+.side {
   @include flex-align-center;
 
-  justify-content: flex-end;
   height: 35px;
 }
 
-.title {
+.center {
   @include flex-align-center;
 
   flex: 1;
   justify-content: center;
   text-align: center;
-  font-size: 18px;
-  font-weight: 500;
   color: var(--header-text-color);
 }
