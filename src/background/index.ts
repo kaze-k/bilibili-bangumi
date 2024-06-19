@@ -1,7 +1,9 @@
 import alarms from "./alarms"
+import { AlarmType, EpisodeTypeKey, MessageType, StateType } from "./enums"
 import handles from "./handles"
 import messages from "./messages"
 import notifications from "./notifications"
+import type { MessageRequest, SendResponse, SyncStatePayload } from "./types"
 
 // 安装触发的事件
 chrome.runtime.onInstalled.addListener((details: chrome.runtime.InstalledDetails): void => {
@@ -24,103 +26,95 @@ chrome.runtime.onStartup.addListener((): void => {
 
 // 接收通信触发的事件
 chrome.runtime.onMessage.addListener(
-  (request: MessageRequest, sender: chrome.runtime.MessageSender, sendResponse: SendResponse): boolean | undefined => {
-    switch (request.message) {
-      // 中止请求
-      case "abort":
-        handles.data.abort(true)
-        break
+  (message: MessageRequest, _sender: chrome.runtime.MessageSender, sendResponse: SendResponse): boolean | undefined => {
+    switch (message.type) {
+      // 终止请求
+      case MessageType.ABORT:
+        handles.data.abort()
+        sendResponse(true)
+        return false
 
       // 更新信息
-      case "update":
-        handles.data.abort(false)
-        Promise.allSettled([
+      case MessageType.UPDATE:
+        Promise.all([
           handles.data.handleData({ types: 1, before: 7, after: 7 }),
           handles.data.handleData({ types: 4, before: 7, after: 7 }),
-        ]).then(
-          (value: [PromiseSettledResult<boolean | undefined>, PromiseSettledResult<boolean | undefined>]): void => {
-            const result: boolean = value.every(
-              (obj: PromiseSettledResult<boolean | undefined>): boolean =>
-                obj.status === "fulfilled" && typeof obj.value !== "undefined",
-            )
-
-            result ? sendResponse(true) : sendResponse(false)
-          },
-        )
-        break
+        ]).then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+        return true
 
       // 获取日漫和国创的信息
-      case "all_episodes":
-        messages.popup.getAllEpisodes(sendResponse)
-        break
+      case MessageType.GET_ALL_EPISODES:
+        messages.episode.getAllEpisodes(sendResponse)
+        return true
 
       // 获取日漫信息
-      case "anime_episodes":
-        messages.popup.getEpisodes(sendResponse, request.message)
-        break
+      case MessageType.GET_ANIME_EPISODES:
+        messages.episode.getEpisodes(sendResponse, message.type)
+        return true
 
       // 获取国创信息
-      case "guochuang_episodes":
-        messages.popup.getEpisodes(sendResponse, request.message)
-        break
+      case MessageType.GET_GUOCHUANG_EPISODES:
+        messages.episode.getEpisodes(sendResponse, message.type)
+        return true
 
-      // 获取日漫时间表
-      case "anime_dates":
-        messages.popup.getDate(sendResponse, request.message)
-        break
-
-      // 获取国创时间表
-      case "guochuang_dates":
-        messages.popup.getDate(sendResponse, request.message)
-        break
+      // 获取日期信息
+      case MessageType.DATES:
+        messages.episode.getDate(sendResponse)
+        return true
 
       // 开启通知
-      case "enable_notice":
-        alarms.create.pushNotice("anime_episodes")
-        alarms.create.pushNotice("guochuang_episodes")
-        break
+      case MessageType.ENABLE_NOTICES:
+        Promise.all([
+          alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES),
+          alarms.create.pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES),
+        ]).then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+        return true
 
       // 禁止通知
-      case "disable_notice":
-        chrome.alarms.clear("anime_episodes_push_notice")
-        chrome.alarms.clear("guochuang_episodes_push_notice")
-        break
+      case MessageType.DISABLE_NOTICES:
+        Promise.all([
+          chrome.alarms.clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE),
+          chrome.alarms.clear(AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE),
+        ]).then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+        return true
 
       // 开启番剧通知
-      case "enable_anime_notice":
-        alarms.create.pushNotice("anime_episodes")
-        break
+      case MessageType.ENABLE_ANIME_NOTICE:
+        alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES).then((result: boolean): void => sendResponse(result))
+        return true
 
       // 禁止番剧通知
-      case "disable_anime_notice":
-        chrome.alarms.clear("anime_episodes_push_notice")
-        break
+      case MessageType.DISABLE_ANIME_NOTICE:
+        chrome.alarms.clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE).then((result: boolean): void => sendResponse(result))
+        return true
 
       // 开启国创通知
-      case "enable_guochuang_notice":
-        alarms.create.pushNotice("guochuang_episodes")
-        break
+      case MessageType.ENABLE_GUOCHUANG_NOTICE:
+        alarms.create
+          .pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES)
+          .then((result: boolean): void => sendResponse(result))
+        return true
 
       // 禁止国创通知
-      case "disable_guochuang_notice":
-        chrome.alarms.clear("guochuang_episodes_push_notice")
-        break
-    }
+      case MessageType.DISABLE_GUOCHUANG_NOTICE:
+        chrome.alarms
+          .clear(AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE)
+          .then((result: boolean): void => sendResponse(result))
+        return true
 
-    return true
+      case StateType.SYNC_STATES:
+        // 同步状态
+        messages.state.sync(message as MessageRequest<SyncStatePayload>)
+        return false
+    }
   },
 )
 
 // alarm触发的事件
 chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
-  // 清除通知
-  if (!isNaN(Number(alarm.name))) {
-    chrome.notifications.clear(alarm.name)
-  }
-
   switch (alarm.name) {
     // 更新信息
-    case "update_data":
+    case AlarmType.UPDATE_DATA:
       Promise.allSettled([
         handles.data.handleData({ types: 1, before: 7, after: 7 }),
         handles.data.handleData({ types: 4, before: 7, after: 7 }),
@@ -128,35 +122,54 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
       break
 
     // 推送日漫更新通知
-    case "anime_episodes_push_notice":
-      alarms.handle.pushNotice(notifications.create, "anime_episodes", alarm.scheduledTime)
-      Promise.allSettled([
-        handles.data.handleData({ types: 1, before: 7, after: 7 }),
-        handles.data.handleData({ types: 4, before: 7, after: 7 }),
-      ])
+    case AlarmType.ANIME_EPISODES_PUSH_NOTICE:
+      handles.data
+        .handleData({ types: 1, before: 7, after: 7 })
+        .then(
+          (): Promise<void> =>
+            alarms.handle.pushNotice(notifications, EpisodeTypeKey.ANIME_EPISODES, alarm.scheduledTime),
+        )
       break
 
     // 推送国创更新通知
-    case "guochuang_episodes_push_notice":
-      alarms.handle.pushNotice(notifications.create, "guochuang_episodes", alarm.scheduledTime)
-      Promise.allSettled([
-        handles.data.handleData({ types: 1, before: 7, after: 7 }),
-        handles.data.handleData({ types: 4, before: 7, after: 7 }),
-      ])
+    case AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE:
+      handles.data
+        .handleData({ types: 4, before: 7, after: 7 })
+        .then(
+          (): Promise<void> =>
+            alarms.handle.pushNotice(notifications, EpisodeTypeKey.GUOCHUANG_EPISODES, alarm.scheduledTime),
+        )
+      break
+
+    case AlarmType.GET_ANIME_EPISODES:
+      handles.data
+        .handleData({ types: 4, before: 7, after: 7 })
+        .then((): Promise<boolean> => alarms.create.pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES))
+        .then((result: boolean): Promise<boolean> => result && chrome.alarms.clear(alarm.name))
+      break
+
+    case AlarmType.GET_GUOCHUANG_EPISODES:
+      handles.data
+        .handleData({ types: 1, before: 7, after: 7 })
+        .then((): Promise<boolean> => alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES))
+        .then((result: boolean): Promise<boolean> => result && chrome.alarms.clear(alarm.name))
+      break
+
+    default:
+      // 清除通知
+      if (!isNaN(Number(alarm.name))) {
+        chrome.notifications.clear(alarm.name)
+      }
       break
   }
 })
 
 // 点击通知触发的事件
 chrome.notifications.onClicked.addListener((notificationId: string): void => {
-  notifications.handle.createTab(notificationId)
+  notifications.handle.open(notificationId)
 })
 
 // 点击通知按钮触发的事件
 chrome.notifications.onButtonClicked.addListener((notificationId: string, buttonIndex: number): void => {
-  if (notificationId === "update-notice" && buttonIndex === 0) {
-    chrome.tabs.create({
-      url: chrome.runtime.getURL("CHANGELOG.html"),
-    })
-  }
+  notifications.handle.update(notificationId, buttonIndex)
 })

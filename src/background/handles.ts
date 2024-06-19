@@ -1,5 +1,10 @@
-import getInfo from "~/service/api/getInfo"
-import getTimeline from "~/service/api/getTimeline"
+import type { AxiosResponse } from "axios"
+
+import { getInfo, getTimeline } from "~/api/bilibili"
+import type { InfoResponse, TimelineParams, TimelineResponse } from "~/api/bilibili"
+
+import { DateTypeKey, EpisodeTypeKey } from "./enums"
+import type { EpisodesInfo } from "./types"
 
 /**
  * @description 信息处理
@@ -7,108 +12,128 @@ import getTimeline from "~/service/api/getTimeline"
  */
 class Data {
   /**
-   * @description 中止请求
+   * @description 请求控制器
    * @private
    * @static
-   * @type {boolean}
+   * @type {AbortController[]}
    * @memberof Data
    */
-  private static isAbort: boolean = false
+  private static controllers: AbortController[] = []
 
   /**
    * 私有数据类构造方法
    * @private
    * @memberof Data
    */
-  private constructor() {}
+  private constructor() {
+    return
+  }
 
   /**
-   * @description 获取剧集信息
+   * @description 取消请求
+   * @static
+   * @memberof Data
+   */
+  public static abort(): void {
+    this.controllers.forEach((controller: AbortController): void => controller.abort())
+  }
+
+  /**
+   * @description 转换日期信息
+   * @private
+   * @static
+   * @param {object[]} results 获取的信息结果
+   * @return {*}  {object[]} 返回过滤后的日期信息对象
+   * @memberof Data
+   */
+  private static transform_dates(results: object[]): object[] {
+    const dates: object[] = []
+
+    // 过滤日期所需字段
+    results.forEach((result: object): void => {
+      const dates_json: string = JSON.stringify(result, ["date", "date_ts", "day_of_week", "is_today"])
+      const date: object = JSON.parse(dates_json)
+
+      dates.push(date)
+    })
+
+    return dates
+  }
+
+  /**
+   * @description 转换剧集信息
    * @private
    * @static
    * @async
-   * @param {any} episodesObj 剧集对象
-   * @return {*}  {Promise<any>} 返回处理后的剧集对象
+   * @param {object[]} results 获取的信息结果
+   * @return {*}  {Promise<[][]>} 返回过滤后的剧集信息
    * @memberof Data
    */
-  private static async get_episode_info(episodesObj: any): Promise<any> {
-    const episodes: any[] = episodesObj.episodes
+  private static async transform_episodes(results: object[]): Promise<object[][]> {
+    const results_episodes: object[][] = []
+    const infoMap: Map<number, EpisodesInfo> = new Map<number, EpisodesInfo>()
 
-    const promises: Promise<APIResponse>[] = []
+    // 请求队列
+    const requests: Promise<AxiosResponse<InfoResponse>>[] = []
 
-    for (const episode of episodes) {
-      const request: ServiceReturn = getInfo({ season_id: episode.season_id })
-      const data: Promise<APIResponse> = request.ready
+    // 将剧集season_id放入map列表
+    results.forEach((result: object): void => {
+      const episodes: object[] = result["episodes"]
 
-      if (this.isAbort) {
-        request.abort()
-        return
-      }
+      episodes.forEach((episode: object): void => {
+        const season_id: number = episode["season_id"]
+        infoMap.set(season_id, null)
+      })
+    })
 
-      promises.push(data)
+    // 构建请求队列
+    for (const season_id of infoMap.keys()) {
+      const controller = new AbortController()
+      this.controllers.push(controller)
+
+      const request: Promise<AxiosResponse<InfoResponse>> = getInfo({ season_id }, controller.signal)
+      requests.push(request)
     }
 
-    await Promise.allSettled(promises).then((result: PromiseFulfilledResult<APIResponse>[]): void => {
-      for (const index in result) {
-        if (result[index].status === "fulfilled") {
-          if (result[index].value && result[index].value.result) {
-            const { rating, stat, styles } = result[index].value.result
-            episodes[index].info = { rating, stat, styles }
+    // 执行请求
+    const requestResults: PromiseSettledResult<AxiosResponse<InfoResponse>>[] = await Promise.allSettled(requests)
+
+    requestResults.forEach((result: PromiseSettledResult<AxiosResponse<InfoResponse>>): void => {
+      if (result.status === "fulfilled") {
+        const fulfilledResult: PromiseFulfilledResult<AxiosResponse<InfoResponse>> = result
+        const data: InfoResponse = fulfilledResult.value?.data
+
+        // 将剧集信息放入对应的map列表位置中
+        if (data && data.result) {
+          const { rating, stat, styles, season_id } = data.result as {
+            rating: object
+            stat: object
+            styles: string[]
+            season_id: number
           }
+
+          infoMap.set(season_id, { rating, stat, styles })
         }
       }
     })
 
-    return episodesObj
-  }
+    // 将剧集信息放到对应的剧集信息对象中
+    results.forEach((result: object): void => {
+      const episodes: object[] = result["episodes"]
 
-  /**
-   * @description 过滤日期信息
-   * @private
-   * @static
-   * @param {any[]} result 获取的信息结果
-   * @return {*}  {{}[]} 返回过滤后的日期信息对象
-   * @memberof Data
-   */
-  private static filter_dates(result: any[]): {}[] {
-    const result_dates: {}[] = []
-
-    for (const index in result) {
-      const dates_json: string = JSON.stringify(result[index], ["date", "date_ts", "day_of_week", "is_today"])
-      const dates: {} = JSON.parse(dates_json)
-      result_dates.push(dates)
-    }
-
-    return result_dates
-  }
-
-  /**
-   * @description 过滤剧集信息
-   * @private
-   * @static
-   * @async
-   * @param {any[]} result 获取的信息结果
-   * @return {*}  {Promise<[][]>} 返回过滤后的剧集信息
-   * @memberof Data
-   */
-  private static async filter_episodes(result: any[]): Promise<[][]> {
-    const results_episodes: [][] = Array(result?.length).fill([])
-
-    const promises: Promise<any>[] = []
-
-    for (const res of result) {
-      const episodes: Promise<any> = this.get_episode_info(res)
-      promises.push(episodes)
-    }
-
-    await Promise.allSettled(promises).then((result: PromiseFulfilledResult<any>[]): void => {
-      for (const index in result) {
-        if (result[index].status === "fulfilled") {
-          if (result[index].value && result[index].value.episodes) {
-            results_episodes[index] = result[index].value.episodes
-          }
+      episodes.forEach((episode: object): void => {
+        const season_id: number = episode["season_id"]
+        if (infoMap.has(season_id) && infoMap.get(season_id) !== null) {
+          const { rating, stat, styles } = infoMap.get(season_id)
+          episode["info"] = { rating, stat, styles }
         }
-      }
+      })
+    })
+
+    // 将剧集信息从时间表中提取
+    results.forEach((result: object): void => {
+      const episodes: object[] = result["episodes"]
+      results_episodes.push(episodes)
     })
 
     return results_episodes
@@ -119,31 +144,60 @@ class Data {
    * @private
    * @static
    * @async
-   * @param {any[]} result 获取的信息结果
-   * @param {EpisodesKey} episodesKey 存储剧集信息的键名
-   * @param {DatesKey} datesKey 存储日期信息的键名
-   * @return {*}  {Promise<boolean | undefined>} 返回true或undefined
+   * @param {object[]} result 获取的信息结果
+   * @param {EpisodeTypeKey} episodeTypeKey 存储剧集信息的键名
+   * @return {*}  {Promise<boolean>} 返回存储状态
    * @memberof Data
    */
-  private static async storageData(
-    result: any[],
-    episodesKey: EpisodesKey,
-    datesKey: DatesKey,
-  ): Promise<boolean | undefined> {
-    const result_dates: {}[] = this.filter_dates(result)
-    const result_episodes: [][] = await this.filter_episodes(result)
+  private static async storageData(result: object[], episodeTypeKey: EpisodeTypeKey): Promise<boolean> {
+    // 转换日期信息
+    const result_dates: object[] = this.transform_dates(result)
+    // 转换剧集信息
+    const result_episodes: object[][] = await this.transform_episodes(result)
 
-    const storages: Storages = {
-      [episodesKey]: result_episodes,
-      [datesKey]: result_dates,
+    const storages: object = {
+      [episodeTypeKey]: result_episodes,
+      [DateTypeKey.DATES]: result_dates,
     }
 
-    // const storage: boolean = await settings("storage")
-    // if (storage) {
-    await chrome.storage.local.set(storages)
+    // 存储数据
+    try {
+      await chrome.storage.local.set(storages)
+    } catch (error) {
+      return false
+    }
 
     return true
-    // }
+  }
+
+  /**
+   * @description 处理时间表信息
+   * @private
+   * @static
+   * @async
+   * @param {TimelineParams} timelineParams 时间表接口的参数
+   * @param {EpisodeTypeKey} episodeTypeKey 存储剧集信息的键名
+   * @return {*}  {(Promise<boolean>)} 返回存储状态
+   * @memberof Data
+   */
+  private static async handle_timeline_data(
+    timelineParams: TimelineParams,
+    episodeTypeKey: EpisodeTypeKey,
+  ): Promise<boolean> {
+    const controller = new AbortController()
+    this.controllers.push(controller)
+
+    const request: Promise<AxiosResponse<TimelineResponse>> = getTimeline(timelineParams, controller.signal)
+    const timeline: AxiosResponse<TimelineResponse> = await request
+
+    if (!timeline?.data?.result) return false
+
+    // 存储数据
+    const result: object[] = timeline?.data?.result
+
+    const status: boolean = await this.storageData(result, episodeTypeKey)
+
+    return status
   }
 
   /**
@@ -151,54 +205,36 @@ class Data {
    * @static
    * @async
    * @param {TimelineParams} timelineParams 时间表接口的参数
-   * @return {*}  {Promise<boolean | undefined>} 返回true或undefined
+   * @return {*}  {Promise<boolean>} 返回存储状态
    * @memberof Data
    */
-  public static async handleData(timelineParams: TimelineParams): Promise<boolean | undefined> {
+  public static async handleData(timelineParams: TimelineParams): Promise<boolean> {
     const { types } = timelineParams
 
+    // 请求日漫时间表信息
     if (types === 1) {
-      const request: ServiceReturn = getTimeline(timelineParams)
-      const anime_timeline: APIResponse = await request.ready
+      const status: boolean = await this.handle_timeline_data(timelineParams, EpisodeTypeKey.ANIME_EPISODES)
 
-      if (this.isAbort) {
-        request.abort()
-        return
-      }
-
-      if (anime_timeline.result) {
-        const anime: any[] = anime_timeline.result
-        const result: boolean | undefined = await this.storageData(anime, "anime_episodes", "anime_dates")
-
-        return result
-      }
+      return status
     }
 
+    // 请求国创时间表信息
     if (types === 4) {
-      const request: ServiceReturn = getTimeline(timelineParams)
-      const guochuang_timeline: APIResponse = await request.ready
+      const status: boolean = await this.handle_timeline_data(timelineParams, EpisodeTypeKey.GUOCHUANG_EPISODES)
 
-      if (this.isAbort) {
-        request.abort()
-        return
-      }
-
-      if (guochuang_timeline.result) {
-        const guochuang: any[] = guochuang_timeline.result
-        const result: boolean | undefined = await this.storageData(guochuang, "guochuang_episodes", "guochuang_dates")
-
-        return result
-      }
+      return status
     }
-  }
-
-  public static abort(isAbort: boolean): void {
-    this.isAbort = isAbort
   }
 }
 
-const handles = {
+interface Handles {
+  data: typeof Data
+}
+
+const handles: Handles = {
   data: Data,
 }
+
+export type { Handles }
 
 export default handles

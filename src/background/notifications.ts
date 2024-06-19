@@ -1,6 +1,11 @@
 import icon from "public/icon.png"
 
+import { PersistKey } from "~/store/enums"
 import { settings } from "~/utils"
+
+import type { Alarms } from "./alarms"
+import { NotificationIdType } from "./enums"
+import type { NotificationsParams } from "./types"
 
 /**
  * @description 创建通知
@@ -32,53 +37,42 @@ class Creator {
    * @private
    * @memberof Creator
    */
-  private constructor() {}
+  private constructor() {
+    return
+  }
 
   /**
    * @description 创建图片类型通知
    * @static
    * @async
-   * @param {NotificationsParams} params 通知需要的参数
-   * @param {number} param.id 通知id(剧集id)
-   * @param {string} param.ep_cover 剧集封面图片
-   * @param {string} param.title 标题
-   * @param {string} param.index 最新的集数名称
-   * @param {number} param.time 剧集更新的时间戳 [可选]
-   * @param {number} param.published 是否已更新
-   * @return {*}  {Promise<void>} 无返回值
+   * @param {Alarms} alarms alarms对象
+   * @param {NotificationsParams[]} params 通知需要的参数
+   * @return {*}  {Promise<void>}
    * @memberof Creator
    */
-  public static async imageNotice(alarmsCreate: Alarms.creator, params: NotificationsParams[]): Promise<void> {
-    const silent: boolean = await settings("notice", "silent")
+  public static async imageNotice(alarms: Alarms, params: NotificationsParams[]): Promise<void> {
+    // 获取静默通知设置
+    const silent: boolean = (await settings<boolean>(PersistKey.NOTICE, "silent")) ?? false
 
-    if (params.length) {
-      for (const obj in params) {
-        const { id, ep_cover, title, index, time, published } = params[obj]
-
-        // TODO: test
-        console.log("id: ", id)
-        console.log("ep_cover: ", ep_cover)
-        console.log("title: ", title)
-        console.log("index: ", index)
-        console.log("time: ", time)
-        console.log("published: ", published)
-
-        if (published) {
-          chrome.notifications.create(String(id), {
-            type: "image",
-            title: title,
-            message: index,
-            contextMessage: this.displayName,
-            iconUrl: icon,
-            imageUrl: ep_cover,
-            silent: silent,
-            eventTime: time * 1000,
-          })
-
-          alarmsCreate.clearNotice(String(id))
-        }
+    // 创建通知
+    params.forEach(({ id, ep_cover, title, index, time }: NotificationsParams): void => {
+      // index不为空字符，创建通知
+      if (index.length) {
+        chrome.notifications.create(String(id), {
+          type: "image",
+          title: title,
+          message: index,
+          contextMessage: this.displayName,
+          iconUrl: icon,
+          imageUrl: ep_cover,
+          silent: silent,
+          eventTime: time * 1000,
+        })
       }
-    }
+
+      // 自动清除通知
+      alarms.create.clearNotice(String(id))
+    })
   }
 
   /**
@@ -88,11 +82,10 @@ class Creator {
    * @memberof Creator
    */
   public static updateNotice(previousVersion: string): void {
-    if (previousVersion === this.version) {
-      return
-    }
+    if (previousVersion === this.version) return
 
-    chrome.notifications.create("update-notice", {
+    // 创建更新完成的通知
+    chrome.notifications.create(NotificationIdType.UPDATE, {
       type: "basic",
       title: "更新完成",
       message: `v${previousVersion} ~ v${this.version}`,
@@ -109,40 +102,77 @@ class Creator {
  */
 class Handler {
   /**
-   * @description 通知剧集基础链接
-   * @private
-   * @static
-   * @readonly
-   * @type {string}
-   * @memberof Handler
-   */
-  private static readonly baseUrl: string = "https://www.bilibili.com/bangumi/play/ep"
-
-  /**
    * 私有处理类构造方法
    * @private
    * @memberof Handler
    */
-  private constructor() {}
+  private constructor() {
+    return
+  }
 
   /**
-   * @description 创建Tab
+   * @description 打开通知
    * @static
    * @async
    * @param {string} id 通知id(剧集id)
-   * @return {*}  {Promise<void>} 无返回值
+   * @return {*}  {Promise<void>}
    * @memberof Handler
    */
-  public static async createTab(id: string): Promise<void> {
+  public static async open(id: string): Promise<void> {
+    const windows: chrome.windows.Window[] = await chrome.windows.getAll()
+
+    // 检查有无窗口
+    if (windows.length === 0) {
+      // 创建窗口
+      chrome.windows.create({ url: `https://www.bilibili.com/bangumi/play/ep${id}`, state: "maximized" })
+      return
+    }
+
+    // 创建Tab
     chrome.tabs.create({
-      url: `${this.baseUrl}${id}`,
+      url: `https://www.bilibili.com/bangumi/play/ep${id}`,
     })
+  }
+
+  /**
+   * @description 更新日志
+   * @static
+   * @async
+   * @param {string} notificationId 消息id
+   * @param {number} buttonIndex 按钮索引
+   * @return {*}  {Promise<void>}
+   * @memberof Handler
+   */
+  public static async update(notificationId: string, buttonIndex: number): Promise<void> {
+    // 打开更新日志
+    if (notificationId === NotificationIdType.UPDATE && buttonIndex === 0) {
+      const windows: chrome.windows.Window[] = await chrome.windows.getAll()
+
+      // 检查有无窗口
+      if (windows.length === 0) {
+        // 创建窗口
+        chrome.windows.create({ url: chrome.runtime.getURL("CHANGELOG.html"), state: "maximized" })
+        return
+      }
+
+      // 创建Tab
+      chrome.tabs.create({
+        url: chrome.runtime.getURL("CHANGELOG.html"),
+      })
+    }
   }
 }
 
-const notifications = {
+interface Notifications {
+  create: typeof Creator
+  handle: typeof Handler
+}
+
+const notifications: Notifications = {
   create: Creator,
   handle: Handler,
 }
+
+export type { Notifications }
 
 export default notifications

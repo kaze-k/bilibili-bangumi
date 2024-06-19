@@ -1,5 +1,9 @@
-import getTimeline from "~/service/api/getTimeline"
+import { PersistKey } from "~/store/enums"
 import { settings } from "~/utils"
+
+import { AlarmType, EpisodeTypeKey } from "./enums"
+import type { Notifications } from "./notifications"
+import type { NotificationsParams } from "./types"
 
 /**
  * @description 处理alarms
@@ -11,34 +15,8 @@ class Handler {
    * @private
    * @memberof Handler
    */
-  private constructor() {}
-
-  /**
-   * @description 请求当天的时间表的信息
-   * @private
-   * @static
-   * @async
-   * @param {EpisodesKey} episodesKey 查询信息的键名
-   * @return {*}  {Promise<{}[]>} 返回当天的时间表信息
-   * @memberof Handler
-   */
-  private static async get_response(episodesKey: EpisodesKey): Promise<{}[]> {
-    let response: APIResponse
-
-    if (episodesKey === "anime_episodes") {
-      response = await getTimeline({ types: 1, before: 0, after: 0 }).ready
-    }
-
-    if (episodesKey === "guochuang_episodes") {
-      response = await getTimeline({ types: 4, before: 0, after: 0 }).ready
-    }
-
-    const result: {}[] = response.result[0]["episodes"]
-
-    // code: 0 请求成功
-    if (!response.code) {
-      return result
-    }
+  private constructor() {
+    return
   }
 
   /**
@@ -46,18 +24,34 @@ class Handler {
    * @private
    * @static
    * @async
-   * @param {EpisodesKey} episodesKey 查询信息的键名
-   * @return {*}  {Promise<{}[]>} 返回时间表信息
+   * @param {EpisodeTypeKey} episodeTypeKey 查询信息的键名
+   * @return {*}  {Promise<object[] | undefined>} 返回时间表信息
    * @memberof Handler
    */
-  private static async get_episodesInfo(episodesKey: EpisodesKey): Promise<{}[]> {
-    const result: {}[] = await this.get_response(episodesKey)
+  private static async get_episodes_info(episodeTypeKey: EpisodeTypeKey): Promise<object[] | undefined> {
+    // 请求时间表信息
+    const result: object = await chrome.storage.local.get(episodeTypeKey)
 
-    const episodes_info: {}[] = result.map((obj: {}): {}[] => {
-      const data: string = JSON.stringify(obj, ["ep_cover", "episode_id", "pub_index", "pub_ts", "title", "published"])
+    if (typeof result[episodeTypeKey] === "undefined") return
 
-      return JSON.parse(data)
-    })
+    // 提取时间表信息
+    const episodes: object[][] = result[episodeTypeKey]
+
+    // 过滤剧集信息字段
+    const episodes_info: object[] = episodes
+      .find((arr: object[]): boolean => arr === episodes[Math.floor(episodes.length / 2)])
+      .map((obj: object): object[] => {
+        const data: string = JSON.stringify(obj, [
+          "ep_cover",
+          "episode_id",
+          "pub_index",
+          "pub_ts",
+          "title",
+          "published",
+        ])
+
+        return JSON.parse(data)
+      })
 
     return episodes_info
   }
@@ -67,27 +61,34 @@ class Handler {
    * @private
    * @static
    * @async
-   * @param {EpisodesKey} episodesKey 查询信息的键名
+   * @param {EpisodeTypeKey} episodeTypeKey 查询信息的键名
    * @param {number} scheduledTime 即将更新的时间
-   * @return {*}  {Promise<NotificationsParams[]>} 返回处理后的通知信息
+   * @return {*}  {Promise<NotificationsParams[] | undefined>} 返回处理后的通知信息
    * @memberof Handler
    */
-  private static async get_noticeInfo(episodesKey: EpisodesKey, scheduledTime: number): Promise<NotificationsParams[]> {
-    const episodes_info: {}[] = await this.get_episodesInfo(episodesKey)
-    const time: number = scheduledTime - 50 * 1000
+  private static async get_notice_info(
+    episodeTypeKey: EpisodeTypeKey,
+    scheduledTime: number,
+  ): Promise<NotificationsParams[] | undefined> {
+    // 提取时间表信息
+    const episodes_info: object[] | undefined = await this.get_episodes_info(episodeTypeKey)
 
+    if (typeof episodes_info === "undefined") return
+
+    const time: number = scheduledTime / 1000
+
+    // 获取最新的通知信息
     const notice_info: NotificationsParams[] = episodes_info
-      .map((obj: {}): NotificationsParams => {
-        if (time === obj["pub_ts"] * 1000) {
+      .map((obj: object): NotificationsParams => {
+        if (time === obj["pub_ts"]) {
           const info: NotificationsParams = {
             ep_cover: obj["ep_cover"],
             id: obj["episode_id"],
             index: obj["pub_index"],
             time: obj["pub_ts"],
             title: obj["title"],
-            published: obj["published"],
+            published: Boolean(obj["published"]),
           }
-
           return info
         }
       })
@@ -104,61 +105,60 @@ class Handler {
    * @description 推送通知
    * @static
    * @async
-   * @param {Notifications.creator} noticeCreate 创建通知的对象
-   * @param {EpisodesKey} episodesKey 查询信息的键名
+   * @param {Notifications} notifications 创建通知的对象
+   * @param {EpisodeTypeKey} episodeTypeKey 查询信息的键名
    * @param {number} scheduledTime 即将更新的时间
-   * @return {*}  {Promise<void>} 无返回值
+   * @return {*}  {Promise<void>}
    * @memberof Handler
    */
   public static async pushNotice(
-    noticeCreate: Notifications.creator,
-    episodesKey: EpisodesKey,
+    notifications: Notifications,
+    episodeTypeKey: EpisodeTypeKey,
     scheduledTime: number,
   ): Promise<void> {
-    const notice: boolean = await settings("notice", "toggle")
+    // 获取通知设置
+    const notice: boolean = await settings<boolean>(PersistKey.NOTICE, "toggle")
 
     const now: number = Math.floor(Date.now() / 1000)
     const time: number = Math.floor(scheduledTime / 1000)
 
-    // TODO: test
-    console.log("notice: ", notice)
-    console.log("now: ", now)
-    console.log("time: ", time)
-
     if (notice && now === time) {
-      const notice_info: NotificationsParams[] = await this.get_noticeInfo(episodesKey, scheduledTime)
+      // 获取通知信息
+      const notice_info: NotificationsParams[] | undefined = await this.get_notice_info(episodeTypeKey, scheduledTime)
 
-      // TODO: test
-      console.log("notice_info: ", notice_info)
+      if (typeof notice_info === "undefined") return
 
-      await noticeCreate.imageNotice(alarms.create, notice_info)
-
-      await alarms.create.pushNotice(episodesKey)
+      // 创建通知
+      await notifications.create.imageNotice(alarms, notice_info)
     }
+
+    // 创建通知alarms
+    if (notice) await alarms.create.pushNotice(episodeTypeKey)
   }
 
   /**
    * @description 获取即将更新的时间
    * @static
    * @async
-   * @param {EpisodesKey} episodesKey 查询信息的键名
-   * @return {*}  {Promise<number>} 返回即将更新的时间
+   * @param {EpisodeTypeKey} episodeTypeKey 查询信息的键名
+   * @return {*}  {Promise<number | undefined>} 返回即将更新的时间
    * @memberof Handler
    */
-  public static async getTime(episodesKey: EpisodesKey): Promise<number> {
-    const episodes: Storages = await chrome.storage.local.get(episodesKey)
-    const data: {}[][] = episodes[episodesKey]
+  public static async getTime(episodeTypeKey: EpisodeTypeKey): Promise<number | undefined> {
+    // 获取本地缓存的时间表信息
+    const times: object = await chrome.storage.local.get(episodeTypeKey)
+    const data: object[][] = times[episodeTypeKey]
+
+    if (typeof data === "undefined") return
 
     const now: number = Date.now()
 
-    for (const episodes in data) {
-      for (const episode in data[episodes]) {
-        const pub_ts: number = data[episodes][episode]["pub_ts"] * 1000
+    // 当前时间小于或等于即将更新的时间，返回即将更新的时间
+    for (const episodes of data) {
+      for (const episode of episodes) {
+        const pub_ts: number = episode["pub_ts"] * 1000
         if (now <= pub_ts) {
-          const data_json: string = JSON.stringify(data[episodes][episode], ["pub_ts"])
-          const time: number = JSON.parse(data_json)["pub_ts"]
-
-          return time
+          return pub_ts
         }
       }
     }
@@ -175,17 +175,19 @@ class Creator {
    * @private
    * @memberof Creator
    */
-  private constructor() {}
+  private constructor() {
+    return
+  }
 
   /**
    * @description 更新信息alarms
-   * - 每隔1个小时获取并存储一次番剧时间表
+   * - 每隔30分钟获取并存储一次番剧时间表
    * @static
    * @memberof Creator
    */
   public static updateData(): void {
-    chrome.alarms.create("update_data", {
-      periodInMinutes: 60,
+    chrome.alarms.create(AlarmType.UPDATE_DATA, {
+      periodInMinutes: 30,
     })
   }
 
@@ -193,23 +195,41 @@ class Creator {
    * @description 创建通知alarms
    * @static
    * @async
-   * @param {EpisodesKey} episodesKey 查询信息的键名
-   * @return {*}  {Promise<void>} 无返回值
+   * @param {EpisodeTypeKey} episodeTypeKey 查询信息的键名
+   * @return {*}  {Promise<boolean>}
    * @memberof Creator
    */
-  public static async pushNotice(episodesKey: EpisodesKey): Promise<void> {
-    // 延迟50秒时间后向接口发起请求
-    const timeout: number = 50 * 1000
+  public static async pushNotice(episodeTypeKey: EpisodeTypeKey): Promise<boolean> {
+    const time: number | undefined = await alarms.handle.getTime(episodeTypeKey)
 
-    const time: number = (await alarms.handle.getTime(episodesKey)) * 1000 + timeout
+    let noticeName: string
+    if (typeof time === "undefined") {
+      if (episodeTypeKey === EpisodeTypeKey.ANIME_EPISODES) noticeName = AlarmType.GET_ANIME_EPISODES
+      else if (episodeTypeKey === EpisodeTypeKey.GUOCHUANG_EPISODES) noticeName = AlarmType.GET_GUOCHUANG_EPISODES
+      else return false
 
-    if (time) {
-      chrome.alarms.create(`${episodesKey}_push_notice`, {
-        when: time,
+      // 创建获取推送通知alarms
+      chrome.alarms.create(noticeName, {
+        periodInMinutes: 1,
       })
-    } else {
-      this.pushNotice(episodesKey)
+
+      return false
     }
+
+    if (episodeTypeKey === EpisodeTypeKey.ANIME_EPISODES) noticeName = AlarmType.ANIME_EPISODES_PUSH_NOTICE
+    else if (episodeTypeKey === EpisodeTypeKey.GUOCHUANG_EPISODES) noticeName = AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE
+    else return false
+
+    // 创建推送通知alarms
+    chrome.alarms.create(noticeName, {
+      when: time,
+    })
+
+    // 获取推送通知alarms
+    const alarm: chrome.alarms.Alarm = await chrome.alarms.get(noticeName)
+    if (alarm.name && alarm.scheduledTime) return true
+
+    return false
   }
 
   /**
@@ -217,16 +237,19 @@ class Creator {
    * @static
    * @async
    * @param {string} id 通知的id
-   * @return {*}  {Promise<void>} 无返回值
+   * @return {*}  {Promise<void>}
    * @memberof Creator
    */
   public static async clearNotice(id: string): Promise<void> {
-    const autoClear: boolean = await settings("notice", "autoClear")
-    const timeout: number = await settings("notice", "timeout")
+    // 获取自动清除通知设置
+    const autoClear: boolean = await settings<boolean>(PersistKey.NOTICE, "autoClear")
+    // 获取通知超时设置
+    const timeout: number = await settings<number>(PersistKey.NOTICE, "timeout")
 
-    const time: number = Date.now() + timeout
+    // 创建自动清除通知alarms
+    if (autoClear && timeout) {
+      const time: number = Date.now() + timeout
 
-    if (autoClear) {
       chrome.alarms.create(`${id}`, {
         when: time,
       })
@@ -234,9 +257,16 @@ class Creator {
   }
 }
 
-const alarms = {
+interface Alarms {
+  handle: typeof Handler
+  create: typeof Creator
+}
+
+const alarms: Alarms = {
   handle: Handler,
   create: Creator,
 }
+
+export type { Alarms }
 
 export default alarms
