@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
+
+type StorageAreaName = "sync" | "local" | "managed" | "session"
 
 /**
  * @description 获取已被使用的存储大小的hook
@@ -8,36 +10,34 @@ function useGetStorageInUse(): number {
   // 状态
   const [usedSize, setUsedSize] = useState<number>(0)
 
-  /**
-   * @description 获取本地存储的方法: 获取本地存储中已被使用的存储大小
-   */
-  const getLocalStorage: () => void = (): void => {
+  // 当size改变时: 同步获取本地存储已被使用的存储大小
+  useLayoutEffect((): void => {
     chrome.storage.local.getBytesInUse(null, (localSize: number): void => {
-      setUsedSize(localSize)
+      if (localSize !== usedSize) {
+        setUsedSize(localSize)
+      }
     })
-  }
+  }, [usedSize])
 
-  /**
-   * @description 获取已被使用的存储大小的方法: 实时获取本地存储已被使用的存储大小
-   */
-  const getStorageInUse: () => void = (): void => {
-    chrome.storage.onChanged.addListener((changes: StorageChanges, areaName: StorageAreaName): void => {
+  // 在size改变时: 监听存储变化，获取本地存储已被使用的存储大小
+  useEffect((): (() => void) => {
+    /**
+     * @description 获取已被使用的存储大小的方法: 实时获取本地存储已被使用的存储大小
+     */
+    const getStorageInUse: (changes: object, areaName: StorageAreaName) => void = (
+      changes: object,
+      areaName: StorageAreaName,
+    ): void => {
       if (changes && areaName === "local") {
         chrome.storage.local.getBytesInUse(null, (localSize: number): void => {
           setUsedSize(localSize)
         })
       }
-    })
-  }
+    }
 
-  // 当页面渲染时: 获取本地存储
-  useEffect((): void => {
-    getLocalStorage()
-  }, [])
+    chrome.storage.onChanged.addListener(getStorageInUse)
 
-  // 在size改变时: 获取已被使用的存储大小
-  useEffect((): void => {
-    getStorageInUse()
+    return (): void => chrome.storage.onChanged.removeListener(getStorageInUse)
   }, [usedSize])
 
   return usedSize
