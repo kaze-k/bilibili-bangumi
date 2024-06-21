@@ -1,5 +1,34 @@
+## 0.3.0 (2024-06-19)
+
+* chore: 更新依赖和新增依赖 ([acd9f95](https://github.com/kaze-k/bilibili-bangumi/commit/acd9f95))
+* chore(tools): 代码规范工具配置 ([017dc49](https://github.com/kaze-k/bilibili-bangumi/commit/017dc49))
+* chore(tools): 修改配置 ([554624c](https://github.com/kaze-k/bilibili-bangumi/commit/554624c))
+* chore(tools): 修改配置 ([28da375](https://github.com/kaze-k/bilibili-bangumi/commit/28da375))
+* build: webpack构建配置 ([9c00a42](https://github.com/kaze-k/bilibili-bangumi/commit/9c00a42))
+* refactor: 代码重构 ([102e50a](https://github.com/kaze-k/bilibili-bangumi/commit/102e50a))
+* refactor: 代码重构 ([40fb421](https://github.com/kaze-k/bilibili-bangumi/commit/40fb421))
+* refactor: 简化类型声明 ([0d0a69f](https://github.com/kaze-k/bilibili-bangumi/commit/0d0a69f))
+* refactor: 重构布局组件代码 ([7287825](https://github.com/kaze-k/bilibili-bangumi/commit/7287825))
+* refactor: 重构多页面的入口代码 ([1b4df6a](https://github.com/kaze-k/bilibili-bangumi/commit/1b4df6a))
+* refactor(background): 代码重构 ([d7b0448](https://github.com/kaze-k/bilibili-bangumi/commit/d7b0448))
+* refactor(routes): 重构路由组件 ([3de479c](https://github.com/kaze-k/bilibili-bangumi/commit/3de479c))
+* refactor(service): axios重构服务api ([e42757a](https://github.com/kaze-k/bilibili-bangumi/commit/e42757a))
+* refactor(store): 代码重构 ([98eadfe](https://github.com/kaze-k/bilibili-bangumi/commit/98eadfe))
+* refactor(utils): 代码重构 ([41a5318](https://github.com/kaze-k/bilibili-bangumi/commit/41a5318))
+* refactor(views): 简化页面组件代码 ([56d283a](https://github.com/kaze-k/bilibili-bangumi/commit/56d283a))
+* refactor(views): 重构页面样式, 分割主题色代码 ([c834cc7](https://github.com/kaze-k/bilibili-bangumi/commit/c834cc7))
+* feat: 实现插件多页面状态实时共享 ([acddd9d](https://github.com/kaze-k/bilibili-bangumi/commit/acddd9d))
+* feat: 新增panel边栏显示当天番剧功能 ([81c3484](https://github.com/kaze-k/bilibili-bangumi/commit/81c3484))
+* update: 新增图标 ([f7002e9](https://github.com/kaze-k/bilibili-bangumi/commit/f7002e9))
+* update(pubilc): 变更部分公共资源 ([8a7c8e7](https://github.com/kaze-k/bilibili-bangumi/commit/8a7c8e7))
+* style(pubilc): 格式化html ([9f3785a](https://github.com/kaze-k/bilibili-bangumi/commit/9f3785a))
+
+
+
 ## <small>0.2.4 (2024-03-29)</small>
 
+* chore: 增加依赖react-transition-group ([7cd730d](https://github.com/kaze-k/bilibili-bangumi/commit/7cd730d))
+* chore(release): v0.2.4 ([bae9930](https://github.com/kaze-k/bilibili-bangumi/commit/bae9930))
 * refactor: 更改方法名 ([132ab54](https://github.com/kaze-k/bilibili-bangumi/commit/132ab54))
 * refactor: 重构 ([4266970](https://github.com/kaze-k/bilibili-bangumi/commit/4266970))
 * refactor(*): 补充变量类型 ([23d3079](https://github.com/kaze-k/bilibili-bangumi/commit/23d3079))
@@ -11,7 +40,6 @@
 * fix(views): 修复存储大小显示错误 ([89f0f17](https://github.com/kaze-k/bilibili-bangumi/commit/89f0f17))
 * update: 更新重置按钮UI样式 ([60fc3ae](https://github.com/kaze-k/bilibili-bangumi/commit/60fc3ae))
 * perf(components): 消息组件增加过渡动画 ([6caaa0f](https://github.com/kaze-k/bilibili-bangumi/commit/6caaa0f))
-* chore: 增加依赖react-transition-group ([7cd730d](https://github.com/kaze-k/bilibili-bangumi/commit/7cd730d))
 
 
 

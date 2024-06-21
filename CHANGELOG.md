@@ -1,20 +1,16 @@
-## [0.2.4](https://github.com/kaze-k/bilibili-bangumi/compare/v0.2.3...v0.2.4) (2024-03-29)
+# [0.3.0](https://github.com/kaze-k/bilibili-bangumi/compare/v0.2.4...v0.3.0) (2024-06-19)
 
 
 ### 更新
 
-* 更新重置按钮UI样式 ([60fc3ae](https://github.com/kaze-k/bilibili-bangumi/commit/60fc3aeb1d17a17ce05d562aa4b1176f20d7bf49))
+* 变更部分公共资源 ([8a7c8e7](https://github.com/kaze-k/bilibili-bangumi/commit/8a7c8e7809d1dab3e4a6d7b28cf4de87273bc467))
+* 新增图标 ([f7002e9](https://github.com/kaze-k/bilibili-bangumi/commit/f7002e9820a50373dff5bcb45908795721639c3b))
 
 
-### 修复
+### 新功能
 
-* 修复存储大小显示错误 ([89f0f17](https://github.com/kaze-k/bilibili-bangumi/commit/89f0f17b2bfbd48a12b1b693785235e3294ead4d))
-* 修复缓存变更问题 ([bcaab9e](https://github.com/kaze-k/bilibili-bangumi/commit/bcaab9e623cf5b5e4db42b3e7ce54e05a3a866b5))
-
-
-### 优化
-
-* 消息组件增加过渡动画 ([6caaa0f](https://github.com/kaze-k/bilibili-bangumi/commit/6caaa0fb394682f44e43675e084382f2e08cb1b1))
+* 实现插件多页面状态实时共享 ([acddd9d](https://github.com/kaze-k/bilibili-bangumi/commit/acddd9dbd7545d8b4cc93ad7d20fda2e69fed41d))
+* 新增panel边栏显示当天番剧功能 ([81c3484](https://github.com/kaze-k/bilibili-bangumi/commit/81c34845340dae2a9774250e66c1cb6207f74c08))
 
 
 
