@@ -12,7 +12,6 @@ interface DayProps {
 }
 
 interface NavItmeProps extends DayProps {
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
   onClick?: React.MouseEventHandler<HTMLInputElement>
   date?: string
   day?: string

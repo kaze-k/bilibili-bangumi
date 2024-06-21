@@ -19,17 +19,11 @@ import style from "./style.module.scss"
  * @param {boolean[]} checked 是否选中
  * @return {*}  {React.ReactElement[]}
  */
-function renderSelectItems(
-  dates: [][],
-  handleChange: (i: number) => void,
-  handleClick: (i: number) => void,
-  checked: boolean[],
-): React.ReactElement[] {
+function renderSelectItems(dates: [][], handleClick: (i: number) => void, checked: boolean[]): React.ReactElement[] {
   const selectItems: React.ReactElement[] = dates?.map(
     (item: object, index: number): React.ReactElement => (
       <SelectItem
         key={item["date_ts"]}
-        onChange={(): void => handleChange(index)}
         onClick={(): void => handleClick(index)}
         date={item["date"]}
         day={toChineseDay(item["day_of_week"])}
@@ -98,19 +92,6 @@ function SelectBar(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
   )
 
   /**
-   * @description 处理改变的方法: 当索引改变时计算滚动的位置
-   * @param {number} i 索引值
-   */
-  const handleChange: (i: number) => void = useCallback(
-    (i: number): void => {
-      dispatch(setChecked(i))
-      handleClick(i)
-      dispatch(setIndex(i))
-    },
-    [handleClick, dispatch],
-  )
-
-  /**
    * @description 导航栏滚动的方法: 当按住`CTRL`键时可以对页面进行滚动，否则只滚动导航栏
    * @param {React.WheelEvent<HTMLElement>} event 导航栏滚动event
    */
@@ -126,17 +107,13 @@ function SelectBar(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
 
       if (event.deltaY > 0 && currentIndex < dates.length - 1) {
         currentChecked[currentIndex + 1] = true
-        dispatch(setIndex(currentIndex + 1))
-        handleChange(currentIndex + 1)
-        dispatch(setChecked(currentIndex + 1))
+        handleClick(currentIndex + 1)
       } else if (event.deltaY < 0 && currentIndex > 0) {
         currentChecked[currentIndex - 1] = true
-        dispatch(setIndex(currentIndex - 1))
-        handleChange(currentIndex - 1)
-        dispatch(setChecked(currentIndex - 1))
+        handleClick(currentIndex - 1)
       }
     },
-    [checked, currentIndex, dates.length, handleChange, dispatch],
+    [checked, currentIndex, dates.length, handleClick],
   )
 
   // 当页面渲染时: 发送获取日期通信
@@ -161,8 +138,8 @@ function SelectBar(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
 
   // 当索引值改变时/当加载动画改变时: 触发处理改变的方法
   useLayoutEffect((): void => {
-    if (currentIndex !== null && dates.length && !loading) handleChange(currentIndex)
-  }, [currentIndex, dates.length, loading, handleChange])
+    if (currentIndex !== null && dates.length && !loading) handleClick(currentIndex)
+  }, [currentIndex, dates.length, loading, handleClick])
 
   if (dates.length) {
     return (
@@ -171,7 +148,7 @@ function SelectBar(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
         className={style["nav"]}
         onWheel={(e: React.WheelEvent<HTMLElement>): void => handleScroll(e)}
       >
-        {renderSelectItems(dates, handleChange, handleClick, checked)}
+        {renderSelectItems(dates, handleClick, checked)}
         {loading !== null && !loading && renderHover(currentIndex)}
       </nav>
     )

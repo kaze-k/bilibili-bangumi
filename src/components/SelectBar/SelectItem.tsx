@@ -29,7 +29,7 @@ function renderTodayIcon(today: boolean): React.ReactElement {
  * @return {*}  {React.ReactElement}
  */
 function SelectItem(props: NavItmeProps, ref: React.Ref<HTMLInputElement>): React.ReactElement {
-  const { today, checked, onChange, onClick, date, day, name, id } = props
+  const { today, checked, onClick, date, day, name, id } = props
 
   return (
     <div
@@ -41,7 +41,6 @@ function SelectItem(props: NavItmeProps, ref: React.Ref<HTMLInputElement>): Reac
         type="radio"
         id={id}
         name={name}
-        onChange={onChange}
         onClick={onClick}
         defaultChecked={checked}
       />
