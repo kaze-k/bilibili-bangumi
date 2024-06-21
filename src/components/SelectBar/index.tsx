@@ -90,8 +90,11 @@ function SelectBar(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
         navRef.current.scrollTo({ left: x, behavior: "auto" })
         setRendered(true)
       }
+
+      dispatch(setChecked(i))
+      dispatch(setIndex(i))
     },
-    [rendered],
+    [rendered, dispatch],
   )
 
   /**
@@ -101,9 +104,7 @@ function SelectBar(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
   const handleChange: (i: number) => void = useCallback(
     (i: number): void => {
       dispatch(setChecked(i))
-
       handleClick(i)
-
       dispatch(setIndex(i))
     },
     [handleClick, dispatch],
