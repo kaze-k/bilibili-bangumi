@@ -68,33 +68,33 @@
 }
 
 .enter-left {
-  animation: fade-in-left 0.1s ease;
+  animation: fade-in-left 0.3s ease-in-out;
 }
 
 .enter-active-left {
-  transition: animation 0.1s ease;
+  transition: animation 0.3s ease-in-out;
 }
 
 .enter-right {
-  animation: fade-in-right 0.1s ease;
+  animation: fade-in-right 0.3s ease-in-out;
 }
 
 .enter-active-right {
-  transition: animation 0.1s ease;
+  transition: animation 0.3s ease-in-out;
 }
 
 .exit-left {
-  animation: fade-out-left 0.1s ease;
+  animation: fade-out-left 0.3s ease-in-out;
 }
 
 .exit-active-left {
-  transition: animation 0.1s ease;
+  transition: animation 0.3s ease-in-out;
 }
 
 .exit-right {
-  animation: fade-out-right 0.1s ease;
+  animation: fade-out-right 0.3s ease-in-out;
 }
 
 .exit-active-right {
-  transition: animation 0.1s ease;
+  transition: animation 0.3s ease-in-out;
 }

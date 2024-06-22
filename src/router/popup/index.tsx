@@ -68,7 +68,7 @@ function RouterView(): React.ReactElement {
     <SwitchTransition mode="in-out">
       <CSSTransition
         key={location.key}
-        timeout={100}
+        timeout={300}
         classNames={classNames}
         nodeRef={nodeRef}
         onEntering={(): void => document.body.setAttribute("style", "pointer-events: none;")}
