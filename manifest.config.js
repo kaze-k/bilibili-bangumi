@@ -21,7 +21,7 @@ module.exports = {
     default_path: "panel.html",
   },
   options_page: "options.html",
-  permissions: ["storage", "notifications", "alarms", "sidePanel"],
+  permissions: ["storage", "notifications", "alarms", "sidePanel", "tabs"],
   default_locale: "zh_CN",
   host_permissions: ["https://*/*", "http://*/*"],
 }
