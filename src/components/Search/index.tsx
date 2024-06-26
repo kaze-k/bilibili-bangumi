@@ -8,6 +8,9 @@ import style from "./style.module.scss"
 // 搜索输入框提示文本
 const PLACEHOLDER = "bilibili 搜索动漫"
 
+// 搜索跳转的URL
+const URL = "https://search.bilibili.com/bangumi"
+
 /**
  * @description 搜索框的清空按钮
  * @param {React.Dispatch<React.SetStateAction<string>>} handle 清空输入框的方法
@@ -35,8 +38,21 @@ function Search(_props: unknown, ref: React.Ref<HTMLDivElement>): React.ReactEle
   const handleSearch: (event: React.KeyboardEvent<HTMLInputElement>) => void = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>): void => {
       if (val && hasFocus && event.key === "Enter") {
-        chrome.tabs.create({
-          url: `https://search.bilibili.com/bangumi?keyword=${val}`,
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]): void => {
+          const currentTab: chrome.tabs.Tab = tabs.at(-1)
+          const input: HTMLInputElement = event.target as HTMLInputElement
+
+          if (currentTab.url.includes(URL)) {
+            chrome.tabs.update(currentTab.id, {
+              url: `${URL}?keyword=${val}`,
+            })
+          } else {
+            chrome.tabs.create({
+              url: `${URL}?keyword=${val}`,
+            })
+          }
+
+          input.blur()
         })
       }
     },
