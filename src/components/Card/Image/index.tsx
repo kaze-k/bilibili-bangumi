@@ -20,14 +20,17 @@ const DEFAULT_TITLE = "图片暂时无法显示"
 function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.ReactElement {
   const { img = unfound, title } = props
 
+  // 图片地址
+  const src: string = img.length === 0 ? unfound : img
+
   // 图片标题
-  const title_text: string = img !== unfound ? title : DEFAULT_TITLE
+  const title_text: string = img !== unfound && img.length !== 0 ? title : DEFAULT_TITLE
 
   return (
     <img
       ref={ref}
       className={style["img"]}
-      src={img}
+      src={src}
       title={title_text}
       alt={ALT_TEXT}
       draggable="false"
