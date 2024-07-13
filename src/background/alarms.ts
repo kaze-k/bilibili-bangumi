@@ -119,8 +119,8 @@ class Handler {
     // 获取通知设置
     const notice: boolean = await settings<boolean>(PersistKey.NOTICE, "toggle")
 
-    const now: number = Math.floor(Date.now() / 1000)
-    const time: number = Math.floor(scheduledTime / 1000)
+    const now: number = Math.floor(Date.now() / 100000)
+    const time: number = Math.floor(scheduledTime / 100000)
 
     if (notice && now === time) {
       // 获取通知信息
