@@ -1,6 +1,22 @@
-## 0.3.0 (2024-06-19)
+## <small>0.3.1 (2024-07-23)</small>
+
+* update(pages,base component): 修改样式 ([833c554](https://github.com/kaze-k/bilibili-bangumi/commit/833c554))
+* perf(background): 优化通知延迟问题 ([c5394cb](https://github.com/kaze-k/bilibili-bangumi/commit/c5394cb))
+* perf(components): 优化搜索框搜索 ([f5cef1d](https://github.com/kaze-k/bilibili-bangumi/commit/f5cef1d))
+* perf(popup): 调整页面过渡动画 ([df31841](https://github.com/kaze-k/bilibili-bangumi/commit/df31841))
+* perf(router): 优化路由过渡动画 ([4b679f5](https://github.com/kaze-k/bilibili-bangumi/commit/4b679f5))
+* fix(components): 修复点击事件可能无法生效bug ([2bb0076](https://github.com/kaze-k/bilibili-bangumi/commit/2bb0076))
+* fix(components): 修复图片地址为空字符串时无法显示问题 ([64db6c4](https://github.com/kaze-k/bilibili-bangumi/commit/64db6c4))
+* build(tools): manifest增加tabs权限 ([bdd1831](https://github.com/kaze-k/bilibili-bangumi/commit/bdd1831))
+* refactor(components): 简化逻辑 ([88019f3](https://github.com/kaze-k/bilibili-bangumi/commit/88019f3))
+* refactor(components): 简化逻辑 ([4725a52](https://github.com/kaze-k/bilibili-bangumi/commit/4725a52))
+
+
+
+## 0.3.0 (2024-06-21)
 
 * chore: 更新依赖和新增依赖 ([acd9f95](https://github.com/kaze-k/bilibili-bangumi/commit/acd9f95))
+* chore(release): v0.3.0 ([2447b05](https://github.com/kaze-k/bilibili-bangumi/commit/2447b05))
 * chore(tools): 代码规范工具配置 ([017dc49](https://github.com/kaze-k/bilibili-bangumi/commit/017dc49))
 * chore(tools): 修改配置 ([554624c](https://github.com/kaze-k/bilibili-bangumi/commit/554624c))
 * chore(tools): 修改配置 ([28da375](https://github.com/kaze-k/bilibili-bangumi/commit/28da375))
