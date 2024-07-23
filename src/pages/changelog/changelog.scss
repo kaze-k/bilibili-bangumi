@@ -3,3 +3,7 @@
 @use "~/styles/theme/light.scss";
 @use "~/styles/theme/markdown-dark.scss";
 @use "~/styles/theme/markdown-light.scss";
+
+#root {
+  background-color: var(--bg-color);
+}
