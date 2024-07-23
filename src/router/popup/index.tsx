@@ -2,7 +2,7 @@ import { Suspense, createRef } from "react"
 import type React from "react"
 import { useLocation, useRoutes } from "react-router-dom"
 import type { Location, RouteObject } from "react-router-dom"
-import { CSSTransition, SwitchTransition } from "react-transition-group"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
 import Loading from "~/components/Loading"
@@ -32,18 +32,13 @@ function mapRoutesWithRef(routes: RouteObject[]): RouteWithRefObject<HTMLDivElem
  * @return {*}  {CSSTransitionClassNames} 路由过渡动画类名
  */
 function getTransitionClassNames(location: Location): CSSTransitionClassNames {
-  const baseTransition: CSSTransitionClassNames = {
-    enter: transition["enter-left"],
-    enterActive: transition["exit-active-left"],
-    exit: transition["exit-left"],
-    exitActive: transition["exit-active-left"],
-  }
+  const baseTransition: CSSTransitionClassNames = {}
 
   if (location.pathname !== "/") {
-    baseTransition.enter = transition["enter-right"]
-    baseTransition.enterActive = transition["exit-active-right"]
-    baseTransition.exit = transition["exit-right"]
-    baseTransition.exitActive = transition["exit-active-right"]
+    baseTransition.enter = transition["cover-enter"]
+    baseTransition.enterActive = transition["cover-enter-active"]
+    baseTransition.exit = transition["cover-exit"]
+    baseTransition.exitActive = transition["cover-exit-active"]
   }
 
   return baseTransition
@@ -65,23 +60,19 @@ function RouterView(): React.ReactElement {
   )
 
   return (
-    <SwitchTransition mode="in-out">
+    <TransitionGroup component={null}>
       <CSSTransition
         key={location.key}
-        timeout={300}
+        timeout={400}
         classNames={classNames}
         nodeRef={nodeRef}
-        onEntering={(): void => document.body.setAttribute("style", "pointer-events: none;")}
-        onEntered={(): void => document.body.removeAttribute("style")}
-        onExiting={(): void => document.body.setAttribute("style", "pointer-events: none;")}
-        onExited={(): void => document.body.removeAttribute("style")}
         unmountOnExit
       >
         <View ref={nodeRef}>
           <Suspense fallback={<Loading icon="spinner" />}>{router}</Suspense>
         </View>
       </CSSTransition>
-    </SwitchTransition>
+    </TransitionGroup>
   )
 }
 
