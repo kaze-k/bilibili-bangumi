@@ -43,7 +43,7 @@ module.exports = {
     { name: "router" },
     { name: "service" },
     { name: "locales" },
-    { name: "pubilc" },
+    { name: "public" },
     { name: "tools" },
     { name: "release" },
     { name: "changelog" },
