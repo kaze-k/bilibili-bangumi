@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        pnpm-version: [8.x]
+        pnpm-version: [9.x]
 
     steps:
       - name: 1. 检查代码
