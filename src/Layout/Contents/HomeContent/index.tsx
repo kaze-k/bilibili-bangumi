@@ -8,7 +8,7 @@ import { EpisodeType } from "~/store/enums"
 
 import ContentMain from "./ContentMain"
 import ErrorMain from "./ErrorMain"
-import LoadingMain from "./LoadingMain"
+import WaitMain from "./WaitMain"
 
 /**
  * @description 首页内容组件
@@ -18,7 +18,7 @@ function HomeContent(): React.ReactElement {
   const dispatch: AppDispatch = useDispatch()
 
   // 状态
-  const [loading, setLoading] = useState<boolean>(true)
+  const [isWait, setIsWait] = useState<boolean>(true)
   const isLoading: boolean = useSelector((state: AppState): boolean => state.data.isLoading)
   const episodes: [][] = useSelector((state: AppState): [][] => state.data.episodes)
   const isError: boolean = useSelector((state: AppState): boolean => state.data.isError)
@@ -35,14 +35,14 @@ function HomeContent(): React.ReactElement {
     if (isLoading !== null && !isLoading) handleData()
   }, [isLoading, handleData, dispatch])
 
-  // 当剧集信息获取成功时/当错误状态改变时: 停止加载动画
+  // 当剧集信息获取成功时/当错误状态改变时: 停止等待
   useEffect((): void => {
-    if (isError) setLoading(false)
-    else if (episodes.length) setLoading(false)
-    else setLoading(true)
+    if (isError) setIsWait(false)
+    else if (episodes.length) setIsWait(false)
+    else setIsWait(true)
   }, [episodes.length, isError])
 
-  if (loading) return <LoadingMain />
+  if (isWait) return <WaitMain />
   if (isError && episodes.length === 0) return <ErrorMain />
   return <ContentMain />
 }

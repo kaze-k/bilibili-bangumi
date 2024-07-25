@@ -37,7 +37,7 @@ function AnimeRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.ReactE
   const animeNotice: boolean = useSelector((state: AppState): boolean => state.notice.animeNotice)
 
   // 节点实例
-  const nodeRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理切换的方法: 切换番剧通知的开关

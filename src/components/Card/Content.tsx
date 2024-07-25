@@ -44,6 +44,7 @@ function Content(props: ContentProps, ref: React.Ref<HTMLDivElement>): React.Rea
       <Image
         img={square_cover}
         title={title}
+        lazy
       />
       <div className={style["context"]}>
         <Episode

@@ -1,5 +1,5 @@
 interface LoadingProps {
-  icon?: "loading" | "spinner"
+  icon?: "spinner"
 }
 
 export default LoadingProps
