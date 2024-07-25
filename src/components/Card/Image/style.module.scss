@@ -1,5 +1,22 @@
-.img {
+.lazy {
+  position: absolute;
+}
+
+.image-wrapper {
   width: 20%;
   margin: 5px;
   border-radius: 12px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 100%;
+  margin: 5px;
+  border-radius: 12px;
+  transition:
+    opacity 0.4s ease-in-out,
+    filter 0.5s ease-in-out;
 }
