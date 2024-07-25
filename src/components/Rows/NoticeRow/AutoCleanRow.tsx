@@ -39,8 +39,8 @@ function AutoCleanRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   const timeout: number = useSelector((state: AppState): number => state.notice.timeout)
 
   // 节点实例
-  const nodeRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
-  const tipsRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const tipsRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   // 提示文本
   const explain = `开启后，通知信息会在${toTime(timeout)}分钟后自动清除`

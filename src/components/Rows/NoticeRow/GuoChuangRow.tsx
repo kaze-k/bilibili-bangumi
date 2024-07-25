@@ -37,7 +37,7 @@ function GuoChuangRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   const guochuangNotice: boolean = useSelector((state: AppState): boolean => state.notice.guochuangNotice)
 
   // 节点实例
-  const nodeRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理切换的方法: 切换国创通知开关

@@ -39,7 +39,7 @@ function SilentRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
   const silent: boolean = useSelector((state: AppState): boolean => state.notice.silent)
 
   // 节点实例
-  const nodeRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理切换的方法: 切换静默通知开关

@@ -58,8 +58,8 @@ function AutoThemeRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   const pm: number = useSelector((state: AppState): number => state.theme.pm)
 
   // 节点实例
-  const nodeRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
-  const tipsRef: React.Ref<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const tipsRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理改变的方法: 切换自动更换主题的状态
