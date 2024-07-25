@@ -1,5 +1,5 @@
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faGithub } from "@fortawesome/free-brands-svg-icons"
+import { faBilibili, faGithub } from "@fortawesome/free-brands-svg-icons"
 import { faClock, faDizzy, faGrinTongueWink } from "@fortawesome/free-regular-svg-icons"
 import {
   faBell,
@@ -24,6 +24,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
+  faBilibili,
   faBell,
   faBellSlash,
   faBomb,

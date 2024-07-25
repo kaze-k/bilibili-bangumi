@@ -1,9 +1,9 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import type React from "react"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import ErrorPage from "~/components/ErrorPage"
-import Loading from "~/components/Loading"
 import { Main } from "~/components/base"
 import { useGetEpisodes } from "~/hooks"
 import type { AppDispatch, AppState } from "~/store"
@@ -14,13 +14,20 @@ import style from "./style.module.scss"
 
 /**
  * @description 渲染内容
- * @param {boolean} isLoading 是否正在加载
+ * @param {boolean} isWait 是否正在等待
  * @param {boolean} isError 是否发生错误
  * @param {[]} todayEpisodes 今日剧集
  * @return {*}  {React.ReactElement}
  */
-function renderContent(isLoading: boolean, isError: boolean, todayEpisodes: []): React.ReactElement {
-  if (isLoading) return <Loading icon="loading" />
+function renderContent(isWait: boolean, isError: boolean, todayEpisodes: []): React.ReactElement {
+  if (isWait)
+    return (
+      <FontAwesomeIcon
+        icon={["fab", "bilibili"]}
+        size="2xl"
+        className={style["icon"]}
+      />
+    )
   if (isError && todayEpisodes === null) return <ErrorPage text="加载失败" />
   return renderPage(todayEpisodes)
 }
@@ -33,7 +40,7 @@ function UpdateContent(): React.ReactElement {
   const dispatch: AppDispatch = useDispatch()
 
   // 状态
-  const [loading, setLoading] = useState<boolean>(true)
+  const [isWait, setIsWait] = useState<boolean>(true)
   const todayEpisodes: [] = useSelector((state: AppState): [] => state.data.todayEpisodes)
   const isLoading: boolean = useSelector((state: AppState): boolean => state.data.isLoading)
   const isError: boolean = useSelector((state: AppState): boolean => state.data.isError)
@@ -50,14 +57,14 @@ function UpdateContent(): React.ReactElement {
     if (isLoading !== null && !isLoading) handleData()
   }, [isLoading, handleData, dispatch])
 
-  // 当今天更新的剧集信息获取成功时/当错误状态改变时: 停止加载动画
+  // 当今天更新的剧集信息获取成功时/当错误状态改变时: 停止等待
   useEffect((): void => {
-    if (isError) setLoading(false)
-    else if (todayEpisodes === null) setLoading(true)
-    else setLoading(false)
+    if (isError) setIsWait(false)
+    else if (todayEpisodes === null) setIsWait(true)
+    else setIsWait(false)
   }, [todayEpisodes, isError])
 
-  return <Main className={style["main"]}>{renderContent(loading, isError, todayEpisodes)}</Main>
+  return <Main className={style["main"]}>{renderContent(isWait, isError, todayEpisodes)}</Main>
 }
 
 export default UpdateContent
