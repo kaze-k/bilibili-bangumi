@@ -1,6 +1,6 @@
 import ClearButton from "./ClearButton"
 import GithubButton from "./GithubButton"
-import GobackButton from "./GobackButton"
+import GoBackButton from "./GoBackButton"
 import NoticeButton from "./NoticeButton"
 import RefreshButton from "./RefreshButton"
 import ResetButton from "./ResetButton"
@@ -10,7 +10,7 @@ import SwitchThemeButton from "./SwitchThemeButton"
 export {
   ClearButton,
   GithubButton,
-  GobackButton,
+  GoBackButton,
   NoticeButton,
   RefreshButton,
   ResetButton,

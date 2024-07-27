@@ -1,7 +1,6 @@
 import type React from "react"
 
-import NoticeButton from "~/components/Buttons/NoticeButton"
-import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
+import { NoticeButton, SwitchThemeButton } from "~/components/Buttons"
 
 import style from "./style.module.scss"
 

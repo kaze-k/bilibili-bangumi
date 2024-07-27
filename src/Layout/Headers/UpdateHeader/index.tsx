@@ -1,8 +1,7 @@
 import type React from "react"
 import { useSelector } from "react-redux"
 
-import RefreshButton from "~/components/Buttons/RefreshButton"
-import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
+import { RefreshButton, SwitchThemeButton } from "~/components/Buttons"
 import Search from "~/components/Search"
 import type { AppState } from "~/store"
 import { EpisodeType } from "~/store/enums"

@@ -1,10 +1,7 @@
 import type React from "react"
 import { useSelector } from "react-redux"
 
-import NoticeButton from "~/components/Buttons/NoticeButton"
-import RefreshButton from "~/components/Buttons/RefreshButton"
-import SetupButton from "~/components/Buttons/SetupButton"
-import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
+import { NoticeButton, RefreshButton, SetupButton, SwitchThemeButton } from "~/components/Buttons"
 import Disconnection from "~/components/Disconnection"
 import Search from "~/components/Search"
 import TypeSelector from "~/components/TypeSelector"
