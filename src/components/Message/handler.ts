@@ -12,7 +12,7 @@ import type { MessageHandler, MessageOptions, MessageState, MessageType, Msgs } 
  */
 const createMessage: (type: MessageType, message?: string, opts?: MessageOptions) => MessageState = (
   type: MessageType,
-  message = "",
+  message: string = "",
   opts?: MessageOptions,
 ): MessageState => ({
   createAt: Date.now(),

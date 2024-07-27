@@ -23,13 +23,13 @@ export type ComponentWithTransition<P = unknown, T extends HTMLElement = HTMLEle
  * @template T
  * @param {WrappedComponent<P, T>} WrappedComponent 传入组件
  * @param {CSSTransitionClassNames} classNames 过渡动画类名
- * @param {number} [timeout] 过渡动画时间
+ * @param {number} [timeout=500] 过渡动画时间
  * @return {*}  {ComponentWithTransition<P, T>} 过渡动画组件
  */
 function withTransition<P = unknown, T extends HTMLElement = HTMLElement>(
   WrappedComponent: WrappedComponent<P, T>,
   classNames: CSSTransitionClassNames,
-  timeout?: number,
+  timeout: number = 500,
 ): ComponentWithTransition<P, T> {
   /**
    * @description 过渡动画组件
@@ -46,7 +46,7 @@ function withTransition<P = unknown, T extends HTMLElement = HTMLElement>(
     return (
       <CSSTransition
         nodeRef={nodeRef}
-        timeout={timeout || 500}
+        timeout={timeout}
         in={inProp}
         classNames={classNames}
         unmountOnExit={unmountOnExit}

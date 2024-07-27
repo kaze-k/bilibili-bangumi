@@ -27,5 +27,14 @@
       "pragma": "React",
       "version": "detect"
     }
+  },
+  "rules": {
+    "@typescript-eslint/no-inferrable-types": [
+      "error",
+      {
+        "ignoreParameters": true,
+        "ignoreProperties": true
+      }
+    ]
   }
 }
