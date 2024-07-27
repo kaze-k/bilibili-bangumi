@@ -7,7 +7,7 @@ import type { AppDispatch, AppState } from "~/store"
 import { setIndex } from "~/store/features/data"
 
 import { Wrapper } from "./components"
-import renderPages from "./render"
+import { renderPages } from "./render"
 import style from "./style.module.scss"
 
 /**

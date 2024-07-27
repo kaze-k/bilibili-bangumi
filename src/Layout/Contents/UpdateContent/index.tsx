@@ -1,36 +1,14 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import type React from "react"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import ErrorPage from "~/components/ErrorPage"
 import { Main } from "~/components/base"
 import { useGetEpisodes } from "~/hooks"
 import type { AppDispatch, AppState } from "~/store"
 import { EpisodeType } from "~/store/enums"
 
-import renderPage from "./render"
+import { renderContent } from "./render"
 import style from "./style.module.scss"
-
-/**
- * @description 渲染内容
- * @param {boolean} isWait 是否正在等待
- * @param {boolean} isError 是否发生错误
- * @param {[]} todayEpisodes 今日剧集
- * @return {*}  {React.ReactElement}
- */
-function renderContent(isWait: boolean, isError: boolean, todayEpisodes: []): React.ReactElement {
-  if (isWait)
-    return (
-      <FontAwesomeIcon
-        icon={["fab", "bilibili"]}
-        size="2xl"
-        className={style["icon"]}
-      />
-    )
-  if (isError && todayEpisodes === null) return <ErrorPage text="加载失败" />
-  return renderPage(todayEpisodes)
-}
 
 /**
  * @description 更新内容组件

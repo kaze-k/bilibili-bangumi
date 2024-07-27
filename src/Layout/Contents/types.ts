@@ -1,5 +1,3 @@
-import type React from "react"
-
 interface EpisodeStat {
   likes?: number
   coins?: number
@@ -28,6 +26,7 @@ interface ContainerProps {
   pub_time?: string
   info?: EpisodeInfo
   cover?: string
+  square_cover?: string
   title?: string
   delay?: boolean
   delay_reason?: string
@@ -36,10 +35,4 @@ interface ContainerProps {
   season_id?: number
 }
 
-interface PageProps {
-  episodes: ContainerProps[]
-  children?: React.ReactNode
-  empty?: React.ReactElement
-}
-
-export { ContainerProps, PageProps }
+export { ContainerProps }
