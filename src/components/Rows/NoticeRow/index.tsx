@@ -1,11 +1,15 @@
-import { forwardRef, useEffect } from "react"
 import type React from "react"
+import { forwardRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
+import withTransition from "~/hocs/withTransition"
+import type { ComponentWithTransition } from "~/hocs/withTransition"
 import type { AppDispatch, AppState } from "~/store"
 import { setNotice } from "~/store/features/notice"
 
 import style from "../style.module.scss"
+import transition from "../transition.module.scss"
 import AnimeRow from "./AnimeRow"
 import AutoCleanRow from "./AutoCleanRow"
 import GuoChuangRow from "./GuoChuangRow"
@@ -14,6 +18,38 @@ import SubscribeRow from "./SubscribeRow"
 
 // 行组件标题文本
 const TITLE_TEXT = "通知"
+
+// 过渡动画类名
+const CLASSNAMES: CSSTransitionClassNames = {
+  enter: transition["enter"],
+  enterActive: transition["enter-active"],
+  exit: transition["exit"],
+  exitActive: transition["exit-active"],
+}
+
+// 过渡动画番剧通知行组件
+const AnimeRowWithTransition: ComponentWithTransition<unknown, HTMLDivElement> = withTransition<
+  unknown,
+  HTMLDivElement
+>(AnimeRow, CLASSNAMES)
+
+// 过渡动画国创通知行组件
+const GuoChuangRowWithTransition: ComponentWithTransition<unknown, HTMLDivElement> = withTransition<
+  unknown,
+  HTMLDivElement
+>(GuoChuangRow, CLASSNAMES)
+
+// 过渡动画静默通知行组件
+const SilentRowWithTransition: ComponentWithTransition<unknown, HTMLDivElement> = withTransition<
+  unknown,
+  HTMLDivElement
+>(SilentRow, CLASSNAMES)
+
+// 过渡动画自动清除通知行组件
+const AutoCleanRowWithTransition: ComponentWithTransition<unknown, HTMLDivElement> = withTransition<
+  unknown,
+  HTMLDivElement
+>(AutoCleanRow, CLASSNAMES)
 
 /**
  * @description 通知行组件
@@ -43,10 +79,22 @@ function NoticeRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.React
     >
       <div className={style["title"]}>{TITLE_TEXT}</div>
       <SubscribeRow />
-      <AnimeRow />
-      <GuoChuangRow />
-      <SilentRow />
-      <AutoCleanRow />
+      <AnimeRowWithTransition
+        inProp={notice}
+        unmountOnExit
+      />
+      <GuoChuangRowWithTransition
+        inProp={notice}
+        unmountOnExit
+      />
+      <SilentRowWithTransition
+        inProp={notice}
+        unmountOnExit
+      />
+      <AutoCleanRowWithTransition
+        inProp={notice}
+        unmountOnExit
+      />
     </div>
   )
 }

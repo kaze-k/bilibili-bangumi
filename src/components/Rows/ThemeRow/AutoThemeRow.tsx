@@ -1,16 +1,18 @@
-import { composeRef } from "rc-util/lib/ref"
-import { forwardRef, useCallback, useRef } from "react"
 import type React from "react"
+import { forwardRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CSSTransition } from "react-transition-group"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
 import { Row, Switch } from "~/components/base"
+import withTransition from "~/hocs/withTransition"
+import type { ComponentWithTransition } from "~/hocs/withTransition"
 import type { AppDispatch, AppState } from "~/store"
 import { setAutoTheme } from "~/store/features/theme"
 
+import { Tips } from "../components"
 import style from "../style.module.scss"
 import transition from "../transition.module.scss"
+import type { TipsProps } from "../types"
 
 // 过渡动画类名
 const CLASSNAMES: CSSTransitionClassNames = {
@@ -42,6 +44,12 @@ function getTips(am: number, pm: number): string {
   return tips
 }
 
+// 过渡动画提示组件
+const TipsWithTransition: ComponentWithTransition<TipsProps, HTMLDivElement> = withTransition<
+  TipsProps,
+  HTMLDivElement
+>(Tips, CLASSNAMES)
+
 /**
  * @description 自动更换主题行组件
  * @param {unknown} _props 自动更换主题行组件Props
@@ -52,14 +60,9 @@ function AutoThemeRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   const dispatch: AppDispatch = useDispatch()
 
   // 状态
-  const system: boolean = useSelector((state: AppState): boolean => state.theme.system)
   const auto: boolean = useSelector((state: AppState): boolean => state.theme.auto)
   const am: number = useSelector((state: AppState): number => state.theme.am)
   const pm: number = useSelector((state: AppState): number => state.theme.pm)
-
-  // 节点实例
-  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-  const tipsRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理改变的方法: 切换自动更换主题的状态
@@ -69,40 +72,24 @@ function AutoThemeRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   }, [auto, dispatch])
 
   return (
-    <CSSTransition
-      in={!system}
-      timeout={500}
-      classNames={CLASSNAMES}
-      nodeRef={nodeRef}
-      unmountOnExit
+    <div
+      ref={ref}
+      className={style["container"]}
     >
-      <div
-        ref={composeRef(ref, nodeRef)}
-        className={style["container"]}
+      <Row text={TEXT}>
+        <Switch
+          id="auto-switch"
+          onChange={handleSwitch}
+          checked={auto}
+        />
+      </Row>
+      <TipsWithTransition
+        inProp={auto}
+        unmountOnExit
       >
-        <Row text={TEXT}>
-          <Switch
-            id="auto-switch"
-            onChange={handleSwitch}
-            checked={auto}
-          />
-        </Row>
-        <CSSTransition
-          in={auto}
-          timeout={500}
-          classNames={CLASSNAMES}
-          nodeRef={tipsRef}
-          unmountOnExit
-        >
-          <div
-            className={style["tips"]}
-            ref={tipsRef}
-          >
-            {getTips(am, pm)}
-          </div>
-        </CSSTransition>
-      </div>
-    </CSSTransition>
+        {getTips(am, pm)}
+      </TipsWithTransition>
+    </div>
   )
 }
 
