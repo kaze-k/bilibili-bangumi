@@ -1,5 +1,5 @@
-import { useLayoutEffect, useState } from "react"
 import type React from "react"
+import { useLayoutEffect, useState } from "react"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 
 import Message from "./Message"
@@ -14,6 +14,32 @@ const CLASSNAMES = {
   enterActive: transition["enter-active"],
   exit: transition["exit"],
   exitActive: transition["exit-active"],
+}
+
+/**
+ * @description 渲染消息
+ * @param {MessageState[]} state 消息状态队列
+ * @return {*}  {React.ReactElement[]}
+ */
+function renderMessages(state: MessageState[]): React.ReactElement[] {
+  return state.map(
+    (m: MessageState): React.ReactElement => (
+      <CSSTransition
+        key={m.id}
+        timeout={300}
+        classNames={CLASSNAMES}
+        nodeRef={m.nodeRef}
+      >
+        <Message
+          id={m.id}
+          key={m.id}
+          message={m.message}
+          type={m.type}
+          ref={m.nodeRef}
+        />
+      </CSSTransition>
+    ),
+  )
 }
 
 /**
@@ -41,26 +67,7 @@ function Messager(props: MessagerProps): React.ReactElement {
       top={top}
       className={style["message-container"]}
     >
-      <TransitionGroup component={null}>
-        {state.map(
-          (m: MessageState): React.ReactElement => (
-            <CSSTransition
-              key={m.id}
-              timeout={300}
-              classNames={CLASSNAMES}
-              nodeRef={m.nodeRef}
-            >
-              <Message
-                id={m.id}
-                key={m.id}
-                message={m.message}
-                type={m.type}
-                ref={m.nodeRef}
-              />
-            </CSSTransition>
-          ),
-        )}
-      </TransitionGroup>
+      <TransitionGroup component={null}>{renderMessages(state)}</TransitionGroup>
     </MessageContainer>
   )
 }
