@@ -41,7 +41,7 @@ function withTransition<P = unknown, T extends HTMLElement = HTMLElement>(
     const { inProp, unmountOnExit } = props
 
     // 节点实例
-    const nodeRef: React.RefObject<T> = useRef(null)
+    const nodeRef: React.RefObject<T> = useRef<T>(null)
 
     return (
       <CSSTransition

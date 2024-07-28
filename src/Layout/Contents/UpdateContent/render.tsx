@@ -19,7 +19,7 @@ const noUpdate: React.ReactElement = <EmptyPage text="今日无内容更新哦~"
 function renderPage(episodes: ContainerProps[]): React.ReactElement {
   // 创建ref
   const data: ContainerProps[] = episodes?.map(
-    (episode: ContainerProps): ContainerProps => ({ ...episode, nodeRef: createRef() }),
+    (episode: ContainerProps): ContainerProps => ({ ...episode, nodeRef: createRef<HTMLDivElement>() }),
   )
 
   return (

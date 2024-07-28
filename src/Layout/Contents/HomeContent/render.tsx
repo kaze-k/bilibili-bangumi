@@ -18,21 +18,21 @@ const noUpdate: React.ReactElement = <EmptyPage text="今日无内容更新哦~"
  */
 function renderPages(episodes: ContainerProps[][]): React.ReactElement[] {
   // 创建ref
-  const data: ContainerProps[][] = episodes?.map((page: ContainerProps[]): ContainerProps[] => {
-    return page?.map((episode: ContainerProps): ContainerProps => {
-      return { ...episode, nodeRef: createRef() }
+  const datas: ContainerProps[][] = episodes?.map((data: ContainerProps[]): ContainerProps[] => {
+    return data?.map((episode: ContainerProps): ContainerProps => {
+      return { ...episode, nodeRef: createRef<HTMLDivElement>() }
     })
   })
 
-  return data?.map(
-    (page: ContainerProps[], index: number): React.ReactElement => (
+  return datas?.map(
+    (data: ContainerProps[], index: number): React.ReactElement => (
       <Page
         className={style["page"]}
-        data={page}
+        data={data}
         key={index}
         empty={noUpdate}
       >
-        <TransitionGroup component={null}>{renderCards(page, "square_cover")}</TransitionGroup>
+        <TransitionGroup component={null}>{renderCards(data, "square_cover")}</TransitionGroup>
       </Page>
     ),
   )

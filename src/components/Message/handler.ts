@@ -16,7 +16,7 @@ const createMessage: (type: MessageType, message?: string, opts?: MessageOptions
   opts?: MessageOptions,
 ): MessageState => ({
   createAt: Date.now(),
-  nodeRef: createRef(),
+  nodeRef: createRef<HTMLDivElement>(),
   id: opts?.id || crypto.randomUUID(),
   type,
   message,
