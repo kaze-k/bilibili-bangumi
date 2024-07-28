@@ -2,6 +2,7 @@ import type React from "react"
 import { CSSTransition } from "react-transition-group"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
+import Animation from "~/components/Animation"
 import Card from "~/components/Card"
 
 import style from "./style.module.scss"
@@ -14,6 +15,19 @@ const CLASSNAMES: CSSTransitionClassNames = {
   enterActive: transition["enter-active"],
   exit: transition["exit"],
   exitActive: transition["exit-active"],
+}
+
+// 过渡动画
+const KEYFRAMES: Keyframe[] = [
+  { transform: "translateY(150px)", opacity: 0.5 },
+  { transform: "translateY(0)", opacity: 1 },
+]
+
+// 过渡动画选项
+const KEYFRAME_OPTIONS: KeyframeAnimationOptions = {
+  duration: 500,
+  easing: "ease-in-out",
+  fill: "forwards",
 }
 
 /**
@@ -40,28 +54,34 @@ function renderEpisodeCard(
         className={style["container"]}
         ref={episode.nodeRef}
       >
-        <Card
+        <Animation
           key={episode?.episode_id}
-          pub_time={episode?.pub_time}
-          styles={episode?.info?.styles}
-          likes={episode?.info?.stat?.likes}
-          coins={episode?.info?.stat?.coins}
-          favorite={episode?.info?.stat?.favorite}
-          share={episode?.info?.stat?.share}
-          reply={episode?.info?.stat?.reply}
-          handleClick={(): void => handleClick(episode?.episode_id, episode?.published, episode?.season_id)}
-          square_cover={episode[cover]}
-          title={episode?.title}
-          delay={episode?.delay}
-          delay_reason={episode?.delay_reason}
-          pub_index={episode?.pub_index}
-          views={episode?.info?.stat?.views}
-          danmakus={episode?.info?.stat?.danmakus}
-          favorites={episode?.info?.stat?.favorites}
-          score={episode?.info?.rating?.score}
-          count={episode?.info?.rating?.count}
-          published={episode?.published}
-        />
+          keyframes={KEYFRAMES}
+          options={KEYFRAME_OPTIONS}
+        >
+          <Card
+            key={episode?.episode_id}
+            pub_time={episode?.pub_time}
+            styles={episode?.info?.styles}
+            likes={episode?.info?.stat?.likes}
+            coins={episode?.info?.stat?.coins}
+            favorite={episode?.info?.stat?.favorite}
+            share={episode?.info?.stat?.share}
+            reply={episode?.info?.stat?.reply}
+            handleClick={(): void => handleClick(episode?.episode_id, episode?.published, episode?.season_id)}
+            square_cover={episode[cover]}
+            title={episode?.title}
+            delay={episode?.delay}
+            delay_reason={episode?.delay_reason}
+            pub_index={episode?.pub_index}
+            views={episode?.info?.stat?.views}
+            danmakus={episode?.info?.stat?.danmakus}
+            favorites={episode?.info?.stat?.favorites}
+            score={episode?.info?.rating?.score}
+            count={episode?.info?.rating?.count}
+            published={episode?.published}
+          />
+        </Animation>
       </div>
     </CSSTransition>
   )
