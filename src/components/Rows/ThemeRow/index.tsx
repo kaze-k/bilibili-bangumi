@@ -3,8 +3,8 @@ import { forwardRef } from "react"
 import { useSelector } from "react-redux"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
-import withTransition from "~/hocs/withTransition"
-import type { ComponentWithTransition } from "~/hocs/withTransition"
+import { withTransition } from "~/hocs"
+import type { ComponentWithTransition } from "~/hocs"
 import { AppState } from "~/store"
 
 import style from "../style.module.scss"

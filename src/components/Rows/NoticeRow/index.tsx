@@ -3,8 +3,8 @@ import { forwardRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
-import withTransition from "~/hocs/withTransition"
-import type { ComponentWithTransition } from "~/hocs/withTransition"
+import { withTransition } from "~/hocs"
+import type { ComponentWithTransition } from "~/hocs"
 import type { AppDispatch, AppState } from "~/store"
 import { setNotice } from "~/store/features/notice"
 
