@@ -36,10 +36,8 @@ function ResetButton(_props: unknown, ref: React.Ref<HTMLButtonElement>): React.
     message.promise(
       chrome.storage.sync
         .clear()
-        .then(
-          (): void => setResettable(false),
-          (): void => setResettable(true),
-        )
+        .then((): void => setResettable(false))
+        .catch((): void => setResettable(true))
         .finally((): void => {
           dispatch(resetStates())
           persistor.persist()

@@ -9,8 +9,12 @@ import type { MessageRequest } from "~/background/types"
  * @return {*}  {Promise<void>}
  */
 const abort = createAsyncThunk("data/abort", async (): Promise<boolean> => {
-  const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ABORT })
-  return response
+  try {
+    const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ABORT })
+    return response
+  } catch (error: unknown) {
+    throw error
+  }
 })
 
 /**
@@ -18,8 +22,12 @@ const abort = createAsyncThunk("data/abort", async (): Promise<boolean> => {
  * @return {*}  {Promise<boolean>} 返回更新状态
  */
 const update = createAsyncThunk("data/update", async (): Promise<boolean> => {
-  const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.UPDATE })
-  return response
+  try {
+    const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.UPDATE })
+    return response
+  } catch (error: unknown) {
+    throw error
+  }
 })
 
 /**
@@ -27,8 +35,12 @@ const update = createAsyncThunk("data/update", async (): Promise<boolean> => {
  * @return {*}  {Promise<[][]>} 返回从background获取的日漫日期信息
  */
 const getDates = createAsyncThunk("data/getDates", async (): Promise<[][]> => {
-  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DATES })
-  return response.data
+  try {
+    const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DATES })
+    return response.data
+  } catch (error: unknown) {
+    throw error
+  }
 })
 
 /**
@@ -36,10 +48,14 @@ const getDates = createAsyncThunk("data/getDates", async (): Promise<[][]> => {
  * @return {*}  {Promise<[][]>} 返回从background获取的全部剧集信息
  */
 const getAllEpisodes = createAsyncThunk("data/getAllEpisodes", async (): Promise<[][]> => {
-  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
-    type: MessageType.GET_ALL_EPISODES,
-  })
-  return response.data
+  try {
+    const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
+      type: MessageType.GET_ALL_EPISODES,
+    })
+    return response.data
+  } catch (error: unknown) {
+    throw error
+  }
 })
 
 /**
@@ -47,10 +63,14 @@ const getAllEpisodes = createAsyncThunk("data/getAllEpisodes", async (): Promise
  * @return {*}  {Promise<[][]>} 返回从background获取的日漫剧集信息
  */
 const getAnimeEpisodes = createAsyncThunk("data/getAnimeEpisodes", async (): Promise<[][]> => {
-  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
-    type: MessageType.GET_ANIME_EPISODES,
-  })
-  return response.data
+  try {
+    const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
+      type: MessageType.GET_ANIME_EPISODES,
+    })
+    return response.data
+  } catch (error: unknown) {
+    throw error
+  }
 })
 
 /**
@@ -58,10 +78,14 @@ const getAnimeEpisodes = createAsyncThunk("data/getAnimeEpisodes", async (): Pro
  * @return {*}  {Promise<[][]>} 返回从background获取的国创剧集信息
  */
 const getGuoChuangEpisodes = createAsyncThunk("data/getGuoChuangEpisodes", async (): Promise<[][]> => {
-  const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
-    type: MessageType.GET_GUOCHUANG_EPISODES,
-  })
-  return response.data
+  try {
+    const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({
+      type: MessageType.GET_GUOCHUANG_EPISODES,
+    })
+    return response.data
+  } catch (error: unknown) {
+    throw error
+  }
 })
 
 export interface DataState {

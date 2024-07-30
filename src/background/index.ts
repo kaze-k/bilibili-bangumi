@@ -39,7 +39,9 @@ chrome.runtime.onMessage.addListener(
         Promise.all([
           handles.data.handleData({ types: 1, before: 7, after: 7 }),
           handles.data.handleData({ types: 4, before: 7, after: 7 }),
-        ]).then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+        ])
+          .then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+          .catch((): void => sendResponse(false))
         return true
 
       // 获取日漫和国创的信息
@@ -67,7 +69,9 @@ chrome.runtime.onMessage.addListener(
         Promise.all([
           alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES),
           alarms.create.pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES),
-        ]).then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+        ])
+          .then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+          .catch((): void => sendResponse(false))
         return true
 
       // 禁止通知
@@ -75,17 +79,25 @@ chrome.runtime.onMessage.addListener(
         Promise.all([
           chrome.alarms.clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE),
           chrome.alarms.clear(AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE),
-        ]).then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+        ])
+          .then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
+          .catch((): void => sendResponse(false))
         return true
 
       // 开启番剧通知
       case MessageType.ENABLE_ANIME_NOTICE:
-        alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES).then((result: boolean): void => sendResponse(result))
+        alarms.create
+          .pushNotice(EpisodeTypeKey.ANIME_EPISODES)
+          .then((result: boolean): void => sendResponse(result))
+          .catch((): void => sendResponse(false))
         return true
 
       // 禁止番剧通知
       case MessageType.DISABLE_ANIME_NOTICE:
-        chrome.alarms.clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE).then((result: boolean): void => sendResponse(result))
+        chrome.alarms
+          .clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE)
+          .then((result: boolean): void => sendResponse(result))
+          .catch((): void => sendResponse(false))
         return true
 
       // 开启国创通知
@@ -93,6 +105,7 @@ chrome.runtime.onMessage.addListener(
         alarms.create
           .pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES)
           .then((result: boolean): void => sendResponse(result))
+          .catch((): void => sendResponse(false))
         return true
 
       // 禁止国创通知
@@ -100,6 +113,7 @@ chrome.runtime.onMessage.addListener(
         chrome.alarms
           .clear(AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE)
           .then((result: boolean): void => sendResponse(result))
+          .catch((): void => sendResponse(false))
         return true
 
       case StateType.SYNC_STATES:
@@ -129,6 +143,9 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
           (): Promise<void> =>
             alarms.handle.pushNotice(notifications, EpisodeTypeKey.ANIME_EPISODES, alarm.scheduledTime),
         )
+        .catch((error: unknown): void => {
+          throw error
+        })
       break
 
     // 推送国创更新通知
@@ -139,6 +156,9 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
           (): Promise<void> =>
             alarms.handle.pushNotice(notifications, EpisodeTypeKey.GUOCHUANG_EPISODES, alarm.scheduledTime),
         )
+        .catch((error: unknown): void => {
+          throw error
+        })
       break
 
     case AlarmType.GET_ANIME_EPISODES:
@@ -146,6 +166,9 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
         .handleData({ types: 4, before: 7, after: 7 })
         .then((): Promise<boolean> => alarms.create.pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES))
         .then((result: boolean): Promise<boolean> => result && chrome.alarms.clear(alarm.name))
+        .catch((error: unknown): void => {
+          throw error
+        })
       break
 
     case AlarmType.GET_GUOCHUANG_EPISODES:
@@ -153,6 +176,9 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
         .handleData({ types: 1, before: 7, after: 7 })
         .then((): Promise<boolean> => alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES))
         .then((result: boolean): Promise<boolean> => result && chrome.alarms.clear(alarm.name))
+        .catch((error: unknown): void => {
+          throw error
+        })
       break
 
     default:

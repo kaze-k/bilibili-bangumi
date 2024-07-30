@@ -30,15 +30,19 @@ class Episode {
     sendResponse: SendResponse,
     episodeKey: MessageType.GET_ANIME_EPISODES | MessageType.GET_GUOCHUANG_EPISODES,
   ): Promise<void> {
-    // 获取本地缓存的剧集信息
-    let key: EpisodeTypeKey
-    if (episodeKey === MessageType.GET_ANIME_EPISODES) key = EpisodeTypeKey.ANIME_EPISODES
-    if (episodeKey === MessageType.GET_GUOCHUANG_EPISODES) key = EpisodeTypeKey.GUOCHUANG_EPISODES
+    try {
+      // 获取本地缓存的剧集信息
+      let key: EpisodeTypeKey
+      if (episodeKey === MessageType.GET_ANIME_EPISODES) key = EpisodeTypeKey.ANIME_EPISODES
+      if (episodeKey === MessageType.GET_GUOCHUANG_EPISODES) key = EpisodeTypeKey.GUOCHUANG_EPISODES
 
-    const result: object = await chrome.storage.local.get(key)
-    if (typeof result[key] === "undefined") return sendResponse({ data: [] })
+      const result: object = await chrome.storage.local.get(key)
+      if (typeof result[key] === "undefined") return sendResponse({ data: [] })
 
-    sendResponse({ data: result[key] })
+      sendResponse({ data: result[key] })
+    } catch (error: unknown) {
+      throw error
+    }
   }
 
   /**
@@ -50,11 +54,15 @@ class Episode {
    * @memberof Popup
    */
   public static async getDate(sendResponse: SendResponse): Promise<void> {
-    // 获取本地缓存的日期信息
-    const result: object = await chrome.storage.local.get(DateTypeKey.DATES)
-    if (typeof result[DateTypeKey.DATES] === "undefined") return sendResponse({ data: [] })
+    try {
+      // 获取本地缓存的日期信息
+      const result: object = await chrome.storage.local.get(DateTypeKey.DATES)
+      if (typeof result[DateTypeKey.DATES] === "undefined") return sendResponse({ data: [] })
 
-    sendResponse({ data: result[DateTypeKey.DATES] })
+      sendResponse({ data: result[DateTypeKey.DATES] })
+    } catch (error: unknown) {
+      throw error
+    }
   }
 
   /**
@@ -66,33 +74,37 @@ class Episode {
    * @memberof Popup
    */
   public static async getAllEpisodes(sendResponse: SendResponse): Promise<void> {
-    // 获取本地缓存的日漫剧集信息
-    const anime: object = await chrome.storage.local.get(EpisodeTypeKey.ANIME_EPISODES)
-    // 获取本地缓存的国创剧集信息
-    const guochuang: object = await chrome.storage.local.get(EpisodeTypeKey.GUOCHUANG_EPISODES)
+    try {
+      // 获取本地缓存的日漫剧集信息
+      const anime: object = await chrome.storage.local.get(EpisodeTypeKey.ANIME_EPISODES)
+      // 获取本地缓存的国创剧集信息
+      const guochuang: object = await chrome.storage.local.get(EpisodeTypeKey.GUOCHUANG_EPISODES)
 
-    const anime_episodes: object[][] = anime[EpisodeTypeKey.ANIME_EPISODES]
-    const guochuang_episodes: object[][] = guochuang[EpisodeTypeKey.GUOCHUANG_EPISODES]
+      const anime_episodes: object[][] = anime[EpisodeTypeKey.ANIME_EPISODES]
+      const guochuang_episodes: object[][] = guochuang[EpisodeTypeKey.GUOCHUANG_EPISODES]
 
-    if (typeof anime_episodes === "undefined" && Array.isArray(guochuang_episodes)) {
-      return sendResponse({ data: guochuang_episodes })
-    } else if (typeof guochuang_episodes === "undefined" && Array.isArray(anime_episodes)) {
-      return sendResponse({ data: anime_episodes })
-    } else if (typeof anime_episodes === "undefined" && typeof guochuang_episodes === "undefined") {
-      return sendResponse({ data: [] })
+      if (typeof anime_episodes === "undefined" && Array.isArray(guochuang_episodes)) {
+        return sendResponse({ data: guochuang_episodes })
+      } else if (typeof guochuang_episodes === "undefined" && Array.isArray(anime_episodes)) {
+        return sendResponse({ data: anime_episodes })
+      } else if (typeof anime_episodes === "undefined" && typeof guochuang_episodes === "undefined") {
+        return sendResponse({ data: [] })
+      }
+
+      // 对剧集信息进行合并
+      const episodes: object[][] = Array(Math.max(anime_episodes.length, guochuang_episodes.length))
+        .fill(null)
+        .map((_episode: object[], index: number): object[] => [...anime_episodes[index], ...guochuang_episodes[index]])
+
+      // 对剧集信息进行排序
+      episodes.forEach((episode: object[]): object[] =>
+        episode.sort((obj1: object, obj2: object): number => obj1["pub_ts"] - obj2["pub_ts"]),
+      )
+
+      sendResponse({ data: episodes })
+    } catch (error: unknown) {
+      throw error
     }
-
-    // 对剧集信息进行合并
-    const episodes: object[][] = Array(Math.max(anime_episodes.length, guochuang_episodes.length))
-      .fill(null)
-      .map((_episode: object[], index: number): object[] => [...anime_episodes[index], ...guochuang_episodes[index]])
-
-    // 对剧集信息进行排序
-    episodes.forEach((episode: object[]): object[] =>
-      episode.sort((obj1: object, obj2: object): number => obj1["pub_ts"] - obj2["pub_ts"]),
-    )
-
-    sendResponse({ data: episodes })
   }
 }
 

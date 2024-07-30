@@ -94,32 +94,36 @@ message.clear = (): void => dispatch({ type: ActionType.CLEAR_MESSAGE })
  * @return {*}  {Promise<T>}
  */
 message.promise = async <T>(promise: Promise<T>, msgs: Msgs, opts?: MessageOptions): Promise<T> => {
-  const id: string = message.loading()
-  await promise
-    .then((): void => {
-      dispatch({
-        type: ActionType.UPDATE_MESSAGE,
-        id,
-        payload: {
-          type: "success",
-          message: msgs.success,
-          ...opts,
-        },
+  try {
+    const id: string = message.loading()
+    await promise
+      .then((): void => {
+        dispatch({
+          type: ActionType.UPDATE_MESSAGE,
+          id,
+          payload: {
+            type: "success",
+            message: msgs.success,
+            ...opts,
+          },
+        })
       })
-    })
-    .catch((): void => {
-      dispatch({
-        type: ActionType.UPDATE_MESSAGE,
-        id,
-        payload: {
-          type: "error",
-          message: msgs.error,
-          ...opts,
-        },
+      .catch((): void => {
+        dispatch({
+          type: ActionType.UPDATE_MESSAGE,
+          id,
+          payload: {
+            type: "error",
+            message: msgs.error,
+            ...opts,
+          },
+        })
       })
-    })
 
-  return promise
+    return promise
+  } catch (error: unknown) {
+    throw error
+  }
 }
 
 export default message
