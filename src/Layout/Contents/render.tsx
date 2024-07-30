@@ -19,7 +19,7 @@ const CLASSNAMES: CSSTransitionClassNames = {
 
 // 过渡动画
 const KEYFRAMES: Keyframe[] = [
-  { transform: "translateY(150px)", opacity: 0.5 },
+  { transform: "translateY(120px)", opacity: 0.5 },
   { transform: "translateY(0)", opacity: 1 },
 ]
 

@@ -35,6 +35,11 @@
   width: 100%;
   list-style: none;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: var(--select-item-hover-color);
+  }
 }
 
 .select-item-text {
@@ -58,5 +63,5 @@
   top: 0;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
-  background-color: var(--select-item-hover-bg-color);
+  background-color: var(--select-item-selected-bg-color);
 }
