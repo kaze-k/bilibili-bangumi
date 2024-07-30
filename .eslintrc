@@ -29,6 +29,7 @@
     }
   },
   "rules": {
+    "no-useless-catch": "off",
     "@typescript-eslint/no-inferrable-types": [
       "error",
       {
