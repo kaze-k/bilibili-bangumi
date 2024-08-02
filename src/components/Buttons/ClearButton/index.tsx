@@ -33,10 +33,9 @@ function ClearButton(_props: unknown, ref: React.Ref<HTMLButtonElement>): React.
    */
   const handleClear: () => void = useCallback((): void => {
     message.promise(
-      Promise.all([chrome.storage.local.clear(), dispatch(clearData())]).then(
-        (): void => setClearable(false),
-        (): void => setClearable(true),
-      ),
+      Promise.all([chrome.storage.local.clear(), dispatch(clearData())])
+        .then((): void => setClearable(false))
+        .catch((): void => setClearable(true)),
       {
         success: "存储已清理",
         error: "存储清理失败",

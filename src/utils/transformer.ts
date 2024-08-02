@@ -52,6 +52,7 @@ function formatNum(num: number): string {
  * @return {*}  {string} 返回中文星期日期
  */
 function toChineseDay(day: number): string {
+  if (day < 1 || day > 7) return
   const week: string[] = ["一", "二", "三", "四", "五", "六", "日"]
   return week[day - 1]
 }
@@ -103,7 +104,7 @@ function toTime(time: number, opt: ToTimeOpt = ToTimeOpt.M): number {
       break
 
     default:
-      result = time / 1000
+      result = time / 1000 / 60
   }
 
   return result

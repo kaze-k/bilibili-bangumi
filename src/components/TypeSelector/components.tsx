@@ -34,7 +34,8 @@ const SelectButton: StyledComponent<"div", SelectButtonProps, SelectButtonProps,
  */
 const SelectItem: StyledComponent<"li", SelectItemProps, SelectItemProps, never> = styled.li<SelectItemProps>(
   (props: SelectItemProps): CSSProp => ({
-    color: props.hover && "var(--select-item-hover-color)",
+    color: props.hover && "var(--select-item-selected-color)",
+    pointerEvents: props.hover ? "none" : "auto",
   }),
 )
 

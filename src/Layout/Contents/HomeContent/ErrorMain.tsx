@@ -1,6 +1,6 @@
 import type React from "react"
 
-import ErrorPage from "~/components/ErrorPage"
+import { ErrorPage } from "~/components/Pages"
 import { Main } from "~/components/base"
 
 import style from "./style.module.scss"

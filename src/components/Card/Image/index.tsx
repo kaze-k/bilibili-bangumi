@@ -44,11 +44,13 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
 
   // 监听图片容器元素是否处于视图
   useLayoutEffect((): (() => void) => {
-    const intersectionObserverCallback: IntersectionObserverCallback = ([entry]: IntersectionObserverEntry[]): void => {
-      if (entry.isIntersecting) {
-        setIsIntersecting(true)
-        observer.disconnect()
-      }
+    const intersectionObserverCallback: IntersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
+      entries.forEach((entry: IntersectionObserverEntry): void => {
+        if (entry.isIntersecting) {
+          setIsIntersecting(true)
+          observer.disconnect()
+        }
+      })
     }
 
     const intersectionObserverOptions: IntersectionObserverInit = {

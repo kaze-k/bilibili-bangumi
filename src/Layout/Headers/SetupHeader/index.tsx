@@ -1,7 +1,6 @@
 import type React from "react"
 
-import GoBackButton from "~/components/Buttons/GobackButton"
-import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
+import { GoBackButton, SwitchThemeButton } from "~/components/Buttons"
 
 import style from "./style.module.scss"
 

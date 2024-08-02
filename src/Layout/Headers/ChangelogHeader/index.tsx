@@ -1,7 +1,6 @@
 import type React from "react"
 
-import { GithubButton } from "~/components/Buttons/"
-import SwitchThemeButton from "~/components/Buttons/SwitchThemeButton"
+import { GithubButton, SwitchThemeButton } from "~/components/Buttons/"
 
 import style from "./style.module.scss"
 

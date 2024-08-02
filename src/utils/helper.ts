@@ -12,22 +12,26 @@ async function settings<T extends boolean | number | string>(
   storageKey: Exclude<PersistKey, PersistKey.PREFIX>,
   name: string,
 ): Promise<T> {
-  const key = `${PersistKey.PREFIX}${storageKey}`
-  const syncStorage: object = await chrome.storage.sync.get(key)
+  try {
+    const key = `${PersistKey.PREFIX}${storageKey}`
+    const syncStorage: object = await chrome.storage.sync.get(key)
 
-  if (syncStorage[key]) {
-    const parsed: object = JSON.parse(syncStorage[key], (_key: string, value: unknown): unknown => {
-      if (typeof value === "string") {
-        const parsedValue: unknown = JSON.parse(value)
-        return parsedValue
-      }
+    if (syncStorage[key]) {
+      const parsed: object = JSON.parse(syncStorage[key], (_key: string, value: unknown): unknown => {
+        if (typeof value === "string") {
+          const parsedValue: unknown = JSON.parse(value)
+          return parsedValue
+        }
 
-      return value
-    })
+        return value
+      })
 
-    const result: T = parsed[name]
+      const result: T = parsed[name]
 
-    return result
+      return result
+    }
+  } catch (error: unknown) {
+    throw error
   }
 }
 

@@ -34,10 +34,14 @@ function RefreshButton(props: RefreshButtonProps, ref: React.Ref<HTMLButtonEleme
    */
   const handleUpdate: () => void = useCallback((): void => {
     if (!isLoading) {
-      dispatch(update()).then((): void => {
-        dispatch(getDates())
-        handleData()
-      })
+      dispatch(update())
+        .then((): void => {
+          dispatch(getDates())
+          handleData()
+        })
+        .catch((error: unknown): void => {
+          throw error
+        })
     }
   }, [isLoading, handleData, dispatch])
 

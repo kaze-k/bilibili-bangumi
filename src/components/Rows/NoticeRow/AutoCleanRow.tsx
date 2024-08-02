@@ -1,17 +1,19 @@
-import { composeRef } from "rc-util/lib/ref"
-import { forwardRef, useCallback, useRef } from "react"
 import type React from "react"
+import { forwardRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CSSTransition } from "react-transition-group"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
 import { Row, Switch } from "~/components/base"
+import { withTransition } from "~/hocs"
+import type { ComponentWithTransition } from "~/hocs"
 import type { AppDispatch, AppState } from "~/store"
 import { setAutoClear } from "~/store/features/notice"
 import { toTime } from "~/utils"
 
+import { Tips } from "../components"
 import style from "../style.module.scss"
 import transition from "../transition.module.scss"
+import type { TipsProps } from "../types"
 
 // 过渡动画类名
 const CLASSNAMES: CSSTransitionClassNames = {
@@ -24,6 +26,12 @@ const CLASSNAMES: CSSTransitionClassNames = {
 // 行组件文本
 const TEXT = "自动清除通知"
 
+// 过渡动画提示组件
+const TipsWithTransition: ComponentWithTransition<TipsProps, HTMLDivElement> = withTransition<
+  TipsProps,
+  HTMLDivElement
+>(Tips, CLASSNAMES)
+
 /**
  * @description 自动清除通知行组件
  * @param {unknown} _props 自动清除通知行组件Props
@@ -34,13 +42,8 @@ function AutoCleanRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   const dispatch: AppDispatch = useDispatch()
 
   // 状态
-  const notice: boolean = useSelector((state: AppState): boolean => state.notice.toggle)
   const autoClear: boolean = useSelector((state: AppState): boolean => state.notice.autoClear)
   const timeout: number = useSelector((state: AppState): number => state.notice.timeout)
-
-  // 节点实例
-  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-  const tipsRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   // 提示文本
   const explain = `开启后，通知信息会在${toTime(timeout)}分钟后自动清除`
@@ -54,43 +57,27 @@ function AutoCleanRow(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
   }, [autoClear, dispatch])
 
   return (
-    <CSSTransition
-      in={notice}
-      timeout={500}
-      classNames={CLASSNAMES}
-      nodeRef={nodeRef}
-      unmountOnExit
+    <div
+      ref={ref}
+      className={style["container"]}
     >
-      <div
-        ref={composeRef(ref, nodeRef)}
-        className={style["container"]}
+      <Row
+        title={explain}
+        text={TEXT}
       >
-        <Row
-          title={explain}
-          text={TEXT}
-        >
-          <Switch
-            id="auto-clean-notice-switch"
-            onChange={handleSwitch}
-            checked={autoClear}
-          />
-        </Row>
-        <CSSTransition
-          in={autoClear}
-          timeout={500}
-          classNames={CLASSNAMES}
-          nodeRef={tipsRef}
-          unmountOnExit
-        >
-          <div
-            className={style["tips"]}
-            ref={tipsRef}
-          >
-            {tips}
-          </div>
-        </CSSTransition>
-      </div>
-    </CSSTransition>
+        <Switch
+          id="auto-clean-notice-switch"
+          onChange={handleSwitch}
+          checked={autoClear}
+        />
+      </Row>
+      <TipsWithTransition
+        inProp={autoClear}
+        unmountOnExit
+      >
+        {tips}
+      </TipsWithTransition>
+    </div>
   )
 }
 

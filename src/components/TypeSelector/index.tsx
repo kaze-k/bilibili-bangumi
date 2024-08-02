@@ -3,8 +3,9 @@ import { composeRef } from "rc-util/lib/ref"
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import type React from "react"
 import { useSelector } from "react-redux"
-import { CSSTransition } from "react-transition-group"
 
+import { withTransition } from "~/hocs"
+import type { ComponentWithTransition } from "~/hocs"
 import type { AppState } from "~/store"
 import { EpisodeType } from "~/store/enums"
 import { toChineseType } from "~/utils"
@@ -22,6 +23,12 @@ const CLASSNAMES = {
   exitActive: transition["exit-active"],
 }
 
+// 过渡动画选项盒组件
+const SelectBoxWithTransition: ComponentWithTransition<unknown, HTMLDivElement> = withTransition<
+  unknown,
+  HTMLDivElement
+>(SelectBox, CLASSNAMES, 300)
+
 /**
  * @description 剧集类型选择组件
  * @param {unknown} _props 剧集类型选择组件props
@@ -35,7 +42,6 @@ function TypeSelector(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
 
   // 节点实例
   const selectRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-  const nodeRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
 
   /**
    * @description 处理点击的方法: 切换显示选项的值
@@ -83,15 +89,10 @@ function TypeSelector(_props: unknown, ref: React.Ref<HTMLDivElement>): React.Re
         />
         <span className={style["text"]}>{toChineseType(type)}</span>
       </SelectButton>
-      <CSSTransition
-        in={showSelect}
-        timeout={300}
-        classNames={CLASSNAMES}
-        nodeRef={nodeRef}
+      <SelectBoxWithTransition
+        inProp={showSelect}
         unmountOnExit
-      >
-        <SelectBox ref={nodeRef} />
-      </CSSTransition>
+      />
     </div>
   )
 }
