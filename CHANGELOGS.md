@@ -1,5 +1,35 @@
-## <small>0.3.1 (2024-07-23)</small>
+## <small>0.3.2 (2024-08-02)</small>
 
+* chore: 调整依赖 ([c79de38](https://github.com/kaze-k/bilibili-bangumi/commit/c79de38))
+* chore: 更新依赖 ([c55b414](https://github.com/kaze-k/bilibili-bangumi/commit/c55b414))
+* chore(tools): 添加jest依赖和配置 ([1c432ea](https://github.com/kaze-k/bilibili-bangumi/commit/1c432ea))
+* chore(tools): 修改规范工具配置并修改代码 ([086dccb](https://github.com/kaze-k/bilibili-bangumi/commit/086dccb))
+* chore(tools): 允许useless-catch ([e7c4441](https://github.com/kaze-k/bilibili-bangumi/commit/e7c4441))
+* test: 添加单元测试 ([a04e7d1](https://github.com/kaze-k/bilibili-bangumi/commit/a04e7d1))
+* style(components): 修改组件UI样式 ([b52efcb](https://github.com/kaze-k/bilibili-bangumi/commit/b52efcb))
+* refactor: 添加异常捕获代码 ([510521a](https://github.com/kaze-k/bilibili-bangumi/commit/510521a))
+* refactor(components): 调整导入HOC ([2ab8d71](https://github.com/kaze-k/bilibili-bangumi/commit/2ab8d71))
+* refactor(components): 调整组件导入 ([c8646ad](https://github.com/kaze-k/bilibili-bangumi/commit/c8646ad))
+* refactor(components): 调整pages组件的目录结构 ([45ca290](https://github.com/kaze-k/bilibili-bangumi/commit/45ca290))
+* refactor(components): 删除多余的loading动画 ([60c2629](https://github.com/kaze-k/bilibili-bangumi/commit/60c2629))
+* refactor(components): 使用HOC封装过渡动画组件 ([56809ec](https://github.com/kaze-k/bilibili-bangumi/commit/56809ec))
+* refactor(components): 统一类型 ([b382076](https://github.com/kaze-k/bilibili-bangumi/commit/b382076))
+* refactor(components): 修改 ([aa24273](https://github.com/kaze-k/bilibili-bangumi/commit/aa24273))
+* refactor(components): 重构懒加载图片监听的代码 ([2dcf978](https://github.com/kaze-k/bilibili-bangumi/commit/2dcf978))
+* refactor(components): 重构消息组件的渲染代码 ([a3e8052](https://github.com/kaze-k/bilibili-bangumi/commit/a3e8052))
+* refactor(components): 重构contents代码 ([5b55e99](https://github.com/kaze-k/bilibili-bangumi/commit/5b55e99))
+* update(components): 卡片平滑上升动画 ([f3b9928](https://github.com/kaze-k/bilibili-bangumi/commit/f3b9928))
+* update(components): 新增图片懒加载 ([f8be8f4](https://github.com/kaze-k/bilibili-bangumi/commit/f8be8f4))
+* perf: 删减初始加载的动画 ([7dcedff](https://github.com/kaze-k/bilibili-bangumi/commit/7dcedff))
+
+
+
+## <small>0.3.1 (2024-07-24)</small>
+
+* ci: 修改pnpm的版本 ([1c5622e](https://github.com/kaze-k/bilibili-bangumi/commit/1c5622e))
+* chore: 修改命令 ([bdb8696](https://github.com/kaze-k/bilibili-bangumi/commit/bdb8696))
+* chore(release): v0.3.1 ([e94bed9](https://github.com/kaze-k/bilibili-bangumi/commit/e94bed9))
+* chore(tools): 修改配置 ([50487d7](https://github.com/kaze-k/bilibili-bangumi/commit/50487d7))
 * update(pages,base component): 修改样式 ([833c554](https://github.com/kaze-k/bilibili-bangumi/commit/833c554))
 * perf(background): 优化通知延迟问题 ([c5394cb](https://github.com/kaze-k/bilibili-bangumi/commit/c5394cb))
 * perf(components): 优化搜索框搜索 ([f5cef1d](https://github.com/kaze-k/bilibili-bangumi/commit/f5cef1d))
