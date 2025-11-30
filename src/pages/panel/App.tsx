@@ -3,7 +3,7 @@ import { Provider } from "react-redux"
 import { MemoryRouter } from "react-router-dom"
 import { PersistGate } from "redux-persist/integration/react"
 
-import Loading from "~/components/Loading"
+import Loading from "~/components/base/Loading"
 import { persistor, store } from "~/store"
 
 import Panel from "./Panel"
@@ -16,7 +16,12 @@ function App(): React.ReactElement {
   return (
     <Provider store={store}>
       <PersistGate
-        loading={<Loading icon="spinner" />}
+        loading={
+          <Loading
+            icon="spinner"
+            size="5x"
+          />
+        }
         persistor={persistor}
       >
         <MemoryRouter>

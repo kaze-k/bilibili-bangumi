@@ -43,7 +43,7 @@ const theme = createSlice({
 
       if (state.system) {
         const dark: boolean = window.matchMedia("(prefers-color-scheme: dark)").matches
-        dark ? (state.darkMode = true) : (state.darkMode = false)
+        state.darkMode = dark
       }
     },
 
@@ -82,7 +82,7 @@ const theme = createSlice({
 
       if (state.system) {
         const dark: boolean = window.matchMedia("(prefers-color-scheme: dark)").matches
-        dark ? (state.darkMode = true) : (state.darkMode = false)
+        state.darkMode = dark
       }
     },
 

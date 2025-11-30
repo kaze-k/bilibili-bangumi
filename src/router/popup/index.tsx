@@ -5,8 +5,8 @@ import type { Location, RouteObject } from "react-router-dom"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import type { CSSTransitionClassNames } from "react-transition-group/CSSTransition"
 
-import Loading from "~/components/Loading"
 import { View } from "~/components/base"
+import Loading from "~/components/base/Loading"
 
 import routes from "./routes"
 import transition from "./transition.module.scss"
@@ -69,7 +69,16 @@ function RouterView(): React.ReactElement {
         unmountOnExit
       >
         <View ref={nodeRef}>
-          <Suspense fallback={<Loading icon="spinner" />}>{router}</Suspense>
+          <Suspense
+            fallback={
+              <Loading
+                icon="spinner"
+                size="5x"
+              />
+            }
+          >
+            {router}
+          </Suspense>
         </View>
       </CSSTransition>
     </TransitionGroup>

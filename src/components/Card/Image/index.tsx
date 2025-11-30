@@ -1,7 +1,8 @@
 import type React from "react"
-import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import unfound from "~/assets/images/unfound.jpg"
+import Loading from "~/components/base/Loading"
 
 import { Img } from "./components"
 import style from "./style.module.scss"
@@ -13,6 +14,12 @@ const DEFAULT_TITLE = "图片暂时无法显示"
 const IMAGE_ERROR = "图片加载失败"
 // 拖放
 const DRAGGABLE = false
+
+const intersectionObserverOptions: IntersectionObserverInit = {
+  root: null, // 视图
+  rootMargin: "0px", // 提前加载距离
+  threshold: [0, 0.25, 0.5, 0.75, 1], // 触发的阈值
+}
 
 /**
  * @description 图片组件
@@ -30,9 +37,18 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
   )
   const [isIntersecting, setIsIntersecting] = useState<boolean>(!lazy)
   const [isLoaded, setIsLoaded] = useState<boolean>(!lazy)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   // 节点实例
   const imageWrapperRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+
+  /**
+   * @description 处理图片加载的方法
+   */
+  const handleLoad: () => void = useCallback((): void => {
+    setIsLoading(false)
+    setIsLoaded(true)
+  }, [])
 
   /**
    * @description 处理图片加载失败的方法
@@ -42,29 +58,30 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
     setTitleText(IMAGE_ERROR)
   }, [])
 
+  /**
+   * @description 监听图片是否处于视图回调
+   * @param {IntersectionObserverEntry[]} [entry] 监听的元素
+   */
+  const intersectionObserverCallback: IntersectionObserverCallback = useCallback(
+    ([entry]: IntersectionObserverEntry[]): void => setIsIntersecting(entry.isIntersecting),
+    [],
+  )
+
+  const observer: IntersectionObserver = useMemo(
+    (): IntersectionObserver => new IntersectionObserver(intersectionObserverCallback, intersectionObserverOptions),
+    [intersectionObserverCallback],
+  )
+
   // 监听图片容器元素是否处于视图
   useLayoutEffect((): (() => void) => {
-    const intersectionObserverCallback: IntersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
-      entries.forEach((entry: IntersectionObserverEntry): void => {
-        if (entry.isIntersecting) {
-          setIsIntersecting(true)
-          observer.disconnect()
-        }
-      })
-    }
-
-    const intersectionObserverOptions: IntersectionObserverInit = {
-      root: null, // 视图
-      rootMargin: "0px", // 提前加载距离
-      threshold: [0, 0.25, 0.5, 0.75, 1], // 触发的阈值
-    }
-
-    const observer = new IntersectionObserver(intersectionObserverCallback, intersectionObserverOptions)
+    if (!lazy) return
 
     if (imageWrapperRef.current) observer.observe(imageWrapperRef.current)
 
+    if (isIntersecting) observer.disconnect()
+
     return (): void => observer && observer.disconnect && observer.disconnect()
-  }, [])
+  }, [lazy, observer, isIntersecting])
 
   // 监听网络状态: 网络在线重新请求图片
   useEffect((): (() => void) => {
@@ -80,20 +97,25 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
       ref={imageWrapperRef}
       className={style["image-wrapper"]}
     >
+      {isIntersecting && isLoading && (
+        <div className={style["lazy"]}>
+          <Loading icon="spinner" />
+        </div>
+      )}
       {isIntersecting && (
         <Img
           ref={ref}
           className={style["image"]}
           src={imageSrc}
-          onLoad={(): void => setIsLoaded(true)}
+          onLoad={handleLoad}
           onError={handleError}
           title={titleText}
           alt={titleText}
           draggable={DRAGGABLE}
+          loading={lazy ? "lazy" : "eager"}
           loaded={isLoaded}
         />
       )}
-      {!isLoaded && <div className={style["lazy"]} />}
     </div>
   )
 }

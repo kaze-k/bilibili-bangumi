@@ -3,8 +3,8 @@ import type React from "react"
 import { useRoutes } from "react-router-dom"
 
 import { UpdateHeader } from "~/Layout/Headers"
-import Loading from "~/components/Loading"
 import { View } from "~/components/base"
+import Loading from "~/components/base/Loading"
 
 import routes from "./routes"
 
@@ -18,7 +18,16 @@ function RouterView(): React.ReactElement {
   return (
     <View>
       <UpdateHeader />
-      <Suspense fallback={<Loading icon="spinner" />}>{router}</Suspense>
+      <Suspense
+        fallback={
+          <Loading
+            icon="spinner"
+            size="5x"
+          />
+        }
+      >
+        {router}
+      </Suspense>
     </View>
   )
 }

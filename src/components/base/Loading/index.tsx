@@ -12,7 +12,7 @@ import LoadingProps from "./types"
  * @return {*}  {React.ReactElement}
  */
 function Loading(props: LoadingProps, ref: React.Ref<HTMLDivElement>): React.ReactElement {
-  const { icon = "spinner" } = props
+  const { icon = "spinner", size = "2xl" } = props
 
   if (icon === "spinner") {
     return (
@@ -21,8 +21,8 @@ function Loading(props: LoadingProps, ref: React.Ref<HTMLDivElement>): React.Rea
         className={style["spinner"]}
       >
         <FontAwesomeIcon
-          icon="spinner"
-          size="2xl"
+          icon={icon}
+          size={size}
           spin
         />
       </div>
