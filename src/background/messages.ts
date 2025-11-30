@@ -41,7 +41,7 @@ class Episode {
 
       sendResponse({ data: result[key] })
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -61,7 +61,7 @@ class Episode {
 
       sendResponse({ data: result[DateTypeKey.DATES] })
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -103,7 +103,7 @@ class Episode {
 
       sendResponse({ data: episodes })
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 }

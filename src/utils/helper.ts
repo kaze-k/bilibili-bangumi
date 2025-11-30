@@ -31,7 +31,7 @@ async function settings<T extends boolean | number | string>(
       return result
     }
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 }
 

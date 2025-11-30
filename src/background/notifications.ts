@@ -75,7 +75,7 @@ class Creator {
         alarms.create.clearNotice(String(id))
       })
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -138,7 +138,7 @@ class Handler {
         url: `https://www.bilibili.com/bangumi/play/ep${id}`,
       })
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -170,7 +170,7 @@ class Handler {
         })
       }
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 }

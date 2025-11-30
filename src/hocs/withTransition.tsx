@@ -29,7 +29,7 @@ export type ComponentWithTransition<P = unknown, T extends HTMLElement = HTMLEle
 function withTransition<P = unknown, T extends HTMLElement = HTMLElement>(
   WrappedComponent: WrappedComponent<P, T>,
   classNames: CSSTransitionClassNames,
-  timeout: number = 500,
+  timeout = 500,
 ): ComponentWithTransition<P, T> {
   /**
    * @description 过渡动画组件

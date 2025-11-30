@@ -27,15 +27,5 @@
       "pragma": "React",
       "version": "detect"
     }
-  },
-  "rules": {
-    "no-useless-catch": "off",
-    "@typescript-eslint/no-inferrable-types": [
-      "error",
-      {
-        "ignoreParameters": true,
-        "ignoreProperties": true
-      }
-    ]
   }
 }

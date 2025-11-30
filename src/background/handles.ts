@@ -139,7 +139,7 @@ class Data {
 
       return results_episodes
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -173,7 +173,7 @@ class Data {
         return false
       }
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -207,7 +207,7 @@ class Data {
 
       return status
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -237,7 +237,7 @@ class Data {
         return status
       }
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 }

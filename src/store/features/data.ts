@@ -13,7 +13,7 @@ const abort = createAsyncThunk("data/abort", async (): Promise<boolean> => {
     const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.ABORT })
     return response
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 })
 
@@ -26,7 +26,7 @@ const update = createAsyncThunk("data/update", async (): Promise<boolean> => {
     const response: boolean = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.UPDATE })
     return response
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 })
 
@@ -39,7 +39,7 @@ const getDates = createAsyncThunk("data/getDates", async (): Promise<[][]> => {
     const response: { data: [][] } = await chrome.runtime.sendMessage<MessageRequest>({ type: MessageType.DATES })
     return response.data
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 })
 
@@ -54,7 +54,7 @@ const getAllEpisodes = createAsyncThunk("data/getAllEpisodes", async (): Promise
     })
     return response.data
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 })
 
@@ -69,7 +69,7 @@ const getAnimeEpisodes = createAsyncThunk("data/getAnimeEpisodes", async (): Pro
     })
     return response.data
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 })
 
@@ -84,7 +84,7 @@ const getGuoChuangEpisodes = createAsyncThunk("data/getGuoChuangEpisodes", async
     })
     return response.data
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 })
 

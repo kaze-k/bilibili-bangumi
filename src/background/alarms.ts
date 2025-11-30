@@ -56,7 +56,7 @@ class Handler {
 
       return episodes_info
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -105,7 +105,7 @@ class Handler {
 
       return notice_info
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -144,7 +144,7 @@ class Handler {
       // 创建通知alarms
       if (notice) await alarms.create.pushNotice(episodeTypeKey)
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -176,7 +176,7 @@ class Handler {
         }
       }
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 }
@@ -249,7 +249,7 @@ class Creator {
 
       return false
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 
@@ -277,7 +277,7 @@ class Creator {
         })
       }
     } catch (error: unknown) {
-      throw error
+      console.error(error)
     }
   }
 }

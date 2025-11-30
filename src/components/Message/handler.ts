@@ -12,7 +12,7 @@ import type { MessageHandler, MessageOptions, MessageState, MessageType, Msgs } 
  */
 const createMessage: (type: MessageType, message?: string, opts?: MessageOptions) => MessageState = (
   type: MessageType,
-  message: string = "",
+  message = "",
   opts?: MessageOptions,
 ): MessageState => ({
   createAt: Date.now(),
@@ -122,7 +122,7 @@ message.promise = async <T>(promise: Promise<T>, msgs: Msgs, opts?: MessageOptio
 
     return promise
   } catch (error: unknown) {
-    throw error
+    console.error(error)
   }
 }
 
