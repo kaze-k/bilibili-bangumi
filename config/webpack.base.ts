@@ -55,6 +55,11 @@ const config: (packageDir: string) => Configuration = (packageDir: string): Conf
       },
       minimizer: [
         new TerserWebpackPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+            },
+          },
           extractComments: {
             condition: "some",
             filename: "licenses.txt",
