@@ -7,7 +7,7 @@
   "author": "kaze",
   "scripts": {
     "prepare": "husky install",
-    "serve": "webpack watch --mode=development",
+    "watch": "webpack watch --mode=development",
     "dev": "tsc && jest && webpack --mode=development",
     "build": "tsc && jest && webpack --mode=production",
     "package": "tsc && jest && webpack --mode=production --env=package",

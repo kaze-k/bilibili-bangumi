@@ -1,0 +1,14 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - core-js
+
+allowedDeprecatedVersions:
+  eslint: "*"
+  glob: "*"
+  rimraf: "*"
+  abab: "*"
+  inflight: "*"
+  domexception: "*"
+  phin: "*"
+  "@humanwhocodes/config-array": "*"
+  "@humanwhocodes/object-schema": "*"

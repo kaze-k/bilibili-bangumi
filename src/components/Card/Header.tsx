@@ -21,7 +21,13 @@ function Header(props: HeaderProps, ref: React.Ref<HTMLDivElement>): React.React
       className={style["header"]}
     >
       <Time>{pub_time}</Time>
-      <div>{styles?.map((style: string): React.ReactElement => <Tag key={style}>{style}</Tag>)}</div>
+      <div>
+        {styles?.map(
+          (style: string): React.ReactElement => (
+            <Tag key={style}>{style}</Tag>
+          ),
+        )}
+      </div>
     </div>
   )
 }

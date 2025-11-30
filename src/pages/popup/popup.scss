@@ -1,6 +1,6 @@
-@use "~/styles/global/reset.scss";
-@use "~/styles/theme/dark.scss";
-@use "~/styles/theme/light.scss";
+@use "~/styles/global/reset";
+@use "~/styles/theme/dark";
+@use "~/styles/theme/light";
 
 #root {
   width: 400px;

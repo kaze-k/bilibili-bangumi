@@ -1,8 +1,8 @@
-@use "~/styles/global/reset.scss";
-@use "~/styles/theme/dark.scss";
-@use "~/styles/theme/light.scss";
-@use "~/styles/theme/markdown-dark.scss";
-@use "~/styles/theme/markdown-light.scss";
+@use "~/styles/global/reset";
+@use "~/styles/theme/dark";
+@use "~/styles/theme/light";
+@use "~/styles/theme/markdown-dark";
+@use "~/styles/theme/markdown-light";
 
 #root {
   background-color: var(--bg-color);

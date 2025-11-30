@@ -11,9 +11,9 @@ import devConfig from "./config/webpack.dev"
 import prodConfig from "./config/webpack.prod"
 
 const mergeConfig: (env: any, argv: any) => Configuration = (env: any, argv: any): Configuration => {
-  // serve模式(watch)
+  // watch模式
   if (env.WEBPACK_WATCH) {
-    const packageDir: string = "serve"
+    const packageDir: string = "watch"
 
     const watchConfig: Configuration = {
       plugins: [
