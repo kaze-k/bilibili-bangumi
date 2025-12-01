@@ -37,7 +37,6 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
   )
   const [isIntersecting, setIsIntersecting] = useState<boolean>(!lazy)
   const [isLoaded, setIsLoaded] = useState<boolean>(!lazy)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   // 节点实例
   const imageWrapperRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
@@ -45,10 +44,7 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
   /**
    * @description 处理图片加载的方法
    */
-  const handleLoad: () => void = useCallback((): void => {
-    setIsLoading(false)
-    setIsLoaded(true)
-  }, [])
+  const handleLoad: () => void = useCallback((): void => setIsLoaded(true), [])
 
   /**
    * @description 处理图片加载失败的方法
@@ -72,13 +68,31 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
     [intersectionObserverCallback],
   )
 
+  // 检测图片是否处于视图
+  useEffect((): void => {
+    if (!imageWrapperRef?.current) return
+
+    const rect: DOMRect = imageWrapperRef.current.getBoundingClientRect()
+    const inView = !(
+      rect.bottom < 0 ||
+      rect.top > window.innerHeight ||
+      rect.right < 0 ||
+      rect.left > window.innerWidth
+    )
+
+    if (inView) setIsIntersecting(true)
+  }, [])
+
   // 监听图片容器元素是否处于视图
   useLayoutEffect((): (() => void) => {
     if (!lazy) return
 
-    if (imageWrapperRef.current) observer.observe(imageWrapperRef.current)
+    if (isIntersecting) {
+      observer.disconnect()
+      return
+    }
 
-    if (isIntersecting) observer.disconnect()
+    if (imageWrapperRef.current) observer.observe(imageWrapperRef.current)
 
     return (): void => observer && observer.disconnect && observer.disconnect()
   }, [lazy, observer, isIntersecting])
@@ -97,8 +111,8 @@ function Image(props: ImageProps, ref: React.Ref<HTMLImageElement>): React.React
       ref={imageWrapperRef}
       className={style["image-wrapper"]}
     >
-      {isIntersecting && isLoading && (
-        <div className={style["lazy"]}>
+      {isIntersecting && !isLoaded && (
+        <div className={style["loading"]}>
           <Loading icon="spinner" />
         </div>
       )}
