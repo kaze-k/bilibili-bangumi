@@ -126,23 +126,23 @@ class Handler {
   ): Promise<void> {
     try {
       // 获取通知设置
-      const notice: boolean = await settings<boolean>(PersistKey.NOTICE, "toggle")
+      const notice: boolean = (await settings<boolean>(PersistKey.NOTICE, "toggle")) ?? false
+      if (!notice) return
 
-      const now: number = Math.floor(Date.now() / 100000)
-      const time: number = Math.floor(scheduledTime / 100000)
+      const nowMin: number = Math.floor(Date.now() / 60000)
+      const timeMin: number = Math.floor(scheduledTime / 60000)
+      const toleranceMin = 5 // 误差5分钟
 
-      if (notice && now === time) {
-        // 获取通知信息
-        const notice_info: NotificationsParams[] | undefined = await this.get_notice_info(episodeTypeKey, scheduledTime)
+      // 仅当当前时间在[scheduledTime, scheduledTime + 误差5分钟]范围内，才触发通知
+      if (nowMin < timeMin || nowMin > timeMin + toleranceMin) return
 
-        if (typeof notice_info === "undefined") return
+      // 获取通知信息
+      const notice_info: NotificationsParams[] | undefined = await this.get_notice_info(episodeTypeKey, scheduledTime)
 
-        // 创建通知
-        await notifications.create.imageNotice(alarms, notice_info)
-      }
+      if (typeof notice_info === "undefined") return
 
-      // 创建通知alarms
-      if (notice) await alarms.create.pushNotice(episodeTypeKey)
+      // 创建通知
+      await notifications.create.imageNotice(alarms, notice_info)
     } catch (error: unknown) {
       console.error(error)
     }
@@ -178,6 +178,23 @@ class Handler {
     } catch (error: unknown) {
       console.error(error)
     }
+  }
+
+  /**
+   * @description 清除alarms
+   * @static
+   * @async
+   * @param {AlarmType[]} alarms AlarmType数组
+   * @return {*}  {Promise<boolean[]>} 返回批量清除的结果
+   * @memberof Handler
+   */
+  public static async clear(alarms: AlarmType[]): Promise<boolean[]> {
+    const getAlarms: chrome.alarms.Alarm[] = await Promise.all(
+      alarms.map((alarm: AlarmType): Promise<chrome.alarms.Alarm> => chrome.alarms.get(alarm)),
+    )
+    const existedAlarms: string[] = getAlarms.filter(Boolean).map((alarm: chrome.alarms.Alarm): string => alarm.name)
+
+    return Promise.all(existedAlarms.map((name: string): Promise<boolean> => chrome.alarms.clear(name)))
   }
 }
 
@@ -264,9 +281,9 @@ class Creator {
   public static async clearNotice(id: string): Promise<void> {
     try {
       // 获取自动清除通知设置
-      const autoClear: boolean = await settings<boolean>(PersistKey.NOTICE, "autoClear")
+      const autoClear: boolean = (await settings<boolean>(PersistKey.NOTICE, "autoClear")) ?? false
       // 获取通知超时设置
-      const timeout: number = await settings<number>(PersistKey.NOTICE, "timeout")
+      const timeout: number = (await settings<number>(PersistKey.NOTICE, "timeout")) ?? 0
 
       // 创建自动清除通知alarms
       if (autoClear && timeout) {

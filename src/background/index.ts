@@ -12,8 +12,14 @@ chrome.runtime.onInstalled.addListener((details: chrome.runtime.InstalledDetails
   }
 
   if (details.reason == "update") {
+    alarms.create.updateData()
     notifications.create.updateNotice(details.previousVersion)
   }
+
+  Promise.allSettled([
+    handles.data.handleData({ types: 1, before: 7, after: 7 }),
+    handles.data.handleData({ types: 4, before: 7, after: 7 }),
+  ])
 })
 
 // 浏览器启动触发的事件
@@ -76,10 +82,13 @@ chrome.runtime.onMessage.addListener(
 
       // 禁止通知
       case MessageType.DISABLE_NOTICES:
-        Promise.all([
-          chrome.alarms.clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE),
-          chrome.alarms.clear(AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE),
-        ])
+        alarms.handle
+          .clear([
+            AlarmType.ANIME_EPISODES_PUSH_NOTICE,
+            AlarmType.GET_ANIME_EPISODES,
+            AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE,
+            AlarmType.GET_GUOCHUANG_EPISODES,
+          ])
           .then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
           .catch((): void => sendResponse(false))
         return true
@@ -94,9 +103,9 @@ chrome.runtime.onMessage.addListener(
 
       // 禁止番剧通知
       case MessageType.DISABLE_ANIME_NOTICE:
-        chrome.alarms
-          .clear(AlarmType.ANIME_EPISODES_PUSH_NOTICE)
-          .then((result: boolean): void => sendResponse(result))
+        alarms.handle
+          .clear([AlarmType.ANIME_EPISODES_PUSH_NOTICE, AlarmType.GET_ANIME_EPISODES])
+          .then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
           .catch((): void => sendResponse(false))
         return true
 
@@ -110,9 +119,9 @@ chrome.runtime.onMessage.addListener(
 
       // 禁止国创通知
       case MessageType.DISABLE_GUOCHUANG_NOTICE:
-        chrome.alarms
-          .clear(AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE)
-          .then((result: boolean): void => sendResponse(result))
+        alarms.handle
+          .clear([AlarmType.GUOCHUANG_EPISODES_PUSH_NOTICE, AlarmType.GET_GUOCHUANG_EPISODES])
+          .then((result: boolean[]): void => sendResponse(result.every((value: boolean): boolean => value)))
           .catch((): void => sendResponse(false))
         return true
 
@@ -146,6 +155,7 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
         .catch((error: unknown): void => {
           throw error
         })
+        .finally((): Promise<boolean> => alarms.create.pushNotice(EpisodeTypeKey.ANIME_EPISODES))
       break
 
     // 推送国创更新通知
@@ -159,8 +169,10 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
         .catch((error: unknown): void => {
           throw error
         })
+        .finally((): Promise<boolean> => alarms.create.pushNotice(EpisodeTypeKey.GUOCHUANG_EPISODES))
       break
 
+    // 获取日漫信息
     case AlarmType.GET_ANIME_EPISODES:
       handles.data
         .handleData({ types: 4, before: 7, after: 7 })
@@ -171,6 +183,7 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm): void => {
         })
       break
 
+    // 获取国创信息
     case AlarmType.GET_GUOCHUANG_EPISODES:
       handles.data
         .handleData({ types: 1, before: 7, after: 7 })
