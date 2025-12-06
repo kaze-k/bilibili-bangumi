@@ -1,7 +1,21 @@
+## <small>0.4.1 (2025-12-06)</small>
+
+* fix: 修复提醒失效问题 ([c5a4ca2](https://github.com/kaze-k/bilibili-bangumi/commit/c5a4ca2))
+* style: 调整图片懒加载loading样式 ([b30bf91](https://github.com/kaze-k/bilibili-bangumi/commit/b30bf91))
+* style: 调整样式 ([480a3cf](https://github.com/kaze-k/bilibili-bangumi/commit/480a3cf))
+* style: 修改lint规范 ([7b6b06a](https://github.com/kaze-k/bilibili-bangumi/commit/7b6b06a))
+* test: 添加loading组件测试用例 ([e728a9e](https://github.com/kaze-k/bilibili-bangumi/commit/e728a9e))
+* perf: 优化部分逻辑 ([734088b](https://github.com/kaze-k/bilibili-bangumi/commit/734088b))
+* chore: 配置清除console ([77747f7](https://github.com/kaze-k/bilibili-bangumi/commit/77747f7))
+* chore: 重建依赖 ([4d67e24](https://github.com/kaze-k/bilibili-bangumi/commit/4d67e24))
+
+
+
 ## <small>0.3.2 (2024-08-02)</small>
 
 * chore: 调整依赖 ([c79de38](https://github.com/kaze-k/bilibili-bangumi/commit/c79de38))
 * chore: 更新依赖 ([c55b414](https://github.com/kaze-k/bilibili-bangumi/commit/c55b414))
+* chore(release): v0.3.2 ([c37215b](https://github.com/kaze-k/bilibili-bangumi/commit/c37215b))
 * chore(tools): 添加jest依赖和配置 ([1c432ea](https://github.com/kaze-k/bilibili-bangumi/commit/1c432ea))
 * chore(tools): 修改规范工具配置并修改代码 ([086dccb](https://github.com/kaze-k/bilibili-bangumi/commit/086dccb))
 * chore(tools): 允许useless-catch ([e7c4441](https://github.com/kaze-k/bilibili-bangumi/commit/e7c4441))
