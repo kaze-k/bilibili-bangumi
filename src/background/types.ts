@@ -16,6 +16,7 @@ interface NotificationsParams {
   title: string
   index: string
   time?: number
+  delay: boolean
   published: boolean
 }
 

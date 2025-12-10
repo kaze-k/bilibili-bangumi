@@ -48,6 +48,7 @@ class Handler {
             "pub_index",
             "pub_ts",
             "title",
+            "delay",
             "published",
           ])
 
@@ -84,24 +85,18 @@ class Handler {
 
       // 获取最新的通知信息
       const notice_info: NotificationsParams[] = episodes_info
-        .map((obj: object): NotificationsParams => {
-          if (time === obj["pub_ts"]) {
-            const info: NotificationsParams = {
-              ep_cover: obj["ep_cover"],
-              id: obj["episode_id"],
-              index: obj["pub_index"],
-              time: obj["pub_ts"],
-              title: obj["title"],
-              published: Boolean(obj["published"]),
-            }
-            return info
-          }
-        })
-        .filter((value: NotificationsParams): NotificationsParams => {
-          if (typeof value !== "undefined") {
-            return value
-          }
-        })
+        .filter((obj: object): boolean => time === obj["pub_ts"])
+        .map(
+          (obj: object): NotificationsParams => ({
+            ep_cover: obj["ep_cover"],
+            id: obj["episode_id"],
+            index: obj["pub_index"],
+            time: obj["pub_ts"],
+            title: obj["title"],
+            delay: Boolean(obj["delay"]),
+            published: Boolean(obj["published"]),
+          }),
+        )
 
       return notice_info
     } catch (error: unknown) {

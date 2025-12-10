@@ -56,9 +56,9 @@ class Creator {
       const silent: boolean = (await settings<boolean>(PersistKey.NOTICE, "silent")) ?? false
 
       // 创建通知
-      params.forEach(({ id, ep_cover, title, index, time }: NotificationsParams): void => {
-        // index不为空字符，创建通知
-        if (index.length) {
+      params.forEach(({ id, ep_cover, title, index, time, delay }: NotificationsParams): void => {
+        // 没有标记延迟，创建通知
+        if (!delay) {
           chrome.notifications.create(String(id), {
             type: "image",
             title: title,
