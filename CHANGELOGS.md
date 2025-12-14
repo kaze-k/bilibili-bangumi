@@ -1,13 +1,21 @@
-## <small>0.4.1 (2025-12-06)</small>
+## <small>0.4.2 (2025-12-14)</small>
 
+* perf(background): 优化延迟更新判断 ([e9f4e20](https://github.com/kaze-k/bilibili-bangumi/commit/e9f4e20))
+
+
+
+## <small>0.4.1 (2025-12-07)</small>
+
+* chore: 更新github action配置 ([7bc6fec](https://github.com/kaze-k/bilibili-bangumi/commit/7bc6fec))
+* chore: 配置清除console ([77747f7](https://github.com/kaze-k/bilibili-bangumi/commit/77747f7))
+* chore: 重建依赖 ([4d67e24](https://github.com/kaze-k/bilibili-bangumi/commit/4d67e24))
+* chore(release): v0.4.1 ([ec8cafd](https://github.com/kaze-k/bilibili-bangumi/commit/ec8cafd))
 * fix: 修复提醒失效问题 ([c5a4ca2](https://github.com/kaze-k/bilibili-bangumi/commit/c5a4ca2))
 * style: 调整图片懒加载loading样式 ([b30bf91](https://github.com/kaze-k/bilibili-bangumi/commit/b30bf91))
 * style: 调整样式 ([480a3cf](https://github.com/kaze-k/bilibili-bangumi/commit/480a3cf))
 * style: 修改lint规范 ([7b6b06a](https://github.com/kaze-k/bilibili-bangumi/commit/7b6b06a))
 * test: 添加loading组件测试用例 ([e728a9e](https://github.com/kaze-k/bilibili-bangumi/commit/e728a9e))
 * perf: 优化部分逻辑 ([734088b](https://github.com/kaze-k/bilibili-bangumi/commit/734088b))
-* chore: 配置清除console ([77747f7](https://github.com/kaze-k/bilibili-bangumi/commit/77747f7))
-* chore: 重建依赖 ([4d67e24](https://github.com/kaze-k/bilibili-bangumi/commit/4d67e24))
 
 
 
